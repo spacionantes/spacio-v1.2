@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Layout from "@/components/Layout";
 import SpaceCard from "@/components/SpaceCard";
-import { mockSpaces } from "@/data/mockData";
+import SpaceDetailDialog from "@/components/SpaceDetailDialog";
+import { mockSpaces, type Space } from "@/data/mockData";
 
 const Explorer = () => {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
 
   const filtered = mockSpaces.filter((s) => {
     const matchSearch = s.title.toLowerCase().includes(search.toLowerCase()) || s.city.toLowerCase().includes(search.toLowerCase());
@@ -54,7 +56,9 @@ const Explorer = () => {
             <p className="mb-4 text-sm text-muted-foreground">{filtered.length} espace{filtered.length > 1 ? "s" : ""} trouvé{filtered.length > 1 ? "s" : ""}</p>
             <div className="grid gap-4 sm:grid-cols-2">
               {filtered.map((space) => (
-                <SpaceCard key={space.id} space={space} />
+                <div key={space.id} className="cursor-pointer" onClick={() => setSelectedSpace(space)}>
+                  <SpaceCard space={space} />
+                </div>
               ))}
             </div>
             {filtered.length === 0 && (
@@ -78,6 +82,7 @@ const Explorer = () => {
           </div>
         </div>
       </section>
+      <SpaceDetailDialog space={selectedSpace} open={!!selectedSpace} onOpenChange={(v) => !v && setSelectedSpace(null)} />
     </Layout>
   );
 };
