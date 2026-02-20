@@ -147,9 +147,6 @@ const Index = () => (
               <li className="flex items-center gap-2">✓ Calendrier intégré</li>
               <li className="flex items-center gap-2">✓ Paiement sécurisé</li>
             </ul>
-            <Link to="/commencer">
-              <Button variant="outline" className="rounded-2xl font-semibold">Proposer un espace</Button>
-            </Link>
           </motion.div>
 
           {/* Associations card */}
@@ -172,9 +169,6 @@ const Index = () => (
               <li className="flex items-center gap-2">✓ Réservation instantanée</li>
               <li className="flex items-center gap-2">✓ Tarifs associatifs</li>
             </ul>
-            <Link to="/explorer">
-              <Button className="rounded-2xl font-semibold">Explorer les espaces</Button>
-            </Link>
           </motion.div>
         </div>
       </div>
