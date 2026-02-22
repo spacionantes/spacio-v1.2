@@ -7,6 +7,7 @@ import logo from "@/assets/logo.png";
 const navItems = [
   { label: "Comment ça marche", href: "/#how-it-works" },
   { label: "Trouver un espace", href: "/explorer" },
+  { label: "Diagnostic", href: "/diagnostic" },
   { label: "Blog", href: "/blog" },
 ];
 
