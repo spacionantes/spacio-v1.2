@@ -1,69 +1,37 @@
 
-# Remplacement de "Proposer un espace" par un questionnaire lead adaptatif
+## Formulaire de reservation pre-rempli par espace
 
-## Changements prevus
+### Objectif
+Quand l'utilisateur clique sur "Reserver cet espace" dans le popup d'un listing, il arrive directement sur un formulaire simplifie ou les infos de l'espace sont deja remplies. Il n'a plus qu'a saisir ses coordonnees personnelles (nom, email, telephone).
 
-### 1. Suppression de la page et route "Proposer un espace"
-- Supprimer la route `/proposer` de `App.tsx`
-- Supprimer le fichier `src/pages/ProposeSpace.tsx`
-- Retirer le lien "Proposer un espace" du menu de navigation dans `Header.tsx`
-- Mettre a jour les liens dans `Footer.tsx` (remplacer "Proposer un espace" par "Commencer" vers `/commencer`)
+### Changements prevus
 
-### 2. Creation de la page `/commencer` - Questionnaire lead
-Nouvelle page `src/pages/GetStarted.tsx` avec un formulaire court et synthetique :
+**1. SpaceDetailDialog.tsx** - Passer les donnees de l'espace dans l'URL
+- Le bouton "Reserver cet espace" naviguera vers `/commencer?space=ID_ESPACE` au lieu de simplement `/commencer`
+- L'ID de l'espace sera passe en query parameter
 
-**Etape 1 - Profil (question pivot)**
-- "Vous etes..." avec deux cartes visuelles cliquables :
-  - "Je cherche un espace" (icone Search) - pour les associations/demandeurs
-  - "Je propose un espace" (icone Building2) - pour les proprietaires
+**2. GetStarted.tsx** - Refonte du formulaire quand un espace est pre-selectionne
+- Lire le query parameter `space` depuis l'URL via `useSearchParams`
+- Si un `space` est present :
+  - Sauter les etapes 1 (profil) et 2 (details association) car on sait deja que c'est un demandeur d'espace
+  - Afficher un recap de l'espace selectionne en haut du formulaire (nom, ville, photo, prix) en lecture seule
+  - Aller directement a un formulaire simplifie demandant uniquement : Nom de l'association, Email, Telephone (optionnel)
+  - Pre-remplir automatiquement `user_type: "seeker"` et `city` depuis les donnees de l'espace
+- Si pas de `space` en URL : garder le flow actuel (etapes 1-2-3-4) inchange
 
-**Etape 2 - Questions adaptees selon le profil**
+**3. Donnees du lead**
+- Ajouter un champ `space_id` et `space_title` au type `LeadData` pour tracer quel espace a ete demande
+- Ces champs seront remplis automatiquement depuis les donnees mock
 
-*Si demandeur d'espace :*
-- Nom de l'association
-- Type d'activite (select : reunion, atelier, evenement, sport, autre)
-- Ville recherchee
-- Email de contact
-- Telephone (optionnel)
+### Resultat pour l'utilisateur
+1. Clic sur "Reserver cet espace" sur le listing "Salle Lumiere"
+2. Arrive sur `/commencer?space=1`
+3. Voit un recap de "Salle Lumiere" avec photo, adresse, prix
+4. Remplit uniquement : Nom de l'association, Email, Telephone
+5. Clique "Envoyer" et voit la confirmation
 
-*Si proprietaire d'espace :*
-- Nom / Societe
-- Type d'espace (select : salle de reunion, atelier, salle evenementielle, coworking, studio, autre)
-- Ville
-- Email de contact
-- Telephone (optionnel)
-
-**Etape 3 - Confirmation**
-- Message de remerciement avec animation
-- "Nous vous recontacterons sous 24h"
-
-Le formulaire sera compact (une seule card centree, max-w-lg), avec un stepper visuel simple (3 points).
-
-### 3. Mise a jour du Header
-- Retirer "Proposer un espace" des `navItems`
-- Le bouton "Commencer" pointe vers `/commencer`
-
-### 4. Mise a jour de la Landing Page (`Index.tsx`)
-- La section "Une solution pour tous" : les boutons des deux cartes (Proprietaires et Associations) pointent vers `/commencer`
-- Le bouton "Rechercher" du hero reste vers `/explorer`
-
-### 5. Mise a jour du Footer
-- Remplacer "Proposer un espace" par "Commencer" pointant vers `/commencer`
-
----
-
-## Details techniques
-
-**Fichiers modifies :**
-- `src/App.tsx` - remplacer route `/proposer` par `/commencer`
-- `src/components/Header.tsx` - retirer nav item, garder bouton CTA vers `/commencer`
-- `src/components/Footer.tsx` - mettre a jour le lien
-- `src/pages/Index.tsx` - mettre a jour les liens des cartes "Solution pour tous"
-
-**Fichiers crees :**
-- `src/pages/GetStarted.tsx` - questionnaire adaptatif avec state local (useState pour l'etape, le profil choisi, et les champs du formulaire)
-
-**Fichier supprime :**
-- `src/pages/ProposeSpace.tsx`
-
-**Donnees du formulaire** : stockees dans un objet avec des noms de champs logiques (`user_type`, `organization_name`, `activity_type`, `space_type`, `city`, `email`, `phone`) prets pour insertion Supabase future via une table `leads`.
+### Details techniques
+- Import de `useSearchParams` depuis `react-router-dom` dans GetStarted
+- Import de `mockSpaces` depuis `mockData.ts` pour retrouver l'espace par ID
+- Le formulaire simplifie sera une Card avec le recap espace + champs contact dans un seul ecran (pas de stepper)
+- Le flow classique sans query param reste intact
