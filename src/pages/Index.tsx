@@ -40,8 +40,8 @@ const Index = () =>
         transition={{ duration: 0.6 }}
         className="mx-auto max-w-3xl text-center">
 
-          <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Trouvez l'espace <span className="text-gradient-primary italic font-serif">parfait</span> pour votre association
+          <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">Trouvez l'espace parfait selon votre besoin
+          <span className="text-gradient-primary italic font-serif">parfait</span> pour votre association
           </h1>
           <p className="mx-auto mb-10 max-w-xl text-lg text-muted-foreground">
             Spacio connecte les associations avec des espaces adaptés à leurs activités. Réservation simple, paiement sécurisé.
