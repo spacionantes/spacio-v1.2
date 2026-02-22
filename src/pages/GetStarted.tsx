@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Search, Building2, CheckCircle2, ArrowLeft, MapPin, Users, Ruler } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import Layout from "@/components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import { mockSpaces } from "@/data/mockData";
+import { useListings } from "@/hooks/useListings";
 
 type UserType = "seeker" | "owner" | null;
 
@@ -141,7 +144,8 @@ const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; on
 const GetStarted = () => {
   const [searchParams] = useSearchParams();
   const spaceId = searchParams.get("space");
-  const selectedSpace = spaceId ? mockSpaces.find((s) => s.id === spaceId) : null;
+  const { data: listings = [] } = useListings();
+  const selectedSpace = spaceId ? listings.find((s) => s.id === spaceId) || mockSpaces.find((s) => s.id === spaceId) : null;
 
   const [step, setStep] = useState(1);
   const [data, setData] = useState<LeadData>(initialData);
@@ -159,9 +163,27 @@ const GetStarted = () => {
 
   const canSubmitStep3 = () => !!data.email;
 
-  const handleSubmit = (leadData?: LeadData) => {
+  const handleSubmit = async (leadData?: LeadData) => {
     const finalData = leadData || data;
-    console.log("Lead submitted:", finalData);
+    
+    const { error } = await supabase.from("leads").insert({
+      user_type: finalData.user_type || "seeker",
+      organization_name: finalData.organization_name,
+      activity_type: finalData.activity_type || null,
+      space_type: finalData.space_type || null,
+      city: finalData.city,
+      email: finalData.email,
+      phone: finalData.phone || null,
+      space_id: finalData.space_id || null,
+      space_title: finalData.space_title || null,
+    });
+
+    if (error) {
+      toast.error("Une erreur est survenue. Veuillez réessayer.");
+      console.error("Lead insert error:", error);
+      return;
+    }
+
     if (leadData) {
       setSubmitted(true);
     } else {

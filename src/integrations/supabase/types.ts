@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          activity_type: string | null
+          city: string
+          created_at: string
+          email: string
+          id: string
+          organization_name: string
+          phone: string | null
+          space_id: string | null
+          space_title: string | null
+          space_type: string | null
+          user_type: string
+        }
+        Insert: {
+          activity_type?: string | null
+          city: string
+          created_at?: string
+          email: string
+          id?: string
+          organization_name: string
+          phone?: string | null
+          space_id?: string | null
+          space_title?: string | null
+          space_type?: string | null
+          user_type: string
+        }
+        Update: {
+          activity_type?: string | null
+          city?: string
+          created_at?: string
+          email?: string
+          id?: string
+          organization_name?: string
+          phone?: string | null
+          space_id?: string | null
+          space_title?: string | null
+          space_type?: string | null
+          user_type?: string
+        }
+        Relationships: []
+      }
+      listings: {
+        Row: {
+          address: string
+          amenities: string[] | null
+          capacity: number
+          city: string
+          created_at: string
+          id: string
+          image_url: string | null
+          price_per_hour: number
+          rating: number | null
+          reviews_count: number | null
+          surface_m2: number
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          amenities?: string[] | null
+          capacity: number
+          city: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          price_per_hour: number
+          rating?: number | null
+          reviews_count?: number | null
+          surface_m2: number
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          amenities?: string[] | null
+          capacity?: number
+          city?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          price_per_hour?: number
+          rating?: number | null
+          reviews_count?: number | null
+          surface_m2?: number
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -6,20 +6,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Layout from "@/components/Layout";
 import SpaceCard from "@/components/SpaceCard";
 import SpaceDetailDialog from "@/components/SpaceDetailDialog";
-import { mockSpaces, type Space } from "@/data/mockData";
+import { useListings } from "@/hooks/useListings";
+import type { Space } from "@/data/mockData";
 
 const Explorer = () => {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
+  const { data: spaces = [] } = useListings();
 
-  const filtered = mockSpaces.filter((s) => {
+  const filtered = spaces.filter((s) => {
     const matchSearch = s.title.toLowerCase().includes(search.toLowerCase()) || s.city.toLowerCase().includes(search.toLowerCase());
     const matchType = typeFilter === "all" || s.type === typeFilter;
     return matchSearch && matchType;
   });
 
-  const types = [...new Set(mockSpaces.map((s) => s.type))];
+  const types = [...new Set(spaces.map((s) => s.type))];
 
   return (
     <Layout>
