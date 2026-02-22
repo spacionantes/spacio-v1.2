@@ -1,9 +1,12 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Zap, Star } from "lucide-react";
+import { Users, Zap, Star, Save, CheckCircle } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const DAYS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"] as const;
 const PERIODS = ["Matin", "Midi", "Après-midi", "Soir", "Nuit"] as const;
@@ -30,14 +33,39 @@ const initGrid = (): Grid => {
 const Diagnostic = () => {
   const [grid, setGrid] = useState<Grid>(initGrid);
 
-  const set = (day: string, period: string, val: OccupancyValue) =>
+  const { toast } = useToast();
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const set = (day: string, period: string, val: OccupancyValue) => {
+    setSaved(false);
     setGrid((prev) => ({ ...prev, [day]: { ...prev[day], [period]: val } }));
+  };
 
   const { score, ratio } = useMemo(() => {
     const sum = DAYS.reduce((s, d) => s + PERIODS.reduce((ps, p) => ps + grid[d][p], 0), 0);
     const r = sum / 35;
     return { score: Math.round(Math.pow(r, 0.25) * 100), ratio: r };
   }, [grid]);
+
+  const adviceCategory = score < 30 ? "mutualisation" : score < 60 ? "hybridation" : "optimal";
+
+  const handleSave = async () => {
+    setSaving(true);
+    const { error } = await supabase.from("diagnostic_results").insert({
+      score,
+      ratio,
+      grid: grid as any,
+      advice_category: adviceCategory,
+    });
+    setSaving(false);
+    if (error) {
+      toast({ title: "Erreur", description: "Impossible d'enregistrer le diagnostic.", variant: "destructive" });
+    } else {
+      setSaved(true);
+      toast({ title: "Enregistré !", description: "Votre diagnostic a bien été sauvegardé." });
+    }
+  };
 
   const gaugeColor = score < 30 ? "hsl(0 84% 60%)" : score < 60 ? "hsl(var(--warning))" : "hsl(var(--success))";
 
@@ -121,6 +149,9 @@ const Diagnostic = () => {
                 {score}
               </motion.span>
               <span className="text-xs text-muted-foreground">Occupation : {Math.round(ratio * 100)}%</span>
+              <Button onClick={handleSave} disabled={saving || saved} className="mt-2 rounded-2xl px-6">
+                {saved ? <><CheckCircle className="h-4 w-4" /> Enregistré</> : saving ? "Enregistrement…" : <><Save className="h-4 w-4" /> Enregistrer mon diagnostic</>}
+              </Button>
             </CardContent>
           </Card>
         </motion.div>

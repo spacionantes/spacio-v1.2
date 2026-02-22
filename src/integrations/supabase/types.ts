@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      diagnostic_results: {
+        Row: {
+          advice_category: string
+          created_at: string
+          grid: Json
+          id: string
+          ratio: number
+          score: number
+        }
+        Insert: {
+          advice_category: string
+          created_at?: string
+          grid: Json
+          id?: string
+          ratio: number
+          score: number
+        }
+        Update: {
+          advice_category?: string
+          created_at?: string
+          grid?: Json
+          id?: string
+          ratio?: number
+          score?: number
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           activity_type: string | null
