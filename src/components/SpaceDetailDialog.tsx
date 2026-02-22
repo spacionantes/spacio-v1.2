@@ -60,7 +60,7 @@ const SpaceDetailDialog = ({ space, open, onOpenChange }: { space: Space | null;
 
           <Button
             className="w-full rounded-2xl py-6 text-base font-semibold"
-            onClick={() => navigate("/commencer")}
+            onClick={() => navigate(`/commencer?space=${space.id}`)}
           >
             Réserver cet espace
           </Button>

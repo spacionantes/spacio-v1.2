@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Search, Building2, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Search, Building2, CheckCircle2, ArrowLeft, MapPin, Users, Ruler } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import Layout from "@/components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
+import { mockSpaces } from "@/data/mockData";
 
 type UserType = "seeker" | "owner" | null;
 
@@ -18,6 +21,8 @@ interface LeadData {
   city: string;
   email: string;
   phone: string;
+  space_id: string;
+  space_title: string;
 }
 
 const initialData: LeadData = {
@@ -28,6 +33,8 @@ const initialData: LeadData = {
   city: "",
   email: "",
   phone: "",
+  space_id: "",
+  space_title: "",
 };
 
 const activityTypes = [
@@ -47,9 +54,98 @@ const spaceTypes = [
   { value: "autre", label: "Autre" },
 ];
 
+const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; onSubmit: (data: LeadData) => void }) => {
+  const [data, setData] = useState<LeadData>({
+    ...initialData,
+    user_type: "seeker",
+    city: space.city,
+    space_id: space.id,
+    space_title: space.title,
+  });
+
+  const update = (field: keyof LeadData, value: string) =>
+    setData((prev) => ({ ...prev, [field]: value }));
+
+  const canSubmit = !!data.email && !!data.organization_name;
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+      <Card className="overflow-hidden rounded-2xl shadow-sm">
+        {/* Space recap */}
+        <div className="relative aspect-[16/7] w-full overflow-hidden">
+          <img src={space.image_url} alt={space.title} className="h-full w-full object-cover" />
+          <Badge className="absolute right-4 top-4 rounded-xl bg-primary px-3 py-1.5 text-base font-bold text-primary-foreground shadow-lg">
+            {space.price_per_hour}€/h
+          </Badge>
+        </div>
+        <div className="space-y-1 border-b px-6 py-4">
+          <h2 className="text-lg font-bold">{space.title}</h2>
+          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4" /> {space.address}, {space.city}
+          </p>
+          <div className="flex items-center gap-4 pt-1 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1"><Users className="h-4 w-4" /> {space.capacity} pers.</span>
+            <span className="flex items-center gap-1"><Ruler className="h-4 w-4" /> {space.surface_m2} m²</span>
+          </div>
+        </div>
+
+        {/* Contact form */}
+        <CardContent className="space-y-4 p-6">
+          <h3 className="text-base font-semibold">Vos coordonnées</h3>
+
+          <div className="space-y-1.5">
+            <Label>Nom de l'association *</Label>
+            <Input
+              value={data.organization_name}
+              onChange={(e) => update("organization_name", e.target.value)}
+              placeholder="Ex : Les Amis du Quartier"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Email *</Label>
+            <Input
+              type="email"
+              value={data.email}
+              onChange={(e) => update("email", e.target.value)}
+              placeholder="vous@exemple.com"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Téléphone <span className="text-muted-foreground">(optionnel)</span></Label>
+            <Input
+              type="tel"
+              value={data.phone}
+              onChange={(e) => update("phone", e.target.value)}
+              placeholder="06 00 00 00 00"
+            />
+          </div>
+
+          <Button
+            className="w-full rounded-2xl py-6 text-base font-semibold"
+            disabled={!canSubmit}
+            onClick={() => onSubmit(data)}
+          >
+            Envoyer ma demande
+          </Button>
+          <p className="text-center text-xs text-muted-foreground">
+            L'équipe Spacio vous recontactera sous 24h pour étudier votre demande.
+          </p>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
+
 const GetStarted = () => {
+  const [searchParams] = useSearchParams();
+  const spaceId = searchParams.get("space");
+  const selectedSpace = spaceId ? mockSpaces.find((s) => s.id === spaceId) : null;
+
   const [step, setStep] = useState(1);
   const [data, setData] = useState<LeadData>(initialData);
+  const [submitted, setSubmitted] = useState(false);
 
   const update = (field: keyof LeadData, value: string) =>
     setData((prev) => ({ ...prev, [field]: value }));
@@ -63,12 +159,42 @@ const GetStarted = () => {
 
   const canSubmitStep3 = () => !!data.email;
 
-  const handleSubmit = () => {
-    // Ready for Supabase insertion
-    console.log("Lead submitted:", data);
-    setStep(4);
+  const handleSubmit = (leadData?: LeadData) => {
+    const finalData = leadData || data;
+    console.log("Lead submitted:", finalData);
+    if (leadData) {
+      setSubmitted(true);
+    } else {
+      setStep(4);
+    }
   };
 
+  // Pre-filled space flow
+  if (selectedSpace) {
+    return (
+      <Layout>
+        <section className="flex min-h-[70vh] items-center justify-center py-16">
+          <div className="w-full max-w-lg px-4">
+            <AnimatePresence mode="wait">
+              {!submitted ? (
+                <SpaceBookingForm key="form" space={selectedSpace} onSubmit={handleSubmit} />
+              ) : (
+                <motion.div key="confirm" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }} className="text-center">
+                  <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+                    <CheckCircle2 className="h-10 w-10 text-primary" />
+                  </div>
+                  <h2 className="mb-2 text-2xl font-bold">Merci !</h2>
+                  <p className="text-muted-foreground">Nous avons bien reçu votre demande pour <strong>{selectedSpace.title}</strong>.<br />Nous vous recontacterons sous 24h.</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </section>
+      </Layout>
+    );
+  }
+
+  // Standard flow (unchanged)
   const stepIndicator = (
     <div className="mb-8 flex items-center justify-center gap-2">
       {[1, 2, 3].map((s) => (
@@ -199,7 +325,7 @@ const GetStarted = () => {
                       <Button variant="outline" className="rounded-2xl" onClick={() => setStep(2)}>
                         <ArrowLeft className="mr-1 h-4 w-4" /> Retour
                       </Button>
-                      <Button className="flex-1 rounded-2xl font-semibold" disabled={!canSubmitStep3()} onClick={handleSubmit}>
+                      <Button className="flex-1 rounded-2xl font-semibold" disabled={!canSubmitStep3()} onClick={() => handleSubmit()}>
                         Envoyer
                       </Button>
                     </div>
