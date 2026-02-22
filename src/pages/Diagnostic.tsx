@@ -4,58 +4,55 @@ import { Users, Zap, Star, Save, CheckCircle } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-const DAYS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"] as const;
-const PERIODS = ["Matin", "Midi", "Après-midi", "Soir", "Nuit"] as const;
+const SLOT_LABELS = ["Matin", "Midi", "Après-midi", "Soir"] as const;
+const SLOT_DURATIONS = [4, 2, 4, 6]; // heures par créneau
+const INTENSITY_LABELS = ["Vide", "Partiel", "Plein"] as const;
 
-type OccupancyValue = 0 | 0.5 | 1;
+type Slot = { duration: number; intensity: 0 | 1 | 2 };
 
-const OPTIONS: { label: string; short: string; value: OccupancyValue; style: string; activeStyle: string }[] = [
-  { label: "Inoccupé", short: "0", value: 0, style: "border-border text-muted-foreground", activeStyle: "bg-muted border-muted-foreground/40 text-foreground font-semibold" },
-  { label: "Partiel", short: "½", value: 0.5, style: "border-border text-muted-foreground", activeStyle: "bg-[hsl(var(--pastel-orange))] border-[hsl(var(--warning))] text-foreground font-semibold" },
-  { label: "Intensif", short: "1", value: 1, style: "border-border text-muted-foreground", activeStyle: "bg-[hsl(var(--pastel-green))] border-[hsl(var(--success))] text-foreground font-semibold" },
-];
-
-type Grid = Record<string, Record<string, OccupancyValue>>;
-
-const initGrid = (): Grid => {
-  const g: Grid = {};
-  DAYS.forEach((d) => {
-    g[d] = {};
-    PERIODS.forEach((p) => { g[d][p] = 0; });
-  });
-  return g;
+const calculateIntensiScore = (slots: Slot[]) => {
+  const actualUsage = slots.reduce((acc, slot) => acc + slot.duration * slot.intensity, 0);
+  const maxTheoretical = 24 * 2;
+  const ratio = actualUsage / maxTheoretical;
+  const scoreRaw = Math.pow(ratio, 0.25);
+  return { score: Math.round(scoreRaw * 100), ratio };
 };
 
 const Diagnostic = () => {
-  const [grid, setGrid] = useState<Grid>(initGrid);
-
+  const [intensities, setIntensities] = useState<(0 | 1 | 2)[]>([0, 0, 0, 0]);
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const set = (day: string, period: string, val: OccupancyValue) => {
+  const setIntensity = (index: number, val: number) => {
     setSaved(false);
-    setGrid((prev) => ({ ...prev, [day]: { ...prev[day], [period]: val } }));
+    setIntensities((prev) => {
+      const next = [...prev];
+      next[index] = val as 0 | 1 | 2;
+      return next;
+    });
   };
 
-  const { score, ratio } = useMemo(() => {
-    const sum = DAYS.reduce((s, d) => s + PERIODS.reduce((ps, p) => ps + grid[d][p], 0), 0);
-    const r = sum / 35;
-    return { score: Math.round(Math.pow(r, 0.25) * 100), ratio: r };
-  }, [grid]);
+  const slots: Slot[] = useMemo(
+    () => intensities.map((intensity, i) => ({ duration: SLOT_DURATIONS[i], intensity })),
+    [intensities]
+  );
 
+  const { score, ratio } = useMemo(() => calculateIntensiScore(slots), [slots]);
   const adviceCategory = score < 30 ? "mutualisation" : score < 60 ? "hybridation" : "optimal";
+  const gaugeColor = score < 30 ? "hsl(0 84% 60%)" : score < 60 ? "hsl(var(--warning))" : "hsl(var(--success))";
 
   const handleSave = async () => {
     setSaving(true);
     const { error } = await supabase.from("diagnostic_results").insert({
       score,
       ratio,
-      grid: grid as any,
+      grid: { slots } as any,
       advice_category: adviceCategory,
     });
     setSaving(false);
@@ -67,62 +64,50 @@ const Diagnostic = () => {
     }
   };
 
-  const gaugeColor = score < 30 ? "hsl(0 84% 60%)" : score < 60 ? "hsl(var(--warning))" : "hsl(var(--success))";
-
   return (
     <Layout>
       <section className="container py-12 md:py-20">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-4xl text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-2xl text-center">
           <h1 className="text-3xl font-extrabold md:text-4xl">
             Diagnostic <span className="text-gradient-primary">Intensi'Score</span>
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Évaluez l'intensité d'usage de votre espace en renseignant l'occupation pour chaque créneau de la semaine.
+            Réglez l'intensité d'occupation de votre espace pour chaque moment de la journée.
           </p>
         </motion.div>
 
-        {/* Grid */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="mx-auto mt-10 max-w-4xl overflow-x-auto rounded-2xl border border-border bg-card p-4 shadow-sm">
-          <table className="w-full min-w-[640px] border-collapse">
-            <thead>
-              <tr>
-                <th className="p-2 text-left text-xs font-semibold text-muted-foreground" />
-                {PERIODS.map((p) => (
-                  <th key={p} className="p-2 text-center text-xs font-semibold text-muted-foreground">{p}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {DAYS.map((day) => (
-                <tr key={day} className="border-t border-border/50">
-                  <td className="whitespace-nowrap p-2 text-sm font-medium">{day}</td>
-                  {PERIODS.map((period) => (
-                    <td key={period} className="p-1.5">
-                      <div className="flex items-center justify-center gap-1">
-                        {OPTIONS.map((opt) => {
-                          const active = grid[day][period] === opt.value;
-                          return (
-                            <button
-                              key={opt.value}
-                              onClick={() => set(day, period, opt.value)}
-                              className={cn(
-                                "rounded-lg border px-2 py-1 text-[11px] transition-all duration-150",
-                                active ? opt.activeStyle : opt.style,
-                                "hover:opacity-80"
-                              )}
-                              title={opt.label}
-                            >
-                              {opt.short}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Sliders */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="mx-auto mt-10 max-w-xl space-y-6">
+          {SLOT_LABELS.map((label, i) => (
+            <Card key={label}>
+              <CardContent className="p-5">
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-sm font-semibold">{label}</span>
+                  <span
+                    className={cn(
+                      "rounded-full px-3 py-0.5 text-xs font-medium",
+                      intensities[i] === 0 && "bg-muted text-muted-foreground",
+                      intensities[i] === 1 && "bg-[hsl(var(--pastel-orange))] text-foreground",
+                      intensities[i] === 2 && "bg-[hsl(var(--pastel-green))] text-foreground"
+                    )}
+                  >
+                    {INTENSITY_LABELS[intensities[i]]}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="w-12 text-xs text-muted-foreground">{SLOT_DURATIONS[i]}h</span>
+                  <Slider
+                    min={0}
+                    max={2}
+                    step={1}
+                    value={[intensities[i]]}
+                    onValueChange={([v]) => setIntensity(i, v)}
+                    className="flex-1"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </motion.div>
 
         {/* Gauge */}
@@ -159,7 +144,7 @@ const Diagnostic = () => {
         {/* Conseils */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={score < 30 ? "low" : score < 60 ? "mid" : "high"}
+            key={adviceCategory}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
