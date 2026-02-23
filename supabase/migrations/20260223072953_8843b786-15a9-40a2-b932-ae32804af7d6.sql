@@ -1,0 +1,1 @@
+ALTER TABLE public.diagnostic_results ADD COLUMN email text;
