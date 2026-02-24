@@ -1,28 +1,27 @@
 
-## Integrer le composant BackgroundGradientAnimation dans le hero de la page d'accueil
+## Corriger les emails Resend + le bug d'animation du hero
 
-### Objectif
-Remplacer les blobs statiques du fond du hero (les 3 divs avec radial-gradient + blur) par le composant animé `BackgroundGradientAnimation`, qui ajoute un effet interactif au curseur de la souris.
+### Probleme 1 : Cle API Resend invalide
+
+Les logs montrent clairement l'erreur : `API key is invalid` (401). La cle stockee dans les secrets Supabase n'est pas valide.
+
+**Action requise de ta part :**
+1. Va sur [resend.com/api-keys](https://resend.com/api-keys)
+2. Copie ta cle API (elle commence par `re_`)
+3. Je te demanderai de la mettre a jour via l'outil de secrets Lovable
+
+### Probleme 2 : Boucle infinie dans BackgroundGradientAnimation
+
+Le `useEffect` aux lignes 55-63 cree une boucle infinie : il depend de `curX` et `curY`, et a l'interieur il appelle `setCurX` / `setCurY`, ce qui re-declenche le `useEffect` indefiniment.
+
+**Correction :** Remplacer cette logique par un `requestAnimationFrame` qui interpole la position du curseur de maniere fluide sans provoquer de re-renders en boucle. Les positions seront stockees dans des `useRef` au lieu de `useState` pour eviter les re-renders.
 
 ### Etapes techniques
 
-**1. Creer le composant**
-- Ajouter `src/components/ui/background-gradient-animation.tsx` avec le code fourni (adapte pour un projet non-Next.js : retirer `"use client"`)
-
-**2. Etendre tailwind.config.ts**
-- Ajouter les keyframes `moveHorizontal`, `moveInCircle`, `moveVertical`
-- Ajouter les animations correspondantes (`first`, `second`, `third`, `fourth`, `fifth`)
-
-**3. Ajouter les styles CSS necessaires**
-- Ajouter dans `src/index.css` les styles pour les gradients SVG et les blobs (variables CSS, classes pour les elements internes du composant)
-
-**4. Modifier `src/pages/Index.tsx`**
-- Remplacer le bloc de fond actuel (les 3 divs radial-gradient aux lignes 35-39) par le composant `BackgroundGradientAnimation`
-- Adapter les couleurs du gradient aux teintes du hero actuel (bleu/indigo/violet fonce) pour rester coherent avec la charte Spacio :
-  - `gradientBackgroundStart`: `"rgb(10, 10, 40)"` (navy fonce)
-  - `gradientBackgroundEnd`: `"rgb(20, 20, 80)"` (indigo fonce)
-  - Couleurs des blobs adaptees aux teintes orange/bleu/violet actuelles
-- Le contenu du hero (titre, barre de recherche, stats) sera passe en `children` du composant
-
-### Resultat attendu
-Le hero de la page d'accueil aura un fond anime avec des blobs de couleur qui bougent de maniere fluide, et un blob supplementaire qui suit le curseur de la souris pour un effet interactif.
+1. **Mettre a jour le secret `RESEND_API_KEY`** avec une cle valide
+2. **Refactorer le composant `background-gradient-animation.tsx`** :
+   - Remplacer les `useState` pour `curX`/`curY` par des `useRef`
+   - Remplacer le `useEffect` de mouvement par une boucle `requestAnimationFrame`
+   - Stocker `tgX`/`tgY` dans des `useRef` egalement
+   - Nettoyer le `requestAnimationFrame` au demontage du composant
+3. **Redeployer la edge function** pour s'assurer qu'elle utilise la nouvelle cle
