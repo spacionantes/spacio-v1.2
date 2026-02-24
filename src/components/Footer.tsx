@@ -9,20 +9,17 @@ const footerLinks = {
     { label: "Blog", href: "/blog" },
   ],
   Entreprise: [
-    { label: "À propos", href: "#" },
-    { label: "Équipe", href: "#" },
-    { label: "Contact", href: "#" },
+    { label: "Équipe", href: "/equipe" },
   ],
   Ressources: [
-    { label: "Centre d'aide", href: "#" },
-    { label: "FAQ", href: "#" },
-    { label: "Réseau", href: "#" },
+    { label: "FAQ", href: "/faq" },
+    { label: "Réseau", href: "/reseau" },
   ],
   Légal: [
-    { label: "CGU", href: "#" },
-    { label: "Politique de confidentialité", href: "#" },
-    { label: "Mentions légales", href: "#" },
-    { label: "Cookies", href: "#" },
+    { label: "CGU", href: "/legal#cgu" },
+    { label: "Politique de confidentialité", href: "/legal#confidentialite" },
+    { label: "Mentions légales", href: "/legal#mentions" },
+    { label: "Cookies", href: "/legal#cookies" },
   ],
 };
 

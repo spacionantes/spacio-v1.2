@@ -56,6 +56,7 @@ export type Database = {
           space_id: string | null
           space_title: string | null
           space_type: string | null
+          statut: string | null
           user_type: string
         }
         Insert: {
@@ -69,6 +70,7 @@ export type Database = {
           space_id?: string | null
           space_title?: string | null
           space_type?: string | null
+          statut?: string | null
           user_type: string
         }
         Update: {
@@ -82,6 +84,7 @@ export type Database = {
           space_id?: string | null
           space_title?: string | null
           space_type?: string | null
+          statut?: string | null
           user_type?: string
         }
         Relationships: []
