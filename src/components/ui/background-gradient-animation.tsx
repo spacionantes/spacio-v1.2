@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 
+
 export const BackgroundGradientAnimation = ({
   gradientBackgroundStart = "rgb(108, 0, 162)",
   gradientBackgroundEnd = "rgb(0, 17, 82)",
@@ -33,11 +34,11 @@ export const BackgroundGradientAnimation = ({
   containerClassName?: string;
 }) => {
   const interactiveRef = useRef<HTMLDivElement>(null);
-
-  const [curX, setCurX] = useState(0);
-  const [curY, setCurY] = useState(0);
-  const [tgX, setTgX] = useState(0);
-  const [tgY, setTgY] = useState(0);
+  const curX = useRef(0);
+  const curY = useRef(0);
+  const tgX = useRef(0);
+  const tgY = useRef(0);
+  const animFrameId = useRef<number>(0);
 
   useEffect(() => {
     document.body.style.setProperty("--gradient-background-start", gradientBackgroundStart);
@@ -53,20 +54,23 @@ export const BackgroundGradientAnimation = ({
   }, []);
 
   useEffect(() => {
-    function move() {
-      if (!interactiveRef.current) return;
-      setCurX((prev) => prev + (tgX - prev) / 20);
-      setCurY((prev) => prev + (tgY - prev) / 20);
-      interactiveRef.current.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+    function animate() {
+      curX.current += (tgX.current - curX.current) / 20;
+      curY.current += (tgY.current - curY.current) / 20;
+      if (interactiveRef.current) {
+        interactiveRef.current.style.transform = `translate(${Math.round(curX.current)}px, ${Math.round(curY.current)}px)`;
+      }
+      animFrameId.current = requestAnimationFrame(animate);
     }
-    move();
-  }, [tgX, tgY, curX, curY]);
+    animFrameId.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animFrameId.current);
+  }, []);
 
   const handleMouseMove = (event: React.MouseEvent) => {
     if (interactiveRef.current) {
       const rect = interactiveRef.current.getBoundingClientRect();
-      setTgX(event.clientX - rect.left);
-      setTgY(event.clientY - rect.top);
+      tgX.current = event.clientX - rect.left;
+      tgY.current = event.clientY - rect.top;
     }
   };
 
