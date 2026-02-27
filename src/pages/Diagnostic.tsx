@@ -89,13 +89,12 @@ const Diagnostic = () => {
       city: city.trim(),
       user_type: "diagnostic",
     });
-    // Insert diagnostic result
+    // Insert diagnostic result (no email - PII stored only in leads)
     const { error: diagError } = await supabase.from("diagnostic_results").insert({
       score,
       ratio,
       grid: { days: grid } as any,
       advice_category: adviceCategory,
-      email: email.trim(),
     });
     setSaving(false);
     if (leadError || diagError) {

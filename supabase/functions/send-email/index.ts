@@ -1,10 +1,26 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+const ALLOWED_ORIGINS = [
+  "https://spacionantes.fr",
+  "https://www.spacionantes.fr",
+  "https://opgcudohhcpmmzvkivtg.supabase.co",
+  "http://localhost:5173",
+  "http://localhost:8080",
+];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get("origin") || "";
+  // Also allow Lovable preview origins
+  const isAllowed =
+    ALLOWED_ORIGINS.includes(origin) ||
+    origin.endsWith(".lovable.app");
+  return {
+    "Access-Control-Allow-Origin": isAllowed ? origin : ALLOWED_ORIGINS[0],
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  };
+}
 
 // Simple HTML escaping to prevent injection
 function escapeHtml(str: string): string {
@@ -18,8 +34,8 @@ function escapeHtml(str: string): string {
 
 // In-memory rate limiting (per function instance)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 5; // max emails per window
-const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 60 * 60 * 1000;
 
 function isRateLimited(key: string): boolean {
   const now = Date.now();
@@ -33,6 +49,8 @@ function isRateLimited(key: string): boolean {
 }
 
 serve(async (req) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -46,18 +64,27 @@ serve(async (req) => {
   }
 
   try {
+    // Reject oversized request bodies (max 10KB)
+    const contentLength = req.headers.get("content-length");
+    if (contentLength && parseInt(contentLength) > 10240) {
+      return new Response(JSON.stringify({ error: "Request too large" }), {
+        status: 413,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const body = await req.json();
     const { type, to, data } = body;
 
     // Validate required fields
-    if (!type || typeof type !== "string") {
+    if (!type || typeof type !== "string" || type.length > 50) {
       return new Response(JSON.stringify({ error: "Invalid request" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    if (!to || typeof to !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    if (!to || typeof to !== "string" || to.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
       return new Response(JSON.stringify({ error: "Invalid email address" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -66,6 +93,26 @@ serve(async (req) => {
 
     if (!data || typeof data !== "object") {
       return new Response(JSON.stringify({ error: "Invalid data" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Validate data field lengths
+    if (data.organization_name && (typeof data.organization_name !== "string" || data.organization_name.length > 500)) {
+      return new Response(JSON.stringify({ error: "Invalid request" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (data.space_title && (typeof data.space_title !== "string" || data.space_title.length > 500)) {
+      return new Response(JSON.stringify({ error: "Invalid request" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (data.organization && (typeof data.organization !== "string" || data.organization.length > 500)) {
+      return new Response(JSON.stringify({ error: "Invalid request" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -90,15 +137,7 @@ serve(async (req) => {
       .eq("email", to)
       .limit(1);
 
-    // Also check diagnostic_results for diagnostic emails
-    const { data: diagData } = await supabase
-      .from("diagnostic_results")
-      .select("id")
-      .eq("email", to)
-      .limit(1);
-
-    const isKnownRecipient =
-      (leadData && leadData.length > 0) || (diagData && diagData.length > 0);
+    const isKnownRecipient = leadData && leadData.length > 0;
 
     if (!isKnownRecipient) {
       return new Response(JSON.stringify({ error: "Recipient not authorized" }), {

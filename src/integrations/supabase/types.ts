@@ -63,7 +63,6 @@ export type Database = {
         Row: {
           advice_category: string
           created_at: string
-          email: string | null
           grid: Json
           id: string
           ratio: number
@@ -72,7 +71,6 @@ export type Database = {
         Insert: {
           advice_category: string
           created_at?: string
-          email?: string | null
           grid: Json
           id?: string
           ratio: number
@@ -81,7 +79,6 @@ export type Database = {
         Update: {
           advice_category?: string
           created_at?: string
-          email?: string | null
           grid?: Json
           id?: string
           ratio?: number
