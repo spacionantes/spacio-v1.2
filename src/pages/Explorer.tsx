@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Search, SlidersHorizontal, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Layout from "@/components/Layout";
 import SpaceCard from "@/components/SpaceCard";
+import SpaceMap from "@/components/SpaceMap";
 import SpaceDetailDialog from "@/components/SpaceDetailDialog";
 import { useListings } from "@/hooks/useListings";
 import type { Space } from "@/data/mockData";
@@ -14,6 +14,7 @@ const Explorer = () => {
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
   const { data: spaces = [] } = useListings();
+  const handleMapSpaceClick = useCallback((space: Space) => setSelectedSpace(space), []);
 
   const filtered = spaces.filter((s) => {
     const matchSearch = s.title.toLowerCase().includes(search.toLowerCase()) || s.city.toLowerCase().includes(search.toLowerCase());
@@ -72,14 +73,14 @@ const Explorer = () => {
             )}
           </div>
 
-          {/* Map placeholder */}
+          {/* Interactive map */}
           <div className="hidden border-l border-border lg:block lg:w-1/2">
-            <div className="flex h-full min-h-[calc(100vh-8rem)] items-center justify-center bg-surface-alt">
-              <div className="text-center">
-                <MapPin className="mx-auto mb-3 h-10 w-10 text-muted-foreground/30" />
-                <p className="font-medium text-muted-foreground/50">Carte interactive</p>
-                <p className="text-sm text-muted-foreground/30">Bientôt disponible</p>
-              </div>
+            <div className="h-full min-h-[calc(100vh-8rem)]">
+              <SpaceMap
+                spaces={filtered}
+                selectedSpaceId={selectedSpace?.id}
+                onSpaceClick={handleMapSpaceClick}
+              />
             </div>
           </div>
         </div>
