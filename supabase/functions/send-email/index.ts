@@ -169,7 +169,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Spacio <onboarding@resend.dev>",
+        from: "Spacio <contact@spacionantes.fr>",
         to: [to],
         subject,
         html,
