@@ -2,10 +2,11 @@ import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Linkedin } from "lucide-react";
 import teamMax from "@/assets/team-max.jpg";
+import teamGilles from "@/assets/team-gilles.jpg";
 
 const team = [
   { name: "Max Doyer", role: "Co-fondateur & CEO", linkedin: "#", photo: teamMax },
-  { name: "Gilles Lainé", role: "Co-fondateur & CFO", linkedin: "#", photo: "" },
+  { name: "Gilles Lainé", role: "Co-fondateur & CFO", linkedin: "#", photo: teamGilles },
   { name: "Simon Thenaisy", role: "Co-fondateur & CTO", linkedin: "#", photo: "" },
 ];
 
