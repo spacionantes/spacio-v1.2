@@ -5,7 +5,7 @@ import { Linkedin } from "lucide-react";
 const team = [
   { name: "Max Doyer", role: "Co-fondateur & CEO", linkedin: "#" },
   { name: "Gilles Lainé", role: "Co-fondateur & CTO", linkedin: "#" },
-  { name: "Membre 3", role: "Business Development", linkedin: "#" },
+  { name: "Simon Thenaisy", role: "Business Development", linkedin: "#" },
 ];
 
 const Equipe = () => (
