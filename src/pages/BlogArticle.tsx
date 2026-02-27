@@ -69,12 +69,21 @@ const BlogArticle = () => {
             </div>
           )}
 
-          <div className="prose prose-lg max-w-none text-foreground">
+          <div className="prose prose-lg max-w-none text-foreground space-y-6">
             {article.content.split("\n\n").map((paragraph, i) => {
               if (paragraph.startsWith("## ")) {
-                return <h2 key={i} className="mt-8 text-2xl font-bold">{paragraph.replace("## ", "")}</h2>;
+                return <h2 key={i} className="mt-10 mb-4 text-2xl font-bold">{paragraph.replace(/^## /,"").replace(/ ##$/,"")}</h2>;
               }
-              return <p key={i} className="mt-4 leading-relaxed text-muted-foreground">{paragraph}</p>;
+              // Bold the first sentence (up to first period, colon, or newline)
+              const match = paragraph.match(/^([^.:\n]+[.:]?)\s*([\s\S]*)$/);
+              if (match && match[2]) {
+                return (
+                  <p key={i} className="leading-relaxed text-muted-foreground">
+                    <strong className="text-foreground">{match[1]}</strong>{" "}{match[2]}
+                  </p>
+                );
+              }
+              return <p key={i} className="leading-relaxed text-muted-foreground">{paragraph}</p>;
             })}
           </div>
         </div>
