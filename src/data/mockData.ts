@@ -11,6 +11,8 @@ export interface Space {
   amenities: string[];
   rating: number;
   reviews_count: number;
+  lat?: number;
+  lng?: number;
 }
 
 export const mockSpaces: Space[] = [
@@ -27,6 +29,8 @@ export const mockSpaces: Space[] = [
     amenities: ["WiFi", "Vidéoprojecteur", "Tableau blanc"],
     rating: 4.8,
     reviews_count: 24,
+    lat: 48.8698,
+    lng: 2.3312,
   },
   {
     id: "2",
@@ -41,6 +45,8 @@ export const mockSpaces: Space[] = [
     amenities: ["WiFi", "Cuisine", "Parking"],
     rating: 4.6,
     reviews_count: 18,
+    lat: 48.8590,
+    lng: 2.3548,
   },
   {
     id: "3",
@@ -55,6 +61,8 @@ export const mockSpaces: Space[] = [
     amenities: ["WiFi", "Sono", "Scène", "Vestiaire"],
     rating: 4.9,
     reviews_count: 42,
+    lat: 48.8534,
+    lng: 2.3693,
   },
   {
     id: "4",
@@ -69,6 +77,8 @@ export const mockSpaces: Space[] = [
     amenities: ["WiFi", "Imprimante", "Café"],
     rating: 4.5,
     reviews_count: 31,
+    lat: 48.8462,
+    lng: 2.3735,
   },
   {
     id: "5",
@@ -83,6 +93,8 @@ export const mockSpaces: Space[] = [
     amenities: ["Miroirs", "Sono", "Vestiaire"],
     rating: 4.7,
     reviews_count: 15,
+    lat: 48.8675,
+    lng: 2.3637,
   },
   {
     id: "6",
@@ -97,6 +109,8 @@ export const mockSpaces: Space[] = [
     amenities: ["WiFi", "Cuisine", "Tables", "Chaises"],
     rating: 4.4,
     reviews_count: 28,
+    lat: 48.8847,
+    lng: 2.3326,
   },
 ];
 
