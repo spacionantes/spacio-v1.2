@@ -1,9 +1,10 @@
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Linkedin } from "lucide-react";
+import teamMax from "@/assets/team-max.jpg";
 
 const team = [
-  { name: "Max Doyer", role: "Co-fondateur & CEO", linkedin: "#", photo: "" },
+  { name: "Max Doyer", role: "Co-fondateur & CEO", linkedin: "#", photo: teamMax },
   { name: "Gilles Lainé", role: "Co-fondateur & CFO", linkedin: "#", photo: "" },
   { name: "Simon Thenaisy", role: "Co-fondateur & CTO", linkedin: "#", photo: "" },
 ];
@@ -27,7 +28,7 @@ const Equipe = () => (
             className="flex flex-col items-center rounded-2xl border border-border bg-card p-6 text-center shadow-sm"
           >
             {m.photo ? (
-              <img src={m.photo} alt={m.name} className="h-20 w-20 rounded-full object-cover" />
+              <img src={m.photo} alt={m.name} className="mb-4 h-20 w-20 rounded-full object-cover" />
             ) : (
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-2xl font-bold text-primary">
                 {m.name.charAt(0)}
