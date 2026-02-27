@@ -2,11 +2,33 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Clock, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Layout from "@/components/Layout";
-import { mockArticles } from "@/data/mockData";
+import { useArticle } from "@/hooks/useArticles";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
-  const article = mockArticles.find((a) => a.slug === slug);
+  const { data: article, isLoading } = useArticle(slug);
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <article className="py-12">
+          <div className="container max-w-3xl space-y-6">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-4 w-64" />
+            <Skeleton className="aspect-[16/10] w-full rounded-2xl" />
+            <div className="space-y-4">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+          </div>
+        </article>
+      </Layout>
+    );
+  }
 
   if (!article) {
     return (
@@ -41,24 +63,19 @@ const BlogArticle = () => {
             <span>{new Date(article.published_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</span>
           </div>
 
-          <div className="mb-10 overflow-hidden rounded-2xl">
-            <img src={article.image_url} alt={article.title} className="w-full object-cover" />
-          </div>
+          {article.image_url && (
+            <div className="mb-10 overflow-hidden rounded-2xl">
+              <img src={article.image_url} alt={article.title} className="w-full object-cover" />
+            </div>
+          )}
 
-          {/* Simulated article content */}
           <div className="prose prose-lg max-w-none text-foreground">
-            <p className="text-lg leading-relaxed text-muted-foreground">{article.excerpt}</p>
-            <p className="mt-6 leading-relaxed text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel aliquam lacinia, nunc nisl aliquet nisl, eget aliquam nisl nisl sit amet nisl. Sed euismod, nisl vel aliquam lacinia, nunc nisl aliquet nisl, eget aliquam nisl nisl sit amet nisl.
-            </p>
-            <h2 className="mt-8 text-2xl font-bold">Pourquoi c'est important</h2>
-            <p className="mt-4 leading-relaxed text-muted-foreground">
-              Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.
-            </p>
-            <h2 className="mt-8 text-2xl font-bold">Nos recommandations</h2>
-            <p className="mt-4 leading-relaxed text-muted-foreground">
-              Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Nulla quis lorem ut libero malesuada feugiat. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.
-            </p>
+            {article.content.split("\n\n").map((paragraph, i) => {
+              if (paragraph.startsWith("## ")) {
+                return <h2 key={i} className="mt-8 text-2xl font-bold">{paragraph.replace("## ", "")}</h2>;
+              }
+              return <p key={i} className="mt-4 leading-relaxed text-muted-foreground">{paragraph}</p>;
+            })}
           </div>
         </div>
       </article>

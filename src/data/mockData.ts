@@ -13,18 +13,6 @@ export interface Space {
   reviews_count: number;
 }
 
-export interface BlogArticle {
-  id: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  image_url: string;
-  author: string;
-  read_time_min: number;
-  published_at: string;
-  slug: string;
-}
-
 export const mockSpaces: Space[] = [
   {
     id: "1",
@@ -109,75 +97,6 @@ export const mockSpaces: Space[] = [
     amenities: ["WiFi", "Cuisine", "Tables", "Chaises"],
     rating: 4.4,
     reviews_count: 28,
-  },
-];
-
-export const mockArticles: BlogArticle[] = [
-  {
-    id: "1",
-    title: "Comment trouver le lieu idéal pour votre assemblée générale",
-    excerpt: "Guide complet pour choisir un espace adapté aux besoins de votre association lors de vos événements annuels.",
-    category: "Conseils",
-    image_url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&h=400&fit=crop",
-    author: "Marie Dupont",
-    read_time_min: 5,
-    published_at: "2025-12-15",
-    slug: "trouver-lieu-ideal-assemblee-generale",
-  },
-  {
-    id: "2",
-    title: "Les 10 erreurs à éviter quand on loue un espace associatif",
-    excerpt: "De la vérification des assurances au contrat de location, découvrez les pièges courants.",
-    category: "Guide",
-    image_url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
-    author: "Pierre Martin",
-    read_time_min: 7,
-    published_at: "2025-11-28",
-    slug: "erreurs-location-espace-associatif",
-  },
-  {
-    id: "3",
-    title: "Rentabilisez vos espaces inutilisés : le guide du propriétaire",
-    excerpt: "Transformez vos salles vides en source de revenus tout en aidant les associations locales.",
-    category: "Propriétaires",
-    image_url: "https://images.unsplash.com/photo-1497215842964-222b430dc094?w=600&h=400&fit=crop",
-    author: "Sophie Leroux",
-    read_time_min: 6,
-    published_at: "2025-11-10",
-    slug: "rentabiliser-espaces-inutilises",
-  },
-  {
-    id: "4",
-    title: "L'impact des espaces partagés sur la vie associative locale",
-    excerpt: "Étude de cas : comment le partage d'espaces renforce le tissu associatif dans les quartiers.",
-    category: "Actualités",
-    image_url: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&h=400&fit=crop",
-    author: "Lucas Bernard",
-    read_time_min: 4,
-    published_at: "2025-10-22",
-    slug: "impact-espaces-partages-vie-associative",
-  },
-  {
-    id: "5",
-    title: "Organiser un événement caritatif : checklist complète",
-    excerpt: "Tous les éléments à prévoir pour réussir votre prochain événement de collecte de fonds.",
-    category: "Événements",
-    image_url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=400&fit=crop",
-    author: "Emma Girard",
-    read_time_min: 8,
-    published_at: "2025-10-05",
-    slug: "organiser-evenement-caritatif-checklist",
-  },
-  {
-    id: "6",
-    title: "Spacio lance son programme de fidélité pour les associations",
-    excerpt: "Découvrez les avantages exclusifs réservés aux associations qui utilisent régulièrement notre plateforme.",
-    category: "Actualités",
-    image_url: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=400&fit=crop",
-    author: "Équipe Spacio",
-    read_time_min: 3,
-    published_at: "2025-09-18",
-    slug: "programme-fidelite-associations",
   },
 ];
 
