@@ -57,7 +57,7 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
       const isSelected = space.id === selectedSpaceId;
 
       const icon = L.divIcon({
-        className: "custom-marker",
+        className: "",
         html: `<div style="
           background: ${isSelected ? "hsl(var(--primary))" : "hsl(var(--background))"};
           color: ${isSelected ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))"};
@@ -68,11 +68,10 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
           font-weight: 600;
           white-space: nowrap;
           box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-          transform: translate(-50%, -100%);
           cursor: pointer;
         ">${space.price_per_hour}€</div>`,
-        iconSize: [0, 0],
-        iconAnchor: [0, 0],
+        iconSize: [60, 28],
+        iconAnchor: [30, 14],
       });
 
       const marker = L.marker([space.lat!, space.lng!], { icon }).addTo(map);
@@ -99,7 +98,7 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
     }
   }, [spaces, selectedSpaceId, onSpaceClick]);
 
-  return <div ref={mapRef} className="h-full w-full" />;
+  return <div ref={mapRef} className="h-full w-full" style={{ zIndex: 0 }} />;
 };
 
 export default SpaceMap;
