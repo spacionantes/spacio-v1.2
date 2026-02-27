@@ -1,27 +1,34 @@
 
-## Corriger les emails Resend + le bug d'animation du hero
 
-### Probleme 1 : Cle API Resend invalide
+## Mise a jour de l'adresse d'expedition email
 
-Les logs montrent clairement l'erreur : `API key is invalid` (401). La cle stockee dans les secrets Supabase n'est pas valide.
+### Contexte
 
-**Action requise de ta part :**
-1. Va sur [resend.com/api-keys](https://resend.com/api-keys)
-2. Copie ta cle API (elle commence par `re_`)
-3. Je te demanderai de la mettre a jour via l'outil de secrets Lovable
+Les emails echouent avec une erreur 403 car l'adresse `onboarding@resend.dev` n'est utilisable qu'en mode test. Le domaine `spacionantes.fr` est maintenant verifie sur Resend.
 
-### Probleme 2 : Boucle infinie dans BackgroundGradientAnimation
+### Modification
 
-Le `useEffect` aux lignes 55-63 cree une boucle infinie : il depend de `curX` et `curY`, et a l'interieur il appelle `setCurX` / `setCurY`, ce qui re-declenche le `useEffect` indefiniment.
+Un seul fichier a modifier : `supabase/functions/send-email/index.ts`
 
-**Correction :** Remplacer cette logique par un `requestAnimationFrame` qui interpole la position du curseur de maniere fluide sans provoquer de re-renders en boucle. Les positions seront stockees dans des `useRef` au lieu de `useState` pour eviter les re-renders.
+Remplacer la ligne :
 
-### Etapes techniques
+```text
+from: "Spacio <onboarding@resend.dev>",
+```
 
-1. **Mettre a jour le secret `RESEND_API_KEY`** avec une cle valide
-2. **Refactorer le composant `background-gradient-animation.tsx`** :
-   - Remplacer les `useState` pour `curX`/`curY` par des `useRef`
-   - Remplacer le `useEffect` de mouvement par une boucle `requestAnimationFrame`
-   - Stocker `tgX`/`tgY` dans des `useRef` egalement
-   - Nettoyer le `requestAnimationFrame` au demontage du composant
-3. **Redeployer la edge function** pour s'assurer qu'elle utilise la nouvelle cle
+par :
+
+```text
+from: "Spacio <contact@spacionantes.fr>",
+```
+
+### Verification
+
+- La cle API Resend est deja configuree dans les secrets Supabase (`RESEND_API_KEY`) et correctement utilisee par la fonction
+- Aucun changement cote front-end n'est necessaire (les appels `supabase.functions.invoke("send-email", ...)` restent identiques)
+- La fonction sera redeployee automatiquement apres la modification
+
+### Impact
+
+Les deux types d'emails (confirmation d'espace et resultats Intensi'Score) utiliseront la nouvelle adresse `contact@spacionantes.fr`, ce qui resoudra l'erreur 403 de Resend.
+
