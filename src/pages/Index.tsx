@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import { howItWorksSteps } from "@/data/mockData";
 import { motion } from "framer-motion";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
+import PartnerMarquee from "@/components/PartnerMarquee";
 
 const iconMap: Record<string, React.ElementType> = {
   Search, CalendarCheck, CreditCard, MapPin, Star, Shield, Users, MessageCircle, Zap
@@ -85,6 +86,9 @@ const Index = () =>
         </div>
       </BackgroundGradientAnimation>
     </section>
+
+    {/* Partner marquee */}
+    <PartnerMarquee />
 
     {/* How it works */}
     <section id="how-it-works" className="bg-surface-alt py-20">
