@@ -52,12 +52,12 @@ const Header = () => {
           {!loading && !user ? (
             <>
               <Link to="/connexion">
-                <Button variant="ghost" size="sm" className="rounded-2xl gap-1.5">
+                <Button variant="ghost" size="sm" className="rounded-2xl gap-2 text-muted-foreground hover:text-foreground">
                   <LogIn className="h-4 w-4" /> Connexion
                 </Button>
               </Link>
               <Link to="/inscription">
-                <Button variant="outline" size="sm" className="rounded-2xl gap-1.5">
+                <Button size="sm" className="rounded-2xl gap-2 shadow-sm px-5">
                   <UserPlus className="h-4 w-4" /> Créer un compte
                 </Button>
               </Link>
