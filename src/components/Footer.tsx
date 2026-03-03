@@ -5,15 +5,18 @@ import logo from "@/assets/logo.png";
 const footerLinks = {
   Plateforme: [
     { label: "Trouver un espace", href: "/explorer" },
-    { label: "Commencer", href: "/commencer" },
+    { label: "Devenir hôte", href: "/commencer?type=owner" },
+    { label: "Diagnostic", href: "/diagnostic" },
     { label: "Blog", href: "/blog" },
   ],
-  Entreprise: [
-    { label: "Équipe", href: "/equipe" },
+  "À propos": [
+    { label: "Missions", href: "/#how-it-works" },
+    { label: "L'équipe", href: "/equipe" },
   ],
   Ressources: [
     { label: "FAQ", href: "/faq" },
     { label: "Réseau", href: "/reseau" },
+    { label: "Contactez-nous", href: "/commencer" },
   ],
   Légal: [
     { label: "CGU", href: "/legal#cgu" },
