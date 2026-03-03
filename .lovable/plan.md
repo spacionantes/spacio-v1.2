@@ -1,106 +1,38 @@
 
-# Systeme de comptes utilisateurs pour Spacio
 
-## Objectif
-Ajouter l'authentification (inscription + connexion) avec Supabase Auth. Le site reste accessible a tous, mais certaines actions (cliquer sur une salle, valider un diagnostic) necessitent d'etre connecte.
+## Plan : Refonte "Contactez-nous" et conservation de "Trouver un espace"
 
-## Ce qui va changer
+### Résumé
 
-### 1. Base de donnees
-- Creer une table `profiles` (id, user_id, full_name, organization, city, created_at) avec RLS pour que chaque utilisateur ne puisse lire/modifier que son propre profil
-- Creer un trigger pour auto-creer un profil a l'inscription
+- **"Trouver un espace"** reste inchangé : lien direct vers `/explorer` (listings + carte)
+- **"Contactez-nous"** devient un lien direct (plus de dropdown) vers une nouvelle page `/contact` avec un formulaire unique
 
-### 2. Nouvelles pages
-- **`/connexion`** : page de connexion (email + mot de passe)
-- **`/inscription`** : page d'inscription (email, mot de passe, nom, organisation, ville)
-- **`/reset-password`** : page de reinitialisation du mot de passe
+### 1. Créer la page Contact (`src/pages/Contact.tsx`)
 
-### 3. Header mis a jour
-- Ajouter 2 boutons a cote de "Commencer" : **Creer un compte** et **Connexion**
-- Quand l'utilisateur est connecte : remplacer ces boutons par un avatar/menu avec "Mon compte" et "Deconnexion"
+Page dédiée avec :
+- **Formulaire** :
+  - "Qui êtes-vous ?" : sélecteur radio/boutons entre "Demandeur d'espace" et "Propriétaire d'espace"
+  - Nom / Organisation (texte)
+  - Email (texte)
+  - Téléphone (optionnel)
+  - "Raison du contact" : champ textarea libre pour exprimer le besoin
+- **Soumission** vers la table `leads` existante (les champs mappent bien : `user_type`, `organization_name`, `email`, `phone`, + on utilisera `activity_type` pour stocker la raison du contact)
+- Écran de confirmation post-envoi
 
-### 4. Hook d'authentification
-- Creer un hook `useAuth` qui expose l'utilisateur courant, les fonctions signIn/signUp/signOut, et un booleen `loading`
-- Utilise `onAuthStateChange` + `getSession` selon les bonnes pratiques Supabase
+Design miroir de la page DevenirHote (deux colonnes : texte explicatif à gauche, formulaire à droite).
 
-### 5. Garde d'authentification (modale)
-- Creer un composant `AuthRequiredDialog` : une modale qui s'affiche quand un utilisateur non connecte tente une action protegee
-- La modale propose "Se connecter" ou "Creer un compte" avec des liens vers les pages correspondantes
+### 2. Mettre à jour le Header (`src/components/Header.tsx`)
 
-### 6. Integration dans les pages existantes
-- **Explorer** (`SpaceDetailDialog`) : quand un utilisateur non connecte clique sur "Reserver cet espace", afficher la modale `AuthRequiredDialog` au lieu de naviguer
-- **Diagnostic** : quand un utilisateur non connecte clique sur "Enregistrer mon diagnostic", afficher la modale `AuthRequiredDialog` au lieu de sauvegarder
+- Supprimer le dropdown "Contactez-nous" et le remplacer par un lien simple vers `/contact`
+- Supprimer la constante `contactReasons`
+- Réordonner les liens : **À propos** → **Diagnostic** → **Trouver un espace** → **Devenir hôte** → **Blog** → **Contactez-nous**
+- Même changement dans le menu mobile
 
-### 7. Routes
-- Ajouter les routes `/connexion`, `/inscription` et `/reset-password` dans `App.tsx`
+### 3. Routing (`src/App.tsx`)
 
----
+- Ajouter la route `/contact` → composant `Contact`
 
-## Details techniques
+### 4. Footer
 
-### Migration SQL
-```sql
-create table public.profiles (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id) on delete cascade not null unique,
-  full_name text,
-  organization text,
-  city text,
-  created_at timestamptz default now()
-);
+- Mettre à jour le lien "Contactez-nous" du footer pour pointer vers `/contact`
 
-alter table public.profiles enable row level security;
-
-create policy "Users can read own profile"
-  on public.profiles for select
-  to authenticated
-  using (auth.uid() = user_id);
-
-create policy "Users can update own profile"
-  on public.profiles for update
-  to authenticated
-  using (auth.uid() = user_id);
-
-create policy "Users can insert own profile"
-  on public.profiles for insert
-  to authenticated
-  with check (auth.uid() = user_id);
-
--- Auto-create profile on signup
-create or replace function public.handle_new_user()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
-begin
-  insert into public.profiles (user_id)
-  values (new.id);
-  return new;
-end;
-$$;
-
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute function public.handle_new_user();
-```
-
-### Fichiers crees/modifies
-| Fichier | Action |
-|---------|--------|
-| `src/hooks/useAuth.ts` | Creer - hook d'authentification |
-| `src/components/AuthRequiredDialog.tsx` | Creer - modale "connexion requise" |
-| `src/pages/Connexion.tsx` | Creer - page de connexion |
-| `src/pages/Inscription.tsx` | Creer - page d'inscription |
-| `src/pages/ResetPassword.tsx` | Creer - page reset mot de passe |
-| `src/components/Header.tsx` | Modifier - ajouter boutons auth + menu connecte |
-| `src/components/SpaceDetailDialog.tsx` | Modifier - verifier auth avant reservation |
-| `src/pages/Diagnostic.tsx` | Modifier - verifier auth avant sauvegarde |
-| `src/App.tsx` | Modifier - ajouter les nouvelles routes |
-
-### Flux utilisateur
-1. Visiteur navigue librement sur le site (Explorer, Blog, FAQ, etc.)
-2. Il clique sur une salle ou sur "Enregistrer mon diagnostic"
-3. Une modale apparait : "Connectez-vous pour continuer"
-4. Il choisit "Creer un compte" ou "Se connecter"
-5. Apres authentification, il est redirige vers la page ou il etait
