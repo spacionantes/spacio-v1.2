@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogIn, LogOut, Home, ChevronDown, Mail, HelpCircle, Search, Building2 } from "lucide-react";
+import { Menu, X, LogIn, LogOut, ChevronDown, Search, Building2, HelpCircle } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +12,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.png";
 
-const navItems = [
-  { label: "Trouver un espace", href: "/explorer" },
-  { label: "Diagnostic", href: "/diagnostic" },
-  { label: "Blog", href: "/blog" },
-];
+const navLinkClass = (active: boolean) =>
+  `inline-flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
+    active ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+  }`;
 
 const contactReasons = [
   { label: "Proposer un espace", icon: Building2, href: "/devenir-hote" },
@@ -33,6 +32,8 @@ const Header = () => {
     ? user.user_metadata.full_name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
     : user?.email?.slice(0, 2).toUpperCase() ?? "?";
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-lg">
       <div className="container flex h-16 items-center justify-between">
@@ -46,13 +47,13 @@ const Header = () => {
           {/* À propos dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="inline-flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground">
+              <button className={navLinkClass(isActive("/missions") || isActive("/equipe"))}>
                 À propos <ChevronDown className="h-3.5 w-3.5" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-44">
               <DropdownMenuItem asChild>
-                <Link to="/#how-it-works" className="w-full">Missions</Link>
+                <Link to="/missions" className="w-full">Missions</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/equipe" className="w-full">L'équipe</Link>
@@ -60,28 +61,25 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
-                location.pathname === item.href
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+          <Link to="/explorer" className={navLinkClass(isActive("/explorer"))}>
+            Trouver un espace
+          </Link>
+          <Link to="/diagnostic" className={navLinkClass(isActive("/diagnostic"))}>
+            Diagnostic
+          </Link>
+          <Link to="/blog" className={navLinkClass(isActive("/blog"))}>
+            Blog
+          </Link>
+          <Link to="/devenir-hote" className={navLinkClass(isActive("/devenir-hote"))}>
+            Devenir hôte
+          </Link>
 
-        <div className="hidden items-center gap-2 md:flex">
           {/* Contactez-nous dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="rounded-2xl gap-1.5 border-border">
-                <Mail className="h-4 w-4" /> Contactez-nous <ChevronDown className="h-3 w-3" />
-              </Button>
+              <button className={navLinkClass(false)}>
+                Contactez-nous <ChevronDown className="h-3.5 w-3.5" />
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
               {contactReasons.map((reason) => (
@@ -94,14 +92,10 @@ const Header = () => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+        </nav>
 
-          {/* Devenir hôte */}
-          <Link to="/devenir-hote">
-            <Button variant="outline" size="sm" className="rounded-2xl gap-1.5 border-primary/30 text-primary hover:bg-primary/5">
-              <Home className="h-4 w-4" /> Devenir hôte
-            </Button>
-          </Link>
-
+        {/* Auth */}
+        <div className="hidden items-center gap-2 md:flex">
           {!loading && !user ? (
             <Link to="/connexion">
               <Button size="sm" className="rounded-2xl gap-2 px-5">
@@ -130,11 +124,7 @@ const Header = () => {
         </div>
 
         {/* Mobile toggle */}
-        <button
-          className="md:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Menu"
-        >
+        <button className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
@@ -143,48 +133,44 @@ const Header = () => {
       {mobileOpen && (
         <div className="border-t border-border bg-background px-4 pb-4 md:hidden">
           <nav className="flex flex-col gap-1 pt-2">
-            {/* À propos section */}
             <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">À propos</p>
-            <Link to="/#how-it-works" className="rounded-xl px-6 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
+            <Link to="/missions" className="rounded-xl px-6 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
               Missions
             </Link>
             <Link to="/equipe" className="rounded-xl px-6 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
               L'équipe
             </Link>
 
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent"
-                onClick={() => setMobileOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            <div className="my-1 border-t border-border" />
 
-            <div className="my-2 border-t border-border" />
-
-            <Link to="/devenir-hote" onClick={() => setMobileOpen(false)}>
-              <Button variant="outline" className="w-full justify-start gap-2 rounded-xl border-primary/30 text-primary">
-                <Home className="h-4 w-4" /> Devenir hôte
-              </Button>
+            <Link to="/explorer" className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
+              Trouver un espace
+            </Link>
+            <Link to="/diagnostic" className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
+              Diagnostic
+            </Link>
+            <Link to="/blog" className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
+              Blog
+            </Link>
+            <Link to="/devenir-hote" className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
+              Devenir hôte
             </Link>
 
-            {/* Contact reasons */}
-            <p className="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contactez-nous</p>
+            <div className="my-1 border-t border-border" />
+
+            <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contactez-nous</p>
             {contactReasons.map((reason) => (
               <Link key={reason.label} to={reason.href} className="flex items-center gap-2 rounded-xl px-6 py-2.5 text-sm text-muted-foreground hover:bg-accent" onClick={() => setMobileOpen(false)}>
                 <reason.icon className="h-4 w-4" /> {reason.label}
               </Link>
             ))}
 
-            <div className="my-2 border-t border-border" />
+            <div className="my-1 border-t border-border" />
 
             {!loading && !user ? (
               <Link to="/connexion" onClick={() => setMobileOpen(false)}>
                 <Button className="w-full rounded-2xl gap-2">
-                  <LogIn className="h-4 w-4" /> Connexion / Inscription
+                  <LogIn className="h-4 w-4" /> Connexion
                 </Button>
               </Link>
             ) : !loading && user ? (
