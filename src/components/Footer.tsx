@@ -10,7 +10,7 @@ const footerLinks = {
     { label: "Blog", href: "/blog" },
   ],
   "À propos": [
-    { label: "Missions", href: "/#how-it-works" },
+    { label: "Missions", href: "/missions" },
     { label: "L'équipe", href: "/equipe" },
   ],
   Ressources: [
