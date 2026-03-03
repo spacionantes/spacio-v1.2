@@ -1,7 +1,7 @@
-import { Search, ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
@@ -32,8 +32,20 @@ const steps = [
 
 
 
+const spaceTypes = [
+  { label: "Salle de réunion", value: "salle-reunion" },
+  { label: "Amphithéâtre", value: "amphitheatre" },
+  { label: "Cour d'école", value: "cour-ecole" },
+  { label: "Salle polyvalente", value: "salle-polyvalente" },
+  { label: "Terrain sportif", value: "terrain-sportif" },
+  { label: "Espace de coworking", value: "espace-coworking" },
+];
 
-const Index = () =>
+const Index = () => {
+  const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  return (
 <Layout>
     {/* Hero */}
     <section className="relative overflow-hidden">
@@ -62,18 +74,38 @@ const Index = () =>
               Spacio connecte les associations avec des espaces adaptés à leurs activités. Réservation simple, paiement sécurisé.
             </p>
 
-            {/* Search bar */}
-            <div className="mx-auto flex max-w-xl items-center gap-2 rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md p-2 shadow-sm">
-              <div className="flex flex-1 items-center gap-2 pl-3">
-                <Search className="h-5 w-5 shrink-0 text-white/60" />
-                <Input
-                  placeholder="Ville, type d'espace..."
-                  className="border-0 bg-transparent shadow-none focus-visible:ring-0 text-white placeholder:text-white/50"
-                />
-              </div>
-              <Link to="/explorer">
-                <Button className="rounded-xl px-6 font-semibold">Rechercher</Button>
-              </Link>
+            {/* Space type selector */}
+            <div className="relative mx-auto max-w-md">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md px-6 py-4 text-left text-white shadow-lg transition-colors hover:bg-white/15"
+              >
+                <span className="text-base font-medium text-white/80">Quel type d'espace cherchez-vous ?</span>
+                <ChevronDown className={`h-5 w-5 text-white/60 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {dropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-white/15 bg-[hsl(230,50%,12%)] shadow-2xl backdrop-blur-xl"
+                >
+                  {spaceTypes.map((type) => (
+                    <button
+                      key={type.value}
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        navigate(`/explorer?type=${type.value}`);
+                      }}
+                      className="flex w-full items-center gap-3 px-6 py-3.5 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                      <Building2 className="h-4 w-4 text-primary/80" />
+                      {type.label}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
             </div>
 
           </motion.div>
@@ -216,7 +248,9 @@ const Index = () =>
         </div>
       </div>
     </section>
-  </Layout>;
+  </Layout>
+  );
+};
 
 
 export default Index;
