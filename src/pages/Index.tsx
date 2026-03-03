@@ -1,27 +1,35 @@
-import { Search, CalendarCheck, CreditCard, MapPin, Star, Shield, Users, MessageCircle, Zap, Building2, Heart } from "lucide-react";
+import { Search, ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Layout from "@/components/Layout";
-import { howItWorksSteps } from "@/data/mockData";
 import { motion } from "framer-motion";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 
-const iconMap: Record<string, React.ElementType> = {
-  Search, CalendarCheck, CreditCard, MapPin, Star, Shield, Users, MessageCircle, Zap
-};
+const steps = [
+  {
+    icon: ClipboardCheck,
+    title: "État des lieux",
+    description: "Nous analysons vos besoins et votre situation pour identifier les espaces adaptés à votre activité.",
+    color: "bg-pastel-blue",
+    number: "01",
+  },
+  {
+    icon: Lightbulb,
+    title: "Conseil",
+    description: "Nos experts vous accompagnent avec des recommandations personnalisées pour optimiser votre recherche.",
+    color: "bg-pastel-orange",
+    number: "02",
+  },
+  {
+    icon: Handshake,
+    title: "Mise en relation",
+    description: "Nous vous connectons directement avec les propriétaires d'espaces qui correspondent à vos critères.",
+    color: "bg-pastel-green",
+    number: "03",
+  },
+];
 
-const pastelBgMap: Record<string, string> = {
-  "pastel-blue": "bg-pastel-blue",
-  "pastel-green": "bg-pastel-green",
-  "pastel-orange": "bg-pastel-orange",
-  "pastel-pink": "bg-pastel-pink",
-  "pastel-purple": "bg-pastel-purple",
-  "pastel-yellow": "bg-pastel-yellow",
-  "pastel-teal": "bg-pastel-teal",
-  "pastel-red": "bg-pastel-red",
-  "pastel-indigo": "bg-pastel-indigo"
-};
 
 
 
@@ -74,39 +82,75 @@ const Index = () =>
     </section>
 
     {/* How it works */}
-    <section id="how-it-works" className="bg-surface-alt py-20">
+    <section id="how-it-works" className="bg-surface-alt py-20 lg:py-28">
       <div className="container">
         <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-12 text-center">
-
-          <h2 className="mb-3 text-3xl font-bold sm:text-4xl">Comment ça marche</h2>
-          <p className="text-muted-foreground">Un processus simple en quelques étapes</p>
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-16 text-center"
+        >
+          <h2 className="mb-3 text-3xl font-bold sm:text-4xl">Comment ça marche ?</h2>
+          <p className="text-muted-foreground">Un accompagnement en 3 étapes clés</p>
         </motion.div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {howItWorksSteps.map((step, i) => {
-          const Icon = iconMap[step.icon] || Search;
-          return (
-            <motion.div
-              key={step.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.06 }}
-              className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
+        <div className="relative flex flex-col items-center gap-8 lg:flex-row lg:items-stretch lg:gap-0">
+          {steps.map((step, i) => (
+            <div key={step.title} className="relative flex flex-1 flex-col items-center lg:flex-row">
+              {/* Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: i * 0.12 }}
+                className="group relative w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 lg:max-w-none"
+              >
+                {/* Step number */}
+                <span className="absolute -top-4 left-6 inline-flex h-8 items-center rounded-full bg-primary px-3 text-xs font-bold text-primary-foreground shadow-sm">
+                  {step.number}
+                </span>
 
-                <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl ${pastelBgMap[step.color]}`}>
-                  <Icon className="h-5 w-5 text-foreground" />
+                <div className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${step.color}`}>
+                  <step.icon className="h-6 w-6 text-foreground" />
                 </div>
-                <h3 className="mb-1 font-semibold text-foreground">{step.title}</h3>
+                <h3 className="mb-2 text-lg font-bold text-foreground">{step.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">{step.description}</p>
-              </motion.div>);
+              </motion.div>
 
-        })}
+              {/* Arrow connector */}
+              {i < steps.length - 1 && (
+                <>
+                  {/* Desktop arrow */}
+                  <div className="hidden lg:flex items-center justify-center px-4 shrink-0">
+                    <motion.div
+                      initial={{ opacity: 0, x: -8 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: 0.2 + i * 0.12 }}
+                      className="flex items-center gap-1"
+                    >
+                      <div className="h-px w-8 bg-gradient-to-r from-border to-primary/40" />
+                      <ArrowRight className="h-5 w-5 text-primary/60" />
+                    </motion.div>
+                  </div>
+                  {/* Mobile arrow */}
+                  <div className="flex lg:hidden items-center justify-center py-2">
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: 0.2 + i * 0.12 }}
+                      className="flex flex-col items-center gap-1"
+                    >
+                      <div className="w-px h-6 bg-gradient-to-b from-border to-primary/40" />
+                      <ArrowRight className="h-5 w-5 text-primary/60 rotate-90" />
+                    </motion.div>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>
