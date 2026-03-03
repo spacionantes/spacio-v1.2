@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Search, SlidersHorizontal, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,11 +11,20 @@ import { useListings } from "@/hooks/useListings";
 import type { Space } from "@/data/mockData";
 
 const Explorer = () => {
+  const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
   const { data: spaces = [] } = useListings();
   const handleMapSpaceClick = useCallback((space: Space) => setSelectedSpace(space), []);
+
+  // Apply type filter from URL query param
+  useEffect(() => {
+    const typeParam = searchParams.get("type");
+    if (typeParam) {
+      setTypeFilter(typeParam);
+    }
+  }, [searchParams]);
 
   const filtered = spaces.filter((s) => {
     const matchSearch = s.title.toLowerCase().includes(search.toLowerCase()) || s.city.toLowerCase().includes(search.toLowerCase());

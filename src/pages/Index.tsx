@@ -33,12 +33,18 @@ const steps = [
 
 
 const spaceTypes = [
-  { label: "Salle de réunion", value: "salle-reunion" },
-  { label: "Amphithéâtre", value: "amphitheatre" },
-  { label: "Cour d'école", value: "cour-ecole" },
-  { label: "Salle polyvalente", value: "salle-polyvalente" },
-  { label: "Terrain sportif", value: "terrain-sportif" },
-  { label: "Espace de coworking", value: "espace-coworking" },
+  { label: "Tout voir", value: "" },
+  { label: "Salle de réunion", value: "Salle de réunion" },
+  { label: "Amphithéâtre", value: "Amphithéâtre" },
+  { label: "Cour d'école", value: "Cour d'école" },
+  { label: "Salle polyvalente", value: "Salle polyvalente" },
+  { label: "Terrain sportif", value: "Terrain sportif" },
+  { label: "Espace de coworking", value: "Coworking" },
+  { label: "Salle de spectacle", value: "Salle de spectacle" },
+  { label: "Gymnase", value: "Gymnase" },
+  { label: "Local associatif", value: "Local associatif" },
+  { label: "Salle de formation", value: "Salle de formation" },
+  { label: "Espace extérieur", value: "Espace extérieur" },
 ];
 
 const Index = () => {
@@ -96,7 +102,7 @@ const Index = () => {
                       key={type.value}
                       onClick={() => {
                         setDropdownOpen(false);
-                        navigate(`/explorer?type=${type.value}`);
+                        navigate(type.value ? `/explorer?type=${encodeURIComponent(type.value)}` : "/explorer");
                       }}
                       className="flex w-full items-center gap-3 px-6 py-3.5 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white"
                     >
