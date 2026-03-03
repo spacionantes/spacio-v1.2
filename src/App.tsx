@@ -16,6 +16,7 @@ import Legal from "./pages/Legal";
 import Equipe from "./pages/Equipe";
 import FAQ from "./pages/FAQ";
 import Reseau from "./pages/Reseau";
+import DevenirHote from "./pages/DevenirHote";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/equipe" element={<Equipe />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/reseau" element={<Reseau />} />
+          <Route path="/devenir-hote" element={<DevenirHote />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

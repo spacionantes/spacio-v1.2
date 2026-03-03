@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogIn, LogOut, Home, ChevronDown, Mail, MessageSquare, HelpCircle, Bug, Handshake } from "lucide-react";
+import { Menu, X, LogIn, LogOut, Home, ChevronDown, Mail, HelpCircle, Search, Building2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,10 +19,9 @@ const navItems = [
 ];
 
 const contactReasons = [
+  { label: "Proposer un espace", icon: Building2, href: "/devenir-hote" },
+  { label: "Trouver un espace", icon: Search, href: "/commencer" },
   { label: "Question générale", icon: HelpCircle, href: "/commencer" },
-  { label: "Proposer un espace", icon: Home, href: "/commencer?type=owner" },
-  { label: "Partenariat", icon: Handshake, href: "/commencer" },
-  { label: "Signaler un problème", icon: Bug, href: "/commencer" },
 ];
 
 const Header = () => {
@@ -80,8 +79,8 @@ const Header = () => {
           {/* Contactez-nous dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="rounded-2xl gap-1.5 text-muted-foreground hover:text-foreground">
-                <Mail className="h-4 w-4" /> Contactez-nous
+              <Button variant="outline" size="sm" className="rounded-2xl gap-1.5 border-border">
+                <Mail className="h-4 w-4" /> Contactez-nous <ChevronDown className="h-3 w-3" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
@@ -97,7 +96,7 @@ const Header = () => {
           </DropdownMenu>
 
           {/* Devenir hôte */}
-          <Link to="/commencer?type=owner">
+          <Link to="/devenir-hote">
             <Button variant="outline" size="sm" className="rounded-2xl gap-1.5 border-primary/30 text-primary hover:bg-primary/5">
               <Home className="h-4 w-4" /> Devenir hôte
             </Button>
@@ -166,7 +165,7 @@ const Header = () => {
 
             <div className="my-2 border-t border-border" />
 
-            <Link to="/commencer?type=owner" onClick={() => setMobileOpen(false)}>
+            <Link to="/devenir-hote" onClick={() => setMobileOpen(false)}>
               <Button variant="outline" className="w-full justify-start gap-2 rounded-xl border-primary/30 text-primary">
                 <Home className="h-4 w-4" /> Devenir hôte
               </Button>

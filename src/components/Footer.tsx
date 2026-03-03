@@ -5,7 +5,7 @@ import logo from "@/assets/logo.png";
 const footerLinks = {
   Plateforme: [
     { label: "Trouver un espace", href: "/explorer" },
-    { label: "Devenir hôte", href: "/commencer?type=owner" },
+    { label: "Devenir hôte", href: "/devenir-hote" },
     { label: "Diagnostic", href: "/diagnostic" },
     { label: "Blog", href: "/blog" },
   ],
