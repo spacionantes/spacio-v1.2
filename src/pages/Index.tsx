@@ -54,7 +54,7 @@ const Index = () => {
   return (
 <Layout>
     {/* Hero */}
-    <section className="relative overflow-hidden">
+    <section className="relative">
       <BackgroundGradientAnimation
         gradientBackgroundStart="rgb(10, 10, 40)"
         gradientBackgroundEnd="rgb(20, 20, 80)"
