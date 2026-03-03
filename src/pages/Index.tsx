@@ -55,67 +55,65 @@ const Index = () => {
   return (
 <Layout>
     {/* Hero */}
-    <section className="relative z-10 bg-[rgb(10,10,40)] py-20 lg:py-32 overflow-hidden">
-      {/* Spline 3D background */}
-      <Suspense fallback={null}>
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <Spline scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />
-        </div>
-      </Suspense>
+    <section className="relative z-10 bg-[rgb(10,10,40)] py-20 lg:py-32">
+      <div className="container">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
+          {/* Left column — Text + dropdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-left"
+          >
+            <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Trouvez l'espace <span className="text-gradient-primary italic font-serif">parfait</span> pour votre association
+            </h1>
+            <p className="mb-10 max-w-xl text-lg text-white/70">
+              Spacio connecte les associations avec des espaces adaptés à leurs activités. Réservation simple, paiement sécurisé.
+            </p>
 
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 z-[1] bg-black/40" />
-
-      {/* Hero content */}
-      <div className="container relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Trouvez l'espace <span className="text-gradient-primary italic font-serif">parfait</span> pour votre association
-          </h1>
-          <p className="mx-auto mb-10 max-w-xl text-lg text-white/70">
-            Spacio connecte les associations avec des espaces adaptés à leurs activités. Réservation simple, paiement sécurisé.
-          </p>
-
-          {/* Space type selector */}
-          <div className="relative mx-auto max-w-md">
-            <button
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md px-6 py-4 text-left text-white shadow-lg transition-colors hover:bg-white/15"
-            >
-              <span className="text-base font-medium text-white/80">Quel type d'espace cherchez-vous ?</span>
-              <ChevronDown className={`h-5 w-5 text-white/60 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
-            </button>
-
-            {dropdownOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-                className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-white/15 bg-[hsl(230,50%,8%)]/95 shadow-2xl"
+            {/* Space type selector */}
+            <div className="relative max-w-md">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md px-6 py-4 text-left text-white shadow-lg transition-colors hover:bg-white/15"
               >
-                {spaceTypes.map((type) => (
-                  <button
-                    key={type.value}
-                    onClick={() => {
-                      setDropdownOpen(false);
-                      navigate(type.value ? `/explorer?type=${encodeURIComponent(type.value)}` : "/explorer");
-                    }}
-                    className="flex w-full items-center gap-3 px-6 py-3.5 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white"
-                  >
-                    <Building2 className="h-4 w-4 text-primary/80" />
-                    {type.label}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </div>
+                <span className="text-base font-medium text-white/80">Quel type d'espace cherchez-vous ?</span>
+                <ChevronDown className={`h-5 w-5 text-white/60 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
+              </button>
 
-        </motion.div>
+              {dropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-white/15 bg-[hsl(230,50%,8%)]/95 shadow-2xl"
+                >
+                  {spaceTypes.map((type) => (
+                    <button
+                      key={type.value}
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        navigate(type.value ? `/explorer?type=${encodeURIComponent(type.value)}` : "/explorer");
+                      }}
+                      className="flex w-full items-center gap-3 px-6 py-3.5 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                      <Building2 className="h-4 w-4 text-primary/80" />
+                      {type.label}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Right column — Spline 3D */}
+          <div className="h-[300px] lg:h-[500px] pointer-events-none">
+            <Suspense fallback={null}>
+              <Spline scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />
+            </Suspense>
+          </div>
+        </div>
       </div>
     </section>
 
