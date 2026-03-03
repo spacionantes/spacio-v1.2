@@ -6,7 +6,6 @@ import Layout from "@/components/Layout";
 import { howItWorksSteps } from "@/data/mockData";
 import { motion } from "framer-motion";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
-import PartnerMarquee from "@/components/PartnerMarquee";
 
 const iconMap: Record<string, React.ElementType> = {
   Search, CalendarCheck, CreditCard, MapPin, Star, Shield, Users, MessageCircle, Zap
@@ -24,10 +23,6 @@ const pastelBgMap: Record<string, string> = {
   "pastel-indigo": "bg-pastel-indigo"
 };
 
-const stats = [
-{ value: "500+", label: "Espaces disponibles" },
-{ value: "1 200", label: "Associations inscrites" },
-{ value: "3 000m²", label: "Réservés ce mois" }];
 
 
 const Index = () =>
@@ -73,22 +68,10 @@ const Index = () =>
               </Link>
             </div>
 
-            {/* Stats badges */}
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
-              {stats.map((stat) => (
-                <div key={stat.label} className="flex items-center gap-2">
-                  <span className="text-2xl font-extrabold text-primary-foreground">{stat.value}</span>
-                  <span className="text-sm text-white/60">{stat.label}</span>
-                </div>
-              ))}
-            </div>
           </motion.div>
         </div>
       </BackgroundGradientAnimation>
     </section>
-
-    {/* Partner marquee */}
-    <PartnerMarquee />
 
     {/* How it works */}
     <section id="how-it-works" className="bg-surface-alt py-20">
