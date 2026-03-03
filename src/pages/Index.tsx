@@ -54,7 +54,7 @@ const Index = () => {
   return (
 <Layout>
     {/* Hero */}
-    <section className="relative">
+    <section className="relative z-10">
       <BackgroundGradientAnimation
         gradientBackgroundStart="rgb(10, 10, 40)"
         gradientBackgroundEnd="rgb(20, 20, 80)"
