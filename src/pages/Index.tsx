@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 
+const SplineScene = lazy(() => import("@splinetool/react-spline"));
 
 
 const steps = [
@@ -107,6 +107,12 @@ const Index = () => {
             </div>
           </motion.div>
 
+          {/* Right column — Spline 3D */}
+          <div className="hidden lg:block h-[500px] pointer-events-none bg-[rgb(10,10,40)]">
+            <Suspense fallback={<div className="h-full w-full bg-[rgb(10,10,40)]" />}>
+              <SplineScene scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />
+            </Suspense>
+          </div>
         </div>
       </div>
     </section>
