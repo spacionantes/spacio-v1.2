@@ -1,16 +1,38 @@
-import { useState, lazy, Suspense, Component, type ReactNode } from "react";
+import { useEffect, useState, type ComponentType } from "react";
 import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 
-const Spline = lazy(() => import("@splinetool/react-spline").catch(() => ({ default: (() => null) as any })));
+const SplineScene = () => {
+  const [SplineComponent, setSplineComponent] = useState<ComponentType<{ scene: string }> | null>(null);
 
-class SplineErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
-  state = { hasError: false };
-  static getDerivedStateFromError() { return { hasError: true }; }
-  render() { return this.state.hasError ? null : this.props.children; }
-}
+  useEffect(() => {
+    let mounted = true;
+
+    import("@splinetool/react-spline")
+      .then((mod) => {
+        if (mounted) {
+          setSplineComponent(() => mod.default as ComponentType<{ scene: string }>);
+        }
+      })
+      .catch(() => {
+        if (mounted) {
+          setSplineComponent(null);
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (!SplineComponent) {
+    return null;
+  }
+
+  return <SplineComponent scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />;
+};
 
 const steps = [
   {
@@ -114,11 +136,7 @@ const Index = () => {
 
           {/* Right column — Spline 3D */}
           <div className="h-[400px] lg:h-[650px] pointer-events-none bg-[rgb(10,10,40)]">
-            <SplineErrorBoundary>
-              <Suspense fallback={null}>
-                <Spline {...{ scene: "https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" } as any} />
-              </Suspense>
-            </SplineErrorBoundary>
+            <SplineScene />
           </div>
         </div>
       </div>
