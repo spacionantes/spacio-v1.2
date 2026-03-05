@@ -1,11 +1,16 @@
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, Component, type ReactNode } from "react";
 import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 
-const Spline = lazy(() => import("@splinetool/react-spline"));
+const Spline = lazy(() => import("@splinetool/react-spline").catch(() => ({ default: (() => null) as any })));
+
+class SplineErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+  static getDerivedStateFromError() { return { hasError: true }; }
+  render() { return this.state.hasError ? null : this.props.children; }
+}
 
 const steps = [
   {
@@ -109,9 +114,11 @@ const Index = () => {
 
           {/* Right column — Spline 3D */}
           <div className="h-[400px] lg:h-[650px] pointer-events-none bg-[rgb(10,10,40)]">
-            <Suspense fallback={null}>
-              <Spline scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />
-            </Suspense>
+            <SplineErrorBoundary>
+              <Suspense fallback={null}>
+                <Spline {...{ scene: "https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" } as any} />
+              </Suspense>
+            </SplineErrorBoundary>
           </div>
         </div>
       </div>
