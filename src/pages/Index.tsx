@@ -108,7 +108,7 @@ const Index = () => {
           </motion.div>
 
           {/* Right column — Spline 3D */}
-          <div className="h-[300px] lg:h-[500px] pointer-events-none bg-[rgb(10,10,40)]">
+          <div className="h-[400px] lg:h-[650px] pointer-events-none bg-[rgb(10,10,40)]">
             <Suspense fallback={null}>
               <Spline scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />
             </Suspense>
