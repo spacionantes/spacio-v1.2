@@ -84,7 +84,7 @@ const Index = () => {
     {/* Hero */}
     <section className="relative z-10 bg-[rgb(10,10,40)] py-20 border-0 mx-0 lg:py-0">
       <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] items-center gap-4">
           {/* Left column — Text + dropdown */}
           <motion.div
               initial={{ opacity: 0, y: 24 }}
