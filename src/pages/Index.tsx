@@ -97,7 +97,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="relative z-10 text-left py-16 lg:py-24 max-w-2xl">
+              className="relative z-10 text-left py-16 lg:py-24 max-w-2xl ml-4 lg:ml-16">
               
             <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
               Trouvez l'espace <span className="text-gradient-primary italic font-serif">parfait</span> pour votre association
