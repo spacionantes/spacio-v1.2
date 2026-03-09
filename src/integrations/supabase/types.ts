@@ -182,6 +182,30 @@ export type Database = {
         }
         Relationships: []
       }
+      partners: {
+        Row: {
+          city: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+        }
+        Insert: {
+          city: string
+          created_at?: string
+          description: string
+          id?: string
+          name: string
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           city: string | null
