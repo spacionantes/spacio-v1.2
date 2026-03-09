@@ -272,7 +272,7 @@ const Index = () => {
               </p>
             <ul className="mb-6 space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">✓ Recherche par critères</li>
-              <li className="flex items-center gap-2">✓ Réservation instantanée</li>
+              <li className="flex items-center gap-2">✓ Réservation facilitées</li>
               <li className="flex items-center gap-2">✓ Tarifs associatifs</li>
             </ul>
           </motion.div>
