@@ -37,8 +37,8 @@ const SplineScene = () => {
 const steps = [
 {
   icon: ClipboardCheck,
-  title: "État des lieux",
-  description: "Nous analysons vos besoins et votre situation pour identifier les espaces adaptés à votre activité.",
+  title: "Explorez",
+  description: "Parcourez nos offres. Un espace vous plaît ? Envoyer une demande, nous vous recontacterons dans les 24h.",
   color: "bg-pastel-blue",
   number: "01"
 },
