@@ -37,22 +37,22 @@ const SplineScene = () => {
 const steps = [
 {
   icon: ClipboardCheck,
-  title: "État des lieux",
-  description: "Nous analysons vos besoins et votre situation pour identifier les espaces adaptés à votre activité.",
+  title: "Explorez",
+  description: "Parcourez nos offres. Un espace vous plaît ? Envoyer une demande, nous vous recontacterons dans les 24h.",
   color: "bg-pastel-blue",
   number: "01"
 },
 {
   icon: Lightbulb,
   title: "Conseil",
-  description: "Nos experts vous accompagnent avec des recommandations personnalisées pour optimiser votre recherche.",
+  description: "Spacio prend le relais : nous validons le potentiel d'hybridation, et nous nous occupons de tout, pour vous !",
   color: "bg-pastel-orange",
   number: "02"
 },
 {
   icon: Handshake,
   title: "Mise en relation",
-  description: "Nous vous connectons directement avec les propriétaires d'espaces qui correspondent à vos critères.",
+  description: "Nous organisons la mise en relation avec le propriétaire de l'espace. Une fois la rencontre validée, c'est parti ! Tout est prêt pour accueillir vos activités.",
   color: "bg-pastel-green",
   number: "03"
 }];
