@@ -132,7 +132,7 @@ const Index = () => {
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-white/15 bg-[hsl(230,50%,8%)]/95 shadow-2xl">
+                  className="absolute left-0 right-0 top-full z-50 mt-2 max-h-64 overflow-y-auto rounded-2xl border border-white/15 bg-[hsl(230,50%,8%)]/95 shadow-2xl scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/20">
                   
                   {spaceTypes.map((type) =>
                   <button
