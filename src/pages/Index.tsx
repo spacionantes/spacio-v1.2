@@ -1,5 +1,6 @@
 import { useEffect, useState, type ComponentType } from "react";
 import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown } from "lucide-react";
+import { Typewriter } from "@/components/ui/typewriter-text";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
