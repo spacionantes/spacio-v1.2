@@ -103,7 +103,7 @@ const Index = () => {
               Trouvez l'espace <span className="text-gradient-primary italic font-serif">parfait</span> pour votre association
             </h1>
             <p className="mb-10 max-w-xl text-lg text-white/70">
-              Spacio connecte les associations avec des espaces adaptés à leurs activités. Réservation simple, paiement sécurisé.
+              Spacio connecte les associations avec des espaces adaptés à leurs activités. Réservez votre prochain lieu d'activité en toute simplicité.
             </p>
 
             {/* Space type selector */}
