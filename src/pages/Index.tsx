@@ -51,7 +51,7 @@ const steps = [
 },
 {
   icon: Handshake,
-  title: "Mise en relation",
+  title: "C'est parti !",
   description: "Nous organisons la mise en relation avec le propriétaire de l'espace. Une fois la rencontre validée, c'est parti ! Tout est prêt pour accueillir vos activités.",
   color: "bg-pastel-green",
   number: "03"
