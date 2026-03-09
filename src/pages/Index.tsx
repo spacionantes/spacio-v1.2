@@ -101,7 +101,17 @@ const Index = () => {
               className="relative z-10 text-left py-16 lg:py-24 max-w-2xl ml-4 lg:ml-16">
               
             <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Trouvez l'espace <span className="text-gradient-primary italic font-serif">parfait</span> pour votre association
+              Trouvez l'espace{" "}
+              <Typewriter
+                text={["parfait", "idéal", "adapté"]}
+                speed={120}
+                deleteSpeed={60}
+                delay={2000}
+                loop={true}
+                cursor="|"
+                className="text-gradient-primary italic font-serif"
+              />{" "}
+              pour votre association
             </h1>
             <p className="mb-10 max-w-xl text-lg text-white/70">
               Spacio connecte les associations avec des espaces adaptés à leurs activités. Réservez votre prochain lieu d'activité en toute simplicité.
