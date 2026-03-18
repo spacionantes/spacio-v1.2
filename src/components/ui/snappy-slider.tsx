@@ -243,27 +243,6 @@ const SnappySlider = React.forwardRef<HTMLDivElement, SnappySliderProps>(
           </div>
         </div>
 
-        {/* Bottom labels */}
-        <div className="flex justify-between mt-1">
-          {allValues.map((mark) => {
-            const markLabel = labelFormatter ? labelFormatter(mark) : formatNumber(mark, computedStep)
-            return (
-              <button
-                key={mark}
-                type="button"
-                onClick={() => handleValueChange(mark)}
-                className={cn(
-                  "text-[10px] font-medium transition-colors px-1",
-                  mark === currentValue
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {markLabel}
-              </button>
-            )
-          })}
-        </div>
       </div>
     )
   }
