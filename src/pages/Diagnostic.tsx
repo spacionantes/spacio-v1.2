@@ -162,30 +162,19 @@ const Diagnostic = () => {
             {SLOT_LABELS.map((label, slotIdx) => (
               <Card key={label}>
                 <CardContent className="p-5">
-                  <div className="mb-3 flex items-center justify-between">
-                    <span className="text-sm font-semibold">{label}</span>
-                    <span
-                      className={cn(
-                        "rounded-full px-3 py-0.5 text-xs font-medium",
-                        grid[activeDay][slotIdx] === 0 && "bg-muted text-muted-foreground",
-                        grid[activeDay][slotIdx] === 1 && "bg-[hsl(var(--pastel-orange))] text-foreground",
-                        grid[activeDay][slotIdx] === 2 && "bg-[hsl(var(--pastel-green))] text-foreground"
-                      )}
-                    >
-                      {INTENSITY_LABELS[grid[activeDay][slotIdx]]}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="w-12 text-xs text-muted-foreground">{SLOT_DURATIONS[slotIdx]}h</span>
-                    <Slider
-                      min={0}
-                      max={2}
-                      step={1}
-                      value={[grid[activeDay][slotIdx]]}
-                      onValueChange={([v]) => setIntensity(activeDay, slotIdx, v)}
-                      className="flex-1"
-                    />
-                  </div>
+                  <SnappySlider
+                    label={`${label} (${SLOT_DURATIONS[slotIdx]}h)`}
+                    values={[0, 1, 2]}
+                    defaultValue={0}
+                    value={grid[activeDay][slotIdx]}
+                    min={0}
+                    max={2}
+                    step={1}
+                    onChange={(v) => setIntensity(activeDay, slotIdx, v)}
+                    config={{
+                      labelFormatter: (v) => INTENSITY_LABELS[v as 0 | 1 | 2],
+                    }}
+                  />
                 </CardContent>
               </Card>
             ))}
