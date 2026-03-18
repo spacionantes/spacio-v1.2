@@ -4,7 +4,7 @@ import { Users, Zap, Star, Send, CheckCircle, Mail, Building2, MapPin } from "lu
 import Layout from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
+import { SnappySlider } from "@/components/ui/snappy-slider";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
