@@ -68,9 +68,6 @@ const Header = () => {
           <Link to="/blog" className={navLinkClass(isActive("/blog"))}>
             Blog
           </Link>
-          <Link to="/contact" className={navLinkClass(isActive("/contact"))}>
-            Contactez-nous
-          </Link>
         </nav>
 
         {/* Auth */}
