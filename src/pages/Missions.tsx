@@ -13,7 +13,7 @@ const sections = [
     icon: Heart,
     title: "Raison d'être",
     content:
-      "Les associations répondent à des besoins que les collectivités peinent parfois à adresser. Les aider, c'est soutenir notre culture.\n\nSpacio leur permet d'accéder à des espaces adaptés pour pratiquer leurs activités.",
+      "Les associations répondent à des besoins que les collectivités et l'État peinent parfois à adresser. Les aider c'est soutenir la culture, le lien social et l'ouverture.\n\nSpacio leur permet d'accéder à des espaces adaptés pour pratiquer leurs activités.",
   },
   {
     icon: Eye,
