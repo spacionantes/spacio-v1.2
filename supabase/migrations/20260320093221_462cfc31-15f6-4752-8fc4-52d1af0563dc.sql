@@ -1,0 +1,2 @@
+UPDATE public.listings SET lat = 47.2957, lng = -1.5069 WHERE address = '35 Avenue du Champs de Manoeuvre' AND city = 'Carquefou';
+UPDATE public.listings SET lat = 47.2184, lng = -1.5536 WHERE id = 'fce2b7ae-e22c-48d5-88a3-7becb9ae3875';
