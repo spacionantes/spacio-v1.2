@@ -51,7 +51,7 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
     markersRef.current.forEach((m) => m.remove());
     markersRef.current = [];
 
-    const spacesWithCoords = spaces.filter((s) => s.lat && s.lng);
+    const spacesWithCoords = spaces.filter((s) => s.lat != null && s.lng != null);
 
     spacesWithCoords.forEach((space) => {
       const isSelected = space.id === selectedSpaceId;
@@ -59,9 +59,9 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
       const icon = L.divIcon({
         className: "",
         html: `<div style="
-          background: ${isSelected ? "hsl(var(--primary))" : "hsl(var(--background))"};
-          color: ${isSelected ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))"};
-          border: 2px solid ${isSelected ? "hsl(var(--primary))" : "hsl(var(--border))"};
+          background: ${isSelected ? "#2563eb" : "#ffffff"};
+          color: ${isSelected ? "#ffffff" : "#1a1a1a"};
+          border: 2px solid ${isSelected ? "#2563eb" : "#e5e7eb"};
           border-radius: 9999px;
           padding: 4px 10px;
           font-size: 13px;
@@ -76,12 +76,14 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
 
       const marker = L.marker([space.lat!, space.lng!], { icon }).addTo(map);
 
+      const ratingDisplay = space.rating ? `<span style="margin-left:8px;font-size:12px">⭐ ${space.rating}</span>` : "";
+
       marker.bindPopup(
         `<div style="min-width:180px">
           <strong style="font-size:14px">${space.title}</strong><br/>
           <span style="color:#666;font-size:12px">${space.address}, ${space.city}</span><br/>
-          <span style="font-weight:600;font-size:13px;color:hsl(var(--primary))">${space.price_per_hour}€/h</span>
-          <span style="margin-left:8px;font-size:12px">⭐ ${space.rating}</span>
+          <span style="font-weight:600;font-size:13px;color:#2563eb">${space.price_per_hour}€/h</span>
+          ${ratingDisplay}
         </div>`,
         { closeButton: false, offset: [0, -5] }
       );
