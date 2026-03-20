@@ -233,9 +233,6 @@ const SnappySlider = React.forwardRef<HTMLDivElement, SnappySliderProps>(
                   "hover:scale-110 active:scale-95 transition-transform"
                 )}
               >
-                <span className="text-[9px] font-bold text-primary-foreground leading-none">
-                  {displayValue}
-                </span>
               </div>
               {/* Triangle pointer */}
               <div className="w-0 h-0 border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-primary -mt-[1px]" />
