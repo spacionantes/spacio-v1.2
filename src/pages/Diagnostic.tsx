@@ -23,7 +23,7 @@ const calculateIntensiScore = (slots: Slot[]) => {
   const actualUsage = slots.reduce((acc, slot) => acc + slot.duration * slot.intensity, 0);
   const maxTheoretical = 16 * 4; // 16h utiles × intensité max 4
   const ratio = actualUsage / maxTheoretical;
-  const scoreRaw = Math.pow(ratio, 0.25);
+  const scoreRaw = ratio;
   return { score: Math.round(scoreRaw * 100), ratio };
 };
 
