@@ -4,22 +4,22 @@ import { Eye, Heart, Target } from "lucide-react";
 
 const sections = [
   {
-    icon: Eye,
-    title: "Notre Vision",
+    icon: Target,
+    title: "Mission",
     content:
-      "Nous imaginons un monde où chaque association, quelle que soit sa taille ou ses moyens, accède facilement à des espaces adaptés pour mener à bien ses projets. Un écosystème où les surfaces sous-utilisées trouvent une seconde vie au service de l'intérêt général.",
+      "Trouver des locaux pour nos associations.",
   },
   {
     icon: Heart,
-    title: "Notre Raison d'Être",
+    title: "Raison d'être",
     content:
-      "Trop d'associations peinent à trouver des locaux abordables et adaptés. En parallèle, des milliers de mètres carrés restent vacants dans nos villes. Spacio existe pour créer le lien entre ces deux réalités et transformer un problème immobilier en opportunité sociale.",
+      "Les associations répondent à des besoins que les collectivités peinent parfois à adresser. Les aider, c'est soutenir notre culture.\n\nSpacio leur permet d'accéder à des espaces adaptés pour pratiquer leurs activités.",
   },
   {
-    icon: Target,
-    title: "Notre Mission",
+    icon: Eye,
+    title: "Vision",
     content:
-      "Faciliter la mise en relation entre propriétaires d'espaces disponibles et associations en recherche de locaux. Nous accompagnons chaque partie avec un diagnostic personnalisé, des conseils adaptés et un suivi humain pour garantir des collaborations durables et vertueuses.",
+      "Spacio propose des espaces à chaque association qui en a besoin.\n\nEn mutualisant les lieux de nos partenaires, nous voulons créer un réflexe de partage et rompre avec la monofonction des bâtiments.\n\nNotre initiative promeut un monde plus durable, où l'existant est mieux optimisé.",
   },
 ];
 
