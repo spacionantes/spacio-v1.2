@@ -30,6 +30,8 @@ export const useListings = () => {
         amenities: l.amenities || [],
         rating: Number(l.rating),
         reviews_count: l.reviews_count || 0,
+        lat: (l as any).lat ?? undefined,
+        lng: (l as any).lng ?? undefined,
       }));
     },
   });
