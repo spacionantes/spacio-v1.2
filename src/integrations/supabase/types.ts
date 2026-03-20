@@ -140,6 +140,8 @@ export type Database = {
           created_at: string
           id: string
           image_url: string | null
+          lat: number | null
+          lng: number | null
           price_per_hour: number
           rating: number | null
           reviews_count: number | null
@@ -156,6 +158,8 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          lat?: number | null
+          lng?: number | null
           price_per_hour: number
           rating?: number | null
           reviews_count?: number | null
@@ -172,6 +176,8 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          lat?: number | null
+          lng?: number | null
           price_per_hour?: number
           rating?: number | null
           reviews_count?: number | null
