@@ -19,11 +19,6 @@ const sections = [
     title: "Mentions Légales",
     content: `Éditeur : Spacio SAS\nSiège social : Nantes, France\nEmail : contact@spacio.fr\n\nDirecteur de la publication : Équipe Spacio\n\nHébergement : Supabase Inc. — 970 Toa Payoh North, Singapour\n\nConformément à la loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, les informations ci-dessus sont portées à la connaissance des utilisateurs et visiteurs du site.`,
   },
-  {
-    id: "cookies",
-    title: "Politique de Cookies",
-    content: `Spacio utilise des cookies strictement nécessaires au fonctionnement du site. Aucun cookie publicitaire ou de traçage n'est utilisé.\n\nLes cookies techniques permettent de maintenir votre session active et d'assurer le bon fonctionnement de la plateforme.\n\nConformément à la réglementation, vous pouvez configurer votre navigateur pour refuser les cookies. Cependant, certaines fonctionnalités du site pourraient ne plus être accessibles.`,
-  },
 ];
 
 const Legal = () => {
