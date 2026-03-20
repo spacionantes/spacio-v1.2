@@ -131,9 +131,6 @@ const Header = () => {
             <Link to="/blog" className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
               Blog
             </Link>
-            <Link to="/contact" className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
-              Contactez-nous
-            </Link>
 
             <div className="my-1 border-t border-border" />
 
