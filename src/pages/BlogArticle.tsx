@@ -70,7 +70,7 @@ const BlogArticle = () => {
           )}
 
           <div className="prose prose-lg max-w-none text-foreground space-y-6">
-            {article.content.split("\n\n").map((block, i) => {
+            {article.content.replace(/\r\n/g, "\n").split("\n\n").map((block, i) => {
               const trimmed = block.trim();
               if (!trimmed) return null;
 
