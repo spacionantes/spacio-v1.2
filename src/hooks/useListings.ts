@@ -6,15 +6,32 @@ export const useListings = () => {
   return useQuery<Space[]>({
     queryKey: ["listings"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("listings")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const [{ data, error }, { data: imagesData }] = await Promise.all([
+        supabase
+          .from("listings")
+          .select("*")
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("listing_images")
+          .select("listing_id, image_url, position")
+          .order("position", { ascending: true }),
+      ]);
 
       if (error) throw error;
 
       if (!data || data.length === 0) {
         return mockSpaces;
+      }
+
+      // Group images by listing_id
+      const imagesByListing: Record<string, string[]> = {};
+      if (imagesData) {
+        for (const img of imagesData) {
+          if (!imagesByListing[img.listing_id]) {
+            imagesByListing[img.listing_id] = [];
+          }
+          imagesByListing[img.listing_id].push(img.image_url);
+        }
       }
 
       return data.map((l) => ({
@@ -26,12 +43,13 @@ export const useListings = () => {
         surface_m2: l.surface_m2,
         capacity: l.capacity,
         image_url: l.image_url || "",
+        images: imagesByListing[l.id] || (l.image_url ? [l.image_url] : []),
         type: l.type,
         amenities: l.amenities || [],
         rating: Number(l.rating),
         reviews_count: l.reviews_count || 0,
-        lat: (l as any).lat ?? undefined,
-        lng: (l as any).lng ?? undefined,
+        lat: l.lat ?? undefined,
+        lng: l.lng ?? undefined,
       }));
     },
   });

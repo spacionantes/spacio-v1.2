@@ -7,6 +7,7 @@ export interface Space {
   surface_m2: number;
   capacity: number;
   image_url: string;
+  images?: string[];
   type: string;
   amenities: string[];
   rating: number;
