@@ -70,20 +70,62 @@ const BlogArticle = () => {
           )}
 
           <div className="prose prose-lg max-w-none text-foreground space-y-6">
-            {article.content.split("\n\n").map((paragraph, i) => {
-              if (paragraph.startsWith("## ")) {
-                return <h2 key={i} className="mt-10 mb-4 text-2xl font-bold">{paragraph.replace(/^## /,"").replace(/ ##$/,"")}</h2>;
+            {article.content.split("\n\n").map((block, i) => {
+              const trimmed = block.trim();
+              if (!trimmed) return null;
+
+              // Heading
+              if (trimmed.startsWith("## ")) {
+                return (
+                  <h2 key={i} className="mt-12 mb-2 text-2xl font-bold tracking-tight">
+                    {trimmed.replace(/^## /, "").replace(/ ##$/, "")}
+                  </h2>
+                );
               }
-              // Bold the first sentence (up to first period, colon, or newline)
-              const match = paragraph.match(/^([^.:\n]+[.:]?)\s*([\s\S]*)$/);
+
+              // Check if block contains line-break-separated items (list-like)
+              const lines = trimmed.split("\n").map((l) => l.trim()).filter(Boolean);
+
+              if (lines.length > 1) {
+                // If lines look like a list (short items), render as list
+                const looksLikeList = lines.every((l) => l.length < 200);
+                if (looksLikeList) {
+                  return (
+                    <ul key={i} className="space-y-2 pl-5 list-disc text-muted-foreground">
+                      {lines.map((line, j) => {
+                        const colonMatch = line.match(/^([^:]+)\s*:\s*(.+)$/);
+                        if (colonMatch) {
+                          return (
+                            <li key={j} className="leading-relaxed">
+                              <strong className="text-foreground">{colonMatch[1]}</strong> : {colonMatch[2]}
+                            </li>
+                          );
+                        }
+                        return <li key={j} className="leading-relaxed">{line}</li>;
+                      })}
+                    </ul>
+                  );
+                }
+                // Otherwise render lines as separate paragraphs
+                return (
+                  <div key={i} className="space-y-3">
+                    {lines.map((line, j) => (
+                      <p key={j} className="leading-relaxed text-muted-foreground">{line}</p>
+                    ))}
+                  </div>
+                );
+              }
+
+              // Single paragraph — bold first sentence
+              const match = trimmed.match(/^([^.:\n]+[.:]?)\s*([\s\S]*)$/);
               if (match && match[2]) {
                 return (
-                  <p key={i} className="leading-relaxed text-muted-foreground">
+                  <p key={i} className="leading-[1.8] text-muted-foreground">
                     <strong className="text-foreground">{match[1]}</strong>{" "}{match[2]}
                   </p>
                 );
               }
-              return <p key={i} className="leading-relaxed text-muted-foreground">{paragraph}</p>;
+              return <p key={i} className="leading-[1.8] text-muted-foreground">{trimmed}</p>;
             })}
           </div>
         </div>
