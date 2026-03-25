@@ -1,26 +1,53 @@
 
 
-## Problem
+## Support multiple photos per listing
 
-The score formula uses `Math.pow(ratio, 0.25)` (fourth root), which dramatically inflates low ratios. For example:
-- ratio = 25% → score = 71
-- ratio = 10% → score = 56
-- ratio = 6% → score = 50
+Currently each listing has a single `image_url` (text column). To support multiple photos, we need a new `listing_images` table and a carousel in the UI.
 
-This makes a nearly empty space appear "well used."
+### Changes
 
-## Solution
+**1. New `listing_images` table (migration)**
 
-Replace the fourth-root formula with a **linear score** that directly reflects the usage ratio. The score simply equals the ratio percentage, so a 25% occupied space gets a score of 25, not 71.
+```sql
+CREATE TABLE public.listing_images (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  listing_id uuid NOT NULL REFERENCES public.listings(id) ON DELETE CASCADE,
+  image_url text NOT NULL,
+  position integer NOT NULL DEFAULT 0,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
 
-## Changes
+ALTER TABLE public.listing_images ENABLE ROW LEVEL SECURITY;
 
-**`src/pages/Diagnostic.tsx`** — one-line change in `calculateIntensiScore`:
+CREATE POLICY "Listing images are publicly readable"
+  ON public.listing_images FOR SELECT TO public USING (true);
 
-Replace `Math.pow(ratio, 0.25)` with just `ratio`:
-```ts
-const scoreRaw = ratio;
+CREATE POLICY "Only service role can insert listing images"
+  ON public.listing_images FOR INSERT TO public WITH CHECK (false);
+
+CREATE POLICY "Only service role can update listing images"
+  ON public.listing_images FOR UPDATE TO public USING (false);
+
+CREATE POLICY "Only service role can delete listing images"
+  ON public.listing_images FOR DELETE TO public USING (false);
 ```
 
-This makes score and ratio consistent. The advice thresholds (30, 60) and gauge colors already work well with this linear mapping.
+**2. Update `Space` type and `useListings` hook**
+
+- Add optional `images: string[]` field to the `Space` interface in `mockData.ts`
+- In `useListings.ts`, after fetching listings, fetch all images from `listing_images` grouped by `listing_id`, merge them into each space object
+- Fall back to `[image_url]` if no images exist in the new table
+
+**3. Image carousel in `SpaceDetailDialog`**
+
+- Replace the single `<img>` with an Embla carousel (using the existing `Carousel` components) showing all photos
+- Add dot indicators and prev/next arrows
+
+**4. SpaceCard thumbnail**
+
+- Keep showing the first image only (no change needed, uses `image_url` or `images[0]`)
+
+### Data entry
+
+Photos are managed via the Supabase dashboard or SQL inserts into `listing_images`. The existing `image_url` column on `listings` continues to serve as the primary/fallback image.
 
