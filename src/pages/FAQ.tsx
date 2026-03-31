@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const faqs = [
-  { q: "Comment fonctionne Spacio ?", a: "Spacio met en relation des associations à la recherche d'espaces avec des propriétaires souhaitant rentabiliser leurs locaux inoccupés. Vous cherchez, réservez et payez directement sur la plateforme." },
+  { q: "Comment fonctionne Spacio ?", a: "Spacio met en relation des associations à la recherche d'espaces avec des propriétaires souhaitant valoriser leurs locaux inoccupés. Spacio est un service clé en main. " },
   
   { q: "Quels types d'espaces sont disponibles ?", a: "Salles de réunion, ateliers, espaces événementiels, coworking, studios… Tous types de locaux adaptés aux besoins associatifs." },
   { q: "Comment proposer un espace ?", a: "Rendez-vous sur la page « Devenir hôte » et remplissez le formulaire avec les informations de votre local. Notre équipe vous recontactera sous 24h." },
