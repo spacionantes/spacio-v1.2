@@ -21,6 +21,12 @@ const SpaceCard = ({ space }: { space: Space }) => (
         <MapPin className="h-3.5 w-3.5" />
         <span>{space.address}, {space.city}</span>
       </div>
+      {space.host_name && (
+        <div className="mb-2 flex items-center gap-1 text-sm text-muted-foreground">
+          <User className="h-3.5 w-3.5" />
+          <span>Hôte : {space.host_name}</span>
+        </div>
+      )}
       <div className="flex items-center justify-between text-sm">
         <div className="flex items-center gap-3 text-muted-foreground">
           <span className="flex items-center gap-1">
