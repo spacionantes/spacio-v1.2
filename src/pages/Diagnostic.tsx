@@ -8,8 +8,6 @@ import { SnappySlider } from "@/components/ui/snappy-slider";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/hooks/useAuth";
-import AuthRequiredDialog from "@/components/AuthRequiredDialog";
 
 const PERIODS = ["Semaine", "Weekend"] as const;
 const SLOT_LABELS = ["Matin", "Midi", "Après-midi", "Soir"] as const;
@@ -40,8 +38,6 @@ const Diagnostic = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const { toast } = useToast();
-  const { user } = useAuth();
-  const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [activePeriod, setActivePeriod] = useState(0);
 
   const setIntensity = (periodIndex: number, slotIndex: number, val: number) => {
@@ -223,7 +219,7 @@ const Diagnostic = () => {
                     {score}
                   </motion.span>
                   <span className="text-xs text-muted-foreground">Occupation moyenne : {Math.round(ratio * 100)}%</span>
-                  <Button onClick={() => { if (!user) { setAuthDialogOpen(true); return; } handleSave(); }} disabled={saving || saved} className="mt-2 rounded-2xl px-6">
+                  <Button onClick={handleSave} disabled={saving || saved} className="mt-2 rounded-2xl px-6">
                     {saved ? <><CheckCircle className="h-4 w-4" /> Enregistré</> : saving ? "Enregistrement…" : <><Send className="h-4 w-4" /> Recevoir mon diagnostic</>}
                   </Button>
                 </CardContent>
@@ -280,7 +276,7 @@ const Diagnostic = () => {
           </>
         )}
       </section>
-      <AuthRequiredDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} returnTo="/diagnostic" />
+      
     </Layout>
   );
 };

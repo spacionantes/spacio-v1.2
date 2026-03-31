@@ -9,9 +9,6 @@ import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
 import GetStarted from "./pages/GetStarted";
 import Diagnostic from "./pages/Diagnostic";
-import Connexion from "./pages/Connexion";
-import Inscription from "./pages/Inscription";
-import ResetPassword from "./pages/ResetPassword";
 import Legal from "./pages/Legal";
 import Equipe from "./pages/Equipe";
 import FAQ from "./pages/FAQ";
@@ -38,9 +35,6 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogArticle />} />
           <Route path="/commencer" element={<GetStarted />} />
           <Route path="/diagnostic" element={<Diagnostic />} />
-          <Route path="/connexion" element={<Connexion />} />
-          <Route path="/inscription" element={<Inscription />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/equipe" element={<Equipe />} />
           <Route path="/faq" element={<FAQ />} />
