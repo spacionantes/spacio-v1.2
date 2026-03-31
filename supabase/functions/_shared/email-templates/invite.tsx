@@ -25,26 +25,25 @@ export const InviteEmail = ({
   siteUrl,
   confirmationUrl,
 }: InviteEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="fr" dir="ltr">
     <Head />
-    <Preview>You've been invited to join {siteName}</Preview>
+    <Preview>Vous êtes invité(e) à rejoindre Spacio</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>You've been invited</Heading>
+        <Heading style={h1}>Vous êtes invité(e) !</Heading>
         <Text style={text}>
-          You've been invited to join{' '}
+          Vous avez été invité(e) à rejoindre{' '}
           <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
+            <strong>Spacio</strong>
           </Link>
-          . Click the button below to accept the invitation and create your
-          account.
+          , la plateforme de partage d'espaces. Cliquez ci-dessous pour accepter
+          l'invitation et créer votre compte.
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Accept Invitation
+          Accepter l'invitation
         </Button>
         <Text style={footer}>
-          If you weren't expecting this invitation, you can safely ignore this
-          email.
+          Si vous n'attendiez pas cette invitation, vous pouvez ignorer cet email.
         </Text>
       </Container>
     </Body>
@@ -53,26 +52,26 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Plus Jakarta Sans', Arial, sans-serif" }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: 'hsl(230, 50%, 10%)',
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#55575d',
+  color: 'hsl(230, 15%, 50%)',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
 const link = { color: 'inherit', textDecoration: 'underline' }
 const button = {
-  backgroundColor: '#000000',
+  backgroundColor: 'hsl(234, 58%, 60%)',
   color: '#ffffff',
   fontSize: '14px',
-  borderRadius: '8px',
+  borderRadius: '1rem',
   padding: '12px 20px',
   textDecoration: 'none',
 }
