@@ -36,27 +36,28 @@ const SplineScene = () => {
 };
 
 const steps = [
-{
-  icon: ClipboardCheck,
-  title: "Explorez",
-  description: "Parcourez nos offres. Un espace vous plaît ? Envoyer une demande, nous vous recontacterons dans les 24h.",
-  color: "bg-pastel-blue",
-  number: "01"
-},
-{
-  icon: Lightbulb,
-  title: "Conseil",
-  description: "Spacio prend le relais : nous validons le potentiel d'hybridation, et nous nous occupons de tout, pour vous !",
-  color: "bg-pastel-orange",
-  number: "02"
-},
-{
-  icon: Handshake,
-  title: "C'est parti !",
-  description: "Nous organisons la mise en relation avec le propriétaire de l'espace. Une fois la rencontre validée, c'est parti ! Tout est prêt pour accueillir vos activités.",
-  color: "bg-pastel-green",
-  number: "03"
-}];
+  {
+    icon: ClipboardCheck,
+    title: "Explorez les espaces",
+    description: "Parcourez nos offres. Un espace vous plaît ? Envoyer une demande, nous vous recontacterons dans les 24h.",
+    color: "bg-pastel-blue",
+    number: "01"
+  },
+  {
+    icon: Lightbulb,
+    title: "Laissez-nous vous conseiller",
+    description: "Spacio prend le relais : nous validons le potentiel d'hybridation, et nous nous occupons de tout, pour vous !",
+    color: "bg-pastel-orange",
+    number: "02"
+  },
+  {
+    icon: Handshake,
+    title: "Rencontrez vous ! ",
+    description: "Nous organisons la mise en relation avec le propriétaire de l'espace. Une fois la rencontre validée, c'est parti ! Tout est prêt pour accueillir vos activités.",
+    color: "bg-pastel-green",
+    number: "03"
+  }
+];
 
 
 
