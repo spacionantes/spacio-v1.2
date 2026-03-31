@@ -80,7 +80,7 @@ const SpaceDetailDialog = ({ space, open, onOpenChange }: { space: Space | null;
           ) : (
             <img src={space.image_url} alt={space.title} className="h-full w-full object-cover" />
           )}
-          <Badge className="absolute right-4 top-4 rounded-xl bg-primary px-3 py-1.5 text-base font-bold text-primary-foreground shadow-lg z-10">
+          <Badge className="absolute left-4 top-4 rounded-xl bg-primary px-3 py-1.5 text-base font-bold text-primary-foreground shadow-lg z-10">
             {space.price_per_hour}€/h
           </Badge>
         </div>
