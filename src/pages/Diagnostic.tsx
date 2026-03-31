@@ -38,8 +38,6 @@ const Diagnostic = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const { toast } = useToast();
-  const { user } = useAuth();
-  const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [activePeriod, setActivePeriod] = useState(0);
 
   const setIntensity = (periodIndex: number, slotIndex: number, val: number) => {
