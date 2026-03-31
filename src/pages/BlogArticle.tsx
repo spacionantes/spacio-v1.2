@@ -88,7 +88,7 @@ const BlogArticle = () => {
                 const looksLikeList = lines.every((l) => l.length < 200);
                 if (looksLikeList) {
                   return (
-                    <ul key={i} className="space-y-2 pl-5 list-disc text-muted-foreground">
+                    <ul key={i} className="space-y-2 pl-5 list-disc text-2xl text-sidebar-primary font-sans font-thin">
                       {lines.map((line, j) => {
                         const colonMatch = line.match(/^([^:]+)\s*:\s*(.+)$/);
                         if (colonMatch) {
