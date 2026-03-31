@@ -74,7 +74,7 @@ const BlogArticle = () => {
               // Heading
               if (trimmed.startsWith("## ") || trimmed.endsWith(" ##")) {
                 return (
-                  <h2 key={i} className="mt-12 mb-2 text-2xl font-bold tracking-tight">
+                  <h2 key={i} className="mt-12 mb-2 text-2xl tracking-tight text-justify font-thin">
                     {trimmed.replace(/^##\s*/, "").replace(/\s*##$/, "")}
                   </h2>
                 );
