@@ -12,7 +12,7 @@ const sections = [
   {
     id: "confidentialite",
     title: "Politique de Confidentialité",
-    content: `Spacio s'engage à protéger la vie privée de ses utilisateurs conformément au Règlement Général sur la Protection des Données (RGPD).\n\nNous collectons uniquement les données nécessaires au fonctionnement du service : nom, email, ville, type d'organisation. Ces données ne sont jamais vendues à des tiers.\n\nVous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles. Pour exercer ces droits, contactez-nous à l'adresse : contact@spacio.fr.`,
+    content: `Spacio s'engage à protéger la vie privée de ses utilisateurs conformément au Règlement Général sur la Protection des Données (RGPD).\n\nNous collectons uniquement les données nécessaires au fonctionnement du service : nom, email, ville, type d'organisation. Ces données ne sont jamais vendues à des tiers.\n\nVous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles. Pour exercer ces droits, contactez-nous à l'adresse : spacionantes@gmail.fr.`,
   },
   {
     id: "mentions",
