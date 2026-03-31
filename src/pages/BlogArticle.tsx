@@ -41,6 +41,7 @@ const renderTextWithLinks = (text: string, navigate: ReturnType<typeof useNaviga
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const { data: article, isLoading } = useArticle(slug);
 
   if (isLoading) {
