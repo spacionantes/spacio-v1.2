@@ -74,7 +74,7 @@ const BlogArticle = () => {
               // Heading
               if (trimmed.startsWith("## ") || trimmed.endsWith(" ##")) {
                 return (
-                  <h2 key={i} className="mt-12 mb-2 text-2xl font-bold tracking-tight">
+                  <h2 key={i} className="mt-12 mb-2 text-2xl tracking-tight text-justify font-thin">
                     {trimmed.replace(/^##\s*/, "").replace(/\s*##$/, "")}
                   </h2>
                 );
@@ -117,12 +117,12 @@ const BlogArticle = () => {
               const match = trimmed.match(/^([^.:\n]+[.:]?)\s*([\s\S]*)$/);
               if (match && match[2]) {
                 return (
-                  <p key={i} className="leading-[1.8] text-muted-foreground">
+                  <p key={i} className="leading-[1.8] text-base font-sans font-bold text-sidebar-primary">
                     <strong className="text-foreground">{match[1]}</strong>{" "}{match[2]}
                   </p>
                 );
               }
-              return <p key={i} className="leading-[1.8] text-muted-foreground">{trimmed}</p>;
+              return <p key={i} className="leading-[1.8] text-base font-sans font-bold text-sidebar-primary">{trimmed}</p>;
             })}
           </div>
         </div>
