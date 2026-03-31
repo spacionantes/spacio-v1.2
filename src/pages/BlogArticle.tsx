@@ -5,6 +5,40 @@ import Layout from "@/components/Layout";
 import { useArticle } from "@/hooks/useArticles";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const URL_REGEX = /(https?:\/\/spacionantes\.fr(\/[^\s,.)]*)?)/g;
+
+const renderTextWithLinks = (text: string, navigate: ReturnType<typeof useNavigate>) => {
+  const parts = text.split(URL_REGEX);
+  if (parts.length === 1) return text;
+  
+  const result: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  const regex = new RegExp(URL_REGEX);
+  
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      result.push(text.slice(lastIndex, match.index));
+    }
+    const url = match[0];
+    const path = match[2] || "/";
+    result.push(
+      <button
+        key={match.index}
+        onClick={() => navigate(path)}
+        className="text-primary underline hover:text-primary/80 transition-colors"
+      >
+        {url}
+      </button>
+    );
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    result.push(text.slice(lastIndex));
+  }
+  return result;
+};
+
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: article, isLoading } = useArticle(slug);
