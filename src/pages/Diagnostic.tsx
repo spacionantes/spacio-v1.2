@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const PERIODS = ["Semaine", "Weekend"] as const;
 const SLOT_LABELS = ["Matin", "Midi", "Après-midi", "Soir"] as const;
-const SLOT_RANGES = ["8h – 12h", "12h – 14h", "14h – 18h", "18h – 00h"];
+const SLOT_RANGES = ["8h–12h", "12h–14h", "14h–18h", "18h–00h"];
 const SLOT_DURATIONS = [4, 2, 4, 6];
 const INTENSITY_LABELS = ["Vide", "Peu occupé", "Modéré", "Bien occupé", "Plein"] as const;
 type Intensity = 0 | 1 | 2 | 3 | 4;
