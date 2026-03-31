@@ -6,9 +6,9 @@ import teamGilles from "@/assets/team-gilles.jpg";
 import teamSimon from "@/assets/team-simon.jpg";
 
 const team = [
-  { name: "Max Doyer", role: "Co-fondateur & CEO", linkedin: "https://www.linkedin.com/in/max-doyer/", photo: teamMax },
-  { name: "Gilles Lainé", role: "Co-fondateur & CFO", linkedin: "https://www.linkedin.com/in/gilleslaine/", photo: teamGilles },
-  { name: "Simon Thenaisy", role: "Co-fondateur & CTO", linkedin: "https://www.linkedin.com/in/simon-thenaisy-884753224/", photo: teamSimon },
+  { name: "Max Doyer", role: "Co-fondateur", linkedin: "https://www.linkedin.com/in/max-doyer/", photo: teamMax },
+  { name: "Gilles Lainé", role: "Co-fondateur", linkedin: "https://www.linkedin.com/in/gilleslaine/", photo: teamGilles },
+  { name: "Simon Thenaisy", role: "Co-fondateur", linkedin: "https://www.linkedin.com/in/simon-thenaisy-884753224/", photo: teamSimon },
 ];
 
 const Equipe = () => (
