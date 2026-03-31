@@ -117,7 +117,7 @@ const BlogArticle = () => {
               const match = trimmed.match(/^([^.:\n]+[.:]?)\s*([\s\S]*)$/);
               if (match && match[2]) {
                 return (
-                  <p key={i} className="leading-[1.8] text-muted-foreground">
+                  <p key={i} className="leading-[1.8] text-base font-sans font-bold text-sidebar-primary">
                     <strong className="text-foreground">{match[1]}</strong>{" "}{match[2]}
                   </p>
                 );
