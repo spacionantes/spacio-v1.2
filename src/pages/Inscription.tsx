@@ -13,7 +13,7 @@ const Inscription = () => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [organization, setOrganization] = useState("");
-  const [city, setCity] = useState("");
+  
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
   const { toast } = useToast();
