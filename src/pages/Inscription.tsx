@@ -24,7 +24,7 @@ const Inscription = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await signUp(email, password, { full_name: fullName, organization, city });
+    const { error } = await signUp(email, password, { full_name: fullName, organization });
     setLoading(false);
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
