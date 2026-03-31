@@ -101,7 +101,7 @@ const BlogArticle = () => {
             </div>
           )}
 
-          <div className="prose prose-lg max-w-none font-sans text-base text-foreground whitespace-pre-line leading-relaxed">
+          <div className="prose prose-lg max-w-none font-sans text-base text-foreground whitespace-pre-line leading-relaxed text-justify space-y-6">
             {renderTextWithLinks(article.content, navigate)}
           </div>
         </div>
