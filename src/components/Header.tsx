@@ -28,8 +28,8 @@ const Header = () => {
           <span className="text-xl font-bold text-navy">Spacio</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 md:flex">
+        {/* Desktop nav — centered */}
+        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className={navLinkClass(isActive("/missions") || isActive("/equipe"))}>
