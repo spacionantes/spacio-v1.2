@@ -17,7 +17,7 @@ const sections = [
   {
     id: "mentions",
     title: "Mentions Légales",
-    content: `Éditeur : Spacio \nSiège social : Nantes, France\nEmail : contact@spacio.fr\n\nDirecteur de la publication : Équipe Spacio\n\nHébergement : Supabase Inc. — 970 Toa Payoh North, Singapour\n\nConformément à la loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, les informations ci-dessus sont portées à la connaissance des utilisateurs et visiteurs du site.`,
+    content: `Éditeur : Spacio \nSiège social : Nantes, France\nEmail : spacionantes@gmail.fr\n\nDirecteur de la publication : Équipe Spacio\n\nHébergement : Supabase Inc. — 970 Toa Payoh North, Singapour\n\nConformément à la loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, les informations ci-dessus sont portées à la connaissance des utilisateurs et visiteurs du site.`,
   },
 ];
 
