@@ -14,6 +14,7 @@ export interface Space {
   reviews_count: number;
   lat?: number;
   lng?: number;
+  host_name?: string;
 }
 
 export const mockSpaces: Space[] = [

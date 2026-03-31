@@ -170,6 +170,7 @@ export type Database = {
           capacity: number
           city: string
           created_at: string
+          host_name: string | null
           id: string
           image_url: string | null
           lat: number | null
@@ -188,6 +189,7 @@ export type Database = {
           capacity: number
           city: string
           created_at?: string
+          host_name?: string | null
           id?: string
           image_url?: string | null
           lat?: number | null
@@ -206,6 +208,7 @@ export type Database = {
           capacity?: number
           city?: string
           created_at?: string
+          host_name?: string | null
           id?: string
           image_url?: string | null
           lat?: number | null

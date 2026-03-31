@@ -1,0 +1,1 @@
+ALTER TABLE public.listings ADD COLUMN host_name text;
