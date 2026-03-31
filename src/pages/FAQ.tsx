@@ -6,7 +6,7 @@ const faqs = [
   { q: "Comment fonctionne Spacio ?", a: "Spacio met en relation des associations à la recherche d'espaces avec des propriétaires souhaitant rentabiliser leurs locaux inoccupés. Vous cherchez, réservez et payez directement sur la plateforme." },
   
   { q: "Quels types d'espaces sont disponibles ?", a: "Salles de réunion, ateliers, espaces événementiels, coworking, studios… Tous types de locaux adaptés aux besoins associatifs." },
-  { q: "Comment proposer un espace ?", a: "Rendez-vous sur la page « Commencer » et sélectionnez « Je propose un espace ». Renseignez les informations de votre local et notre équipe vous recontactera sous 24h." },
+  { q: "Comment proposer un espace ?", a: "Rendez-vous sur la page « Devenir hôte » et remplissez le formulaire avec les informations de votre local. Notre équipe vous recontactera sous 24h." },
   { q: "Qu'est-ce que l'Intensi'Score ?", a: "C'est un outil de diagnostic gratuit qui évalue le taux d'occupation de votre espace sur une semaine type. Il vous fournit des conseils personnalisés (mutualisation, hybridation) pour optimiser l'usage de vos locaux." },
   { q: "Comment contacter l'équipe Spacio ?", a: "Vous pouvez nous joindre via notre page LinkedIn (Spacio Nantes) ou par email à spacionantes@gmail.fr." },
 ];
