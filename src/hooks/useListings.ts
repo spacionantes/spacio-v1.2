@@ -46,6 +46,7 @@ export const useListings = () => {
         images: imagesByListing[l.id] || (l.image_url ? [l.image_url] : []),
         type: l.type,
         amenities: l.amenities || [],
+        host_name: l.host_name || undefined,
         rating: Number(l.rating),
         reviews_count: l.reviews_count || 0,
         lat: l.lat ?? undefined,
