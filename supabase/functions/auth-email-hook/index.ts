@@ -1,5 +1,4 @@
 import * as React from 'npm:react@18.3.1'
-import { Webhook } from 'npm:standardwebhooks@1.0.0'
 import { renderAsync } from 'npm:@react-email/components@0.0.22'
 import { SignupEmail } from '../_shared/email-templates/signup.tsx'
 import { InviteEmail } from '../_shared/email-templates/invite.tsx'
