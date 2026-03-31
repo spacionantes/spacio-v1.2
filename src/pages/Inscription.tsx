@@ -60,10 +60,6 @@ const Inscription = () => {
                 <Building2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input placeholder="Organisation" value={organization} onChange={(e) => setOrganization(e.target.value)} className="pl-10" />
               </div>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input placeholder="Ville" value={city} onChange={(e) => setCity(e.target.value)} className="pl-10" />
-              </div>
               <Button type="submit" className="w-full rounded-2xl" disabled={loading}>
                 {loading ? "Création…" : "Créer mon compte"}
               </Button>
