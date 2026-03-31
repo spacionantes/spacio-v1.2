@@ -129,7 +129,7 @@ const BlogArticle = () => {
                         if (colonMatch) {
                           return (
                             <li key={j} className="leading-relaxed">
-                              <strong className="text-foreground">{colonMatch[1]}</strong> : {colonMatch[2]}
+                              <strong className="text-foreground">{colonMatch[1]}</strong> : {renderTextWithLinks(colonMatch[2], navigate)}
                             </li>
                           );
                         }
