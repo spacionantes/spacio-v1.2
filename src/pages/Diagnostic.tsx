@@ -96,7 +96,7 @@ const Diagnostic = () => {
       toast({ title: "Erreur", description: "Impossible d'enregistrer le diagnostic.", variant: "destructive" });
     } else {
       setSaved(true);
-      toast({ title: "Enregistré !", description: "Votre diagnostic a bien été sauvegardé." });
+      toast({ title: "Envoyé !", description: "Votre diagnostic a bien été envoyé par email." });
       supabase.functions.invoke("send-email", {
         body: {
           type: "diagnostic_results",
