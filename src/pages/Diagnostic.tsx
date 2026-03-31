@@ -276,7 +276,7 @@ const Diagnostic = () => {
           </>
         )}
       </section>
-      <AuthRequiredDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} returnTo="/diagnostic" />
+      
     </Layout>
   );
 };
