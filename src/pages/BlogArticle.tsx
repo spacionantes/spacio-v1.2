@@ -142,7 +142,7 @@ const BlogArticle = () => {
                 return (
                   <div key={i} className="space-y-3">
                     {lines.map((line, j) => (
-                      <p key={j} className="leading-relaxed text-foreground">{line}</p>
+                      <p key={j} className="leading-relaxed text-foreground">{renderTextWithLinks(line, navigate)}</p>
                     ))}
                   </div>
                 );
