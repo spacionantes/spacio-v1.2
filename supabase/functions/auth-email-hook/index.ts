@@ -1,5 +1,4 @@
 import * as React from 'npm:react@18.3.1'
-import { Webhook } from 'npm:standardwebhooks@1.0.0'
 import { renderAsync } from 'npm:@react-email/components@0.0.22'
 import { SignupEmail } from '../_shared/email-templates/signup.tsx'
 import { InviteEmail } from '../_shared/email-templates/invite.tsx'
@@ -49,34 +48,9 @@ Deno.serve(async (req) => {
     )
   }
 
-  const hookSecret = Deno.env.get('SEND_EMAIL_HOOK_SECRET')
-
   try {
-    // Read the raw body for signature verification
-    const body = await req.text()
-    console.log('Raw payload:', body)
-
-    // Verify webhook signature if secret is configured
-    if (hookSecret) {
-      const wh = new Webhook(hookSecret)
-      const headers = {
-        'webhook-id': req.headers.get('webhook-id') || '',
-        'webhook-timestamp': req.headers.get('webhook-timestamp') || '',
-        'webhook-signature': req.headers.get('webhook-signature') || '',
-      }
-      try {
-        wh.verify(body, headers)
-        console.log('Webhook signature verified')
-      } catch (err) {
-        console.error('Webhook signature verification failed:', err)
-        return new Response(
-          JSON.stringify({ error: 'Invalid webhook signature' }),
-          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-    }
-
-    const payload = JSON.parse(body)
+    const payload = await req.json()
+    console.log('Raw payload keys:', Object.keys(payload))
 
     // Supabase Auth Send Email Hook payload format:
     // { user: { email: "..." }, email_data: { email_action_type: "signup", token: "...", token_hash: "...", redirect_to: "..." } }
@@ -96,7 +70,7 @@ Deno.serve(async (req) => {
     const newEmail = payload.email_data?.new_email || payload.new_email
 
     if (!emailType || !recipient) {
-      console.error('Missing email type or recipient', { payload: body })
+      console.error('Missing email type or recipient', { emailType, recipient, keys: Object.keys(payload) })
       return new Response(
         JSON.stringify({ error: 'Missing required fields' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
