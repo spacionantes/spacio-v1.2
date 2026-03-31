@@ -4,7 +4,7 @@ import Layout from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, Lock, User, Building2, MapPin } from "lucide-react";
+import { Mail, Lock, User, Building2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,7 +13,7 @@ const Inscription = () => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [organization, setOrganization] = useState("");
-  const [city, setCity] = useState("");
+  
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
   const { toast } = useToast();
@@ -24,7 +24,7 @@ const Inscription = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await signUp(email, password, { full_name: fullName, organization, city });
+    const { error } = await signUp(email, password, { full_name: fullName, organization });
     setLoading(false);
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
@@ -59,10 +59,6 @@ const Inscription = () => {
               <div className="relative">
                 <Building2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input placeholder="Organisation" value={organization} onChange={(e) => setOrganization(e.target.value)} className="pl-10" />
-              </div>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input placeholder="Ville" value={city} onChange={(e) => setCity(e.target.value)} className="pl-10" />
               </div>
               <Button type="submit" className="w-full rounded-2xl" disabled={loading}>
                 {loading ? "Création…" : "Créer mon compte"}
