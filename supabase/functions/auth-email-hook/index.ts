@@ -58,7 +58,9 @@ Deno.serve(async (req) => {
 
     // Verify webhook signature if secret is configured
     if (hookSecret) {
-      const wh = new Webhook(hookSecret)
+      // Strip "v1," prefix if present - Supabase uses "v1,whsec_..." format
+      const secretForVerification = hookSecret.startsWith('v1,') ? hookSecret.slice(3) : hookSecret
+      const wh = new Webhook(secretForVerification)
       const headers = {
         'webhook-id': req.headers.get('webhook-id') || '',
         'webhook-timestamp': req.headers.get('webhook-timestamp') || '',
