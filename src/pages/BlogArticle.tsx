@@ -52,9 +52,6 @@ const BlogArticle = () => {
             Retour au blog
           </Link>
 
-          <Badge variant="secondary" className="mb-4 rounded-lg">
-            {article.category}
-          </Badge>
           <h1 className="mb-4 text-3xl font-bold leading-tight sm:text-4xl">{article.title}</h1>
 
           <div className="mb-8 flex items-center gap-4 text-sm text-muted-foreground">
