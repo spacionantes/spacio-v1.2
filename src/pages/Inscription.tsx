@@ -21,13 +21,24 @@ const Inscription = () => {
   const [searchParams] = useSearchParams();
   const returnTo = searchParams.get("returnTo") || "/";
 
+  const simplifyError = (msg: string) => {
+    if (msg.includes("least one digit")) return "Le mot de passe doit contenir au moins un chiffre.";
+    if (msg.includes("at least 6")) return "Le mot de passe doit contenir au moins 6 caractères.";
+    if (msg.includes("already registered")) return "Cet email est déjà utilisé.";
+    if (msg.includes("valid email")) return "Veuillez entrer un email valide.";
+    if (msg.includes("uppercase")) return "Le mot de passe doit contenir au moins une majuscule.";
+    if (msg.includes("lowercase")) return "Le mot de passe doit contenir au moins une minuscule.";
+    if (msg.includes("special")) return "Le mot de passe doit contenir au moins un caractère spécial.";
+    return msg;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const { error } = await signUp(email, password, { full_name: fullName, organization });
     setLoading(false);
     if (error) {
-      toast({ title: "Erreur", description: error.message, variant: "destructive" });
+      toast({ title: "Erreur", description: simplifyError(error.message), variant: "destructive" });
     } else {
       toast({ title: "Compte créé !", description: "Vérifiez votre email pour confirmer votre inscription." });
       navigate(returnTo);
