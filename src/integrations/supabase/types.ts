@@ -190,6 +190,7 @@ export type Database = {
           lat: number | null
           lng: number | null
           price_per_hour: number
+          quartier: string | null
           rating: number | null
           reviews_count: number | null
           surface_m2: number
@@ -214,6 +215,7 @@ export type Database = {
           lat?: number | null
           lng?: number | null
           price_per_hour: number
+          quartier?: string | null
           rating?: number | null
           reviews_count?: number | null
           surface_m2: number
@@ -238,6 +240,7 @@ export type Database = {
           lat?: number | null
           lng?: number | null
           price_per_hour?: number
+          quartier?: string | null
           rating?: number | null
           reviews_count?: number | null
           surface_m2?: number
