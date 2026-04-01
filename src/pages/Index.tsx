@@ -63,8 +63,6 @@ const steps = [
 
 
 
-
-
 const Index = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
