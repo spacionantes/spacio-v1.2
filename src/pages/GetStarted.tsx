@@ -31,6 +31,9 @@ interface LeadData {
   phone: string;
   space_id: string;
   space_title: string;
+  desired_date?: string;
+  desired_start_time?: string;
+  desired_end_time?: string;
 }
 
 const initialData: LeadData = {
@@ -211,7 +214,12 @@ const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; on
           <Button
             className="mt-5 w-full rounded-2xl bg-[hsl(var(--indigo))] py-6 text-base font-bold text-primary-foreground shadow-lg shadow-[hsl(var(--indigo)/0.3)] transition-all hover:shadow-xl hover:shadow-[hsl(var(--indigo)/0.4)] hover:brightness-110"
             disabled={!canSubmit}
-            onClick={() => onSubmit(data)}
+            onClick={() => onSubmit({
+              ...data,
+              desired_date: selectedDate ? format(selectedDate, "yyyy-MM-dd") : undefined,
+              desired_start_time: startTime || undefined,
+              desired_end_time: endTime || undefined,
+            })}
           >
             Envoyer ma demande
           </Button>
@@ -259,6 +267,9 @@ const GetStarted = () => {
       phone: finalData.phone || null,
       space_id: finalData.space_id || null,
       space_title: finalData.space_title || null,
+      desired_date: finalData.desired_date || null,
+      desired_start_time: finalData.desired_start_time || null,
+      desired_end_time: finalData.desired_end_time || null,
     });
 
     if (error) {

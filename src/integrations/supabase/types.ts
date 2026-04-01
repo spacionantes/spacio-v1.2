@@ -91,6 +91,9 @@ export type Database = {
           activity_type: string | null
           city: string
           created_at: string
+          desired_date: string | null
+          desired_end_time: string | null
+          desired_start_time: string | null
           email: string
           id: string
           organization_name: string
@@ -105,6 +108,9 @@ export type Database = {
           activity_type?: string | null
           city: string
           created_at?: string
+          desired_date?: string | null
+          desired_end_time?: string | null
+          desired_start_time?: string | null
           email: string
           id?: string
           organization_name: string
@@ -119,6 +125,9 @@ export type Database = {
           activity_type?: string | null
           city?: string
           created_at?: string
+          desired_date?: string | null
+          desired_end_time?: string | null
+          desired_start_time?: string | null
           email?: string
           id?: string
           organization_name?: string
