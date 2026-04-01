@@ -115,7 +115,7 @@ const Index = () => {
               pour votre association
             </h1>
             <p className="mb-10 max-w-xl text-lg text-justify font-light text-indigo-50">
-              Spacio est un service clé en main qui met à disposition les locaux inutilisés de propriétaires d'espaces à destination des structures qui œuvrent pour le bien commun.<br />Réservez votre prochaine salle en toute simplicité.
+              Spacio est un service clé en main qui met à disposition les locaux inutilisés de propriétaires d'espaces à destination des structures qui œuvrent pour le bien commun.
             </p>
 
             {/* Space type selector */}
