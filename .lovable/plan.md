@@ -1,30 +1,32 @@
 
 
-## Créer le bucket de stockage pour les photos
+## Gérer les marqueurs superposés sur la carte
 
-### Résumé
-Créer un bucket Supabase `listing-photos` pour que tu puisses uploader tes photos depuis le dashboard Supabase, puis utiliser leurs URLs dans les listings.
+### Problème
+Quand plusieurs listings partagent les mêmes coordonnées, leurs marqueurs se chevauchent et seul le dernier est visible/cliquable.
 
-### Étape unique — Migration SQL
+### Solution — Leaflet.markercluster
 
-Créer le bucket public `listing-photos` avec une politique de lecture publique :
+Utiliser le plugin `leaflet.markercluster` qui regroupe automatiquement les marqueurs proches en clusters cliquables. Au clic sur un cluster, la carte zoome pour révéler les marqueurs individuels. Si les coordonnées sont strictement identiques, le plugin affiche un "spiderfy" (les marqueurs s'écartent en éventail).
 
-```sql
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('listing-photos', 'listing-photos', true);
+### Étapes
 
-CREATE POLICY "Public read access on listing-photos"
-ON storage.objects FOR SELECT
-TO public
-USING (bucket_id = 'listing-photos');
+1. **Installer le package** : `leaflet.markercluster` + ses types `@types/leaflet.markercluster`
+
+2. **Modifier `SpaceMap.tsx`** :
+   - Importer `leaflet.markercluster` et son CSS
+   - Créer un `L.markerClusterGroup` avec des options de style personnalisées (couleurs cohérentes avec le design)
+   - Ajouter tous les marqueurs au cluster group au lieu de les ajouter directement à la carte
+   - Nettoyer le cluster group lors du re-rendu
+
+3. **Style des clusters** : Les cercles de cluster afficheront le nombre de listings regroupés, avec un style arrondi blanc/bleu cohérent avec les prix-pills existants.
+
+### Détails techniques
+
+```text
+Avant :  marker.addTo(map)
+Après :  clusterGroup.addLayer(marker)  →  map.addLayer(clusterGroup)
 ```
 
-### Aucun changement de code
-Le code existant utilise déjà des URLs pour `image_url` et `listing_images`. Il suffit de copier l'URL publique d'une photo uploadée et de la coller dans la table.
-
-### Utilisation
-1. Dashboard Supabase → **Storage** → bucket `listing-photos`
-2. Upload tes photos
-3. Copie l'URL publique
-4. Colle-la dans `image_url` (table `listings`) ou dans `listing_images`
+Le spiderfy intégré gère nativement le cas des coordonnées strictement identiques — les marqueurs s'ouvrent en éventail au clic.
 
