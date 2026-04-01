@@ -45,7 +45,7 @@ const steps = [
   },
   {
     icon: Lightbulb,
-    title: "Laissez-nous vous conseiller",
+    title: "Faites vous conseiller",
     description: "Spacio prend le relais : nous validons le potentiel d'hybridation, et nous nous occupons de tout, pour vous !",
     color: "bg-pastel-orange",
     number: "02"
