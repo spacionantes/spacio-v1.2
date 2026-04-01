@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Users } from "lucide-react";
+import { useListings } from "@/hooks/useListings";
 
 const Reseau = () => {
   return (
