@@ -249,11 +249,11 @@ const Index = () => {
               <Building2 className="h-6 w-6 text-foreground" />
             </div>
             <h3 className="mb-3 text-2xl font-bold">Propriétaires</h3>
-            <p className="mb-6 leading-relaxed text-muted-foreground text-base">
+            <p className="mb-6 leading-relaxed text-muted-foreground text-base text-justify">
               Valorisez vos espaces inutilisés en les mettant à disposition d'acteurs de l’ESS. Gérez vos réservations, fixez vos prix et contribuez à la vie locale.
             </p>
-            <ul className="mb-6 space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">✓ Rayonnement de l'établissement</li>
+            <ul className="mb-6 space-y-2 text-sm text-muted-foreground text-center">
+              <li className="flex items-center gap-2 text-center">✓ Rayonnement de l'établissement</li>
               <li className="flex items-center gap-2">✓ Mutualisation des charges</li>
               <li className="flex items-center gap-2">✓ Gestion complète prise en charge</li>
             </ul>
@@ -271,11 +271,10 @@ const Index = () => {
               <Heart className="h-6 w-6 text-foreground" />
             </div>
             <h3 className="mb-3 text-2xl font-bold">Associations</h3>
-            <p className="mb-6 leading-relaxed text-muted-foreground text-base">Trouvez des espaces abordables et adaptés pour vos réunions, ateliers, événements… Réservez en quelques clics et concentrez-vous sur l'essentiel.
-
+            <p className="mb-6 leading-relaxed text-muted-foreground text-base text-justify">Trouvez des espaces abordables et adaptés pour vos réunions, ateliers, événements… Réservez en quelques clics et concentrez-vous sur l'essentiel.
               </p>
-            <ul className="mb-6 space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">✓ Recherche par critères</li>
+            <ul className="mb-6 space-y-2 text-sm text-muted-foreground text-center">
+              <li className="flex items-center gap-2 text-right">✓ Recherche par critères</li>
               <li className="flex items-center gap-2">✓ Réservation facilitées</li>
               <li className="flex items-center gap-2">✓ Tarifs associatifs</li>
             </ul>
