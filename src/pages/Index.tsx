@@ -46,14 +46,14 @@ const steps = [
   {
     icon: Lightbulb,
     title: "Faites vous conseiller",
-    description: "Spacio prend le relais : nous validons le potentiel d'hybridation, et nous nous occupons de tout, pour vous !",
+    description: "Spacio prend le relais : nous vérifions la compatibilité d'usage, et nous nous occupons de tous les détails.",
     color: "bg-pastel-orange",
     number: "02"
   },
   {
     icon: Handshake,
     title: "Rencontrez vous ! ",
-    description: "Nous organisons la mise en relation avec le propriétaire de l'espace. Une fois la rencontre validée, c'est parti ! Tout est prêt pour accueillir vos activités.",
+    description: "Nous organisons la mise en relation avec le propriétaire de l'espace. Une fois la rencontre validée, tout est prêt pour accueillir vos activités !",
     color: "bg-pastel-green",
     number: "03"
   }
