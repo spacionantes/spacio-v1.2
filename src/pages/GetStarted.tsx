@@ -85,6 +85,31 @@ const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; on
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
+  // Map French day names for available_days matching
+  const dayNameMap: Record<number, string> = {
+    0: "dimanche", 1: "lundi", 2: "mardi", 3: "mercredi",
+    4: "jeudi", 5: "vendredi", 6: "samedi",
+  };
+
+  // Filter time options based on space availability
+  const filteredTimeOptions = timeOptions.filter((t) => {
+    if (space.available_from && t.value < space.available_from) return false;
+    if (space.available_to && t.value > space.available_to) return false;
+    return true;
+  });
+
+  // Calendar disabled logic
+  const isDateDisabled = (date: Date) => {
+    if (date < startOfDay(new Date())) return true;
+    if (space.available_start_date && date < parseISO(space.available_start_date)) return true;
+    if (space.available_end_date && date > parseISO(space.available_end_date)) return true;
+    if (space.available_days && space.available_days.length > 0) {
+      const dayName = dayNameMap[getDay(date)];
+      if (!space.available_days.includes(dayName)) return true;
+    }
+    return false;
+  };
+
   const update = (field: keyof LeadData, value: string) =>
     setData((prev) => ({ ...prev, [field]: value }));
 
