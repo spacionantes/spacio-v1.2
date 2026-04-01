@@ -63,6 +63,18 @@ const Explorer = () => {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={quartierFilter} onValueChange={setQuartierFilter}>
+              <SelectTrigger className="w-48 rounded-2xl">
+                <MapPin className="mr-2 h-4 w-4" />
+                <SelectValue placeholder="Quartier" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tous les quartiers</SelectItem>
+                {quartiers.map((q) => (
+                  <SelectItem key={q} value={q}>{q}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
