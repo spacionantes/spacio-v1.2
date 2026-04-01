@@ -31,6 +31,9 @@ interface LeadData {
   phone: string;
   space_id: string;
   space_title: string;
+  desired_date?: string;
+  desired_start_time?: string;
+  desired_end_time?: string;
 }
 
 const initialData: LeadData = {
