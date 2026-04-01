@@ -102,6 +102,12 @@ const Contact = () => {
                       vous souhaitiez proposer un lieu, notre équipe est là pour
                       vous accompagner.
                     </p>
+                    <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                      <Mail className="h-4 w-4 text-primary" />
+                      <a href="mailto:spacionantes@gmail.com" className="hover:text-primary transition-colors">
+                        spacionantes@gmail.com
+                      </a>
+                    </div>
                   </div>
 
                   <div className="space-y-6">
