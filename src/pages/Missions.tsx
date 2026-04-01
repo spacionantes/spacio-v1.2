@@ -66,7 +66,7 @@ const Missions = () => (
               </div>
               <div>
                 <h2 className="mb-2 text-xl font-semibold text-foreground">{s.title}</h2>
-                <p className="leading-relaxed text-muted-foreground">{s.content}</p>
+                <p className="leading-relaxed text-muted-foreground text-justify">{s.content}</p>
               </div>
             </motion.div>
           ))}
