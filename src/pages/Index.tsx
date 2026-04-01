@@ -276,9 +276,10 @@ const Index = () => {
             <p className="mb-6 leading-relaxed text-muted-foreground text-base text-justify">Trouvez des espaces abordables et adaptés pour vos réunions, activités… Réservez en quelques clics et concentrez-vous sur l'essentiel.
               </p>
             <ul className="mb-6 space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">✓ Recherche par critères</li>
-              <li className="flex items-center gap-2">✓ Réservation facilitées</li>
-              <li className="flex items-center gap-2">✓ Tarifs associatifs</li>
+              <li className="flex items-center gap-2">✓ Trouvez rapidement un espace adapté à vos besoins</li>
+              <li className="flex items-center gap-2">✓ Réservez simplement, en quelques clics</li>
+              <li className="flex items-center gap-2">✓ Accédez à des tarifs solidaires et avantageux</li>
+              <li className="flex items-center gap-2">✓ Créez des synergies entre bénéficiaires et acteurs locaux</li>
             </ul>
           </motion.div>
         </div>
