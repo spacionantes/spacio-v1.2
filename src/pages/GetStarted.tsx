@@ -62,6 +62,13 @@ const spaceTypes = [
   { value: "autre", label: "Autre" },
 ];
 
+const timeSlots = [
+  { value: "matin", label: "Matin (8h–12h)" },
+  { value: "midi", label: "Midi (12h–14h)" },
+  { value: "apres-midi", label: "Après-midi (14h–18h)" },
+  { value: "soir", label: "Soir (18h–00h)" },
+];
+
 const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; onSubmit: (data: LeadData) => void }) => {
   const [data, setData] = useState<LeadData>({
     ...initialData,
@@ -70,6 +77,8 @@ const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; on
     space_id: space.id,
     space_title: space.title,
   });
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedSlot, setSelectedSlot] = useState("");
 
   const update = (field: keyof LeadData, value: string) =>
     setData((prev) => ({ ...prev, [field]: value }));
