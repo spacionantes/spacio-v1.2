@@ -253,9 +253,11 @@ const Index = () => {
               Valorisez vos espaces inutilisés en les mettant à disposition d'acteurs de l’ESS. Gérez vos réservations, fixez vos prix et contribuez à la vie locale.
             </p>
             <ul className="mb-6 space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">✓ Rayonnement de l'établissement</li>
-              <li className="flex items-center gap-2">✓ Mutualisation des charges</li>
-              <li className="flex items-center gap-2">✓ Gestion complète prise en charge</li>
+              <li className="flex items-center gap-2">✓ Renforcez concrètement vos engagements RSE</li>
+              <li className="flex items-center gap-2">✓ Faites rayonner votre établissement</li>
+              <li className="flex items-center gap-2">✓ Optimisez vos coûts en mutualisant vos charges</li>
+              <li className="flex items-center gap-2">✓ Créez des synergies entre collaborateurs et bénéficiaires</li>
+              <li className="flex items-center gap-2">✓ Donnez vie à vos espaces inoccupés</li>
             </ul>
           </motion.div>
 
