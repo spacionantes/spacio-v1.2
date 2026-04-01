@@ -259,6 +259,9 @@ const GetStarted = () => {
       phone: finalData.phone || null,
       space_id: finalData.space_id || null,
       space_title: finalData.space_title || null,
+      desired_date: selectedDate ? format(selectedDate, "yyyy-MM-dd") : null,
+      desired_start_time: startTime || null,
+      desired_end_time: endTime || null,
     });
 
     if (error) {
