@@ -79,7 +79,8 @@ const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; on
     space_title: space.title,
   });
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedSlot, setSelectedSlot] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   const update = (field: keyof LeadData, value: string) =>
     setData((prev) => ({ ...prev, [field]: value }));
