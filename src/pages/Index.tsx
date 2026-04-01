@@ -63,19 +63,6 @@ const steps = [
 
 
 
-const spaceTypes = [
-{ label: "Tout voir", value: "" },
-{ label: "Salle de réunion", value: "Salle de réunion" },
-{ label: "Amphithéâtre", value: "Amphithéâtre" },
-{ label: "Cour d'école", value: "Cour d'école" },
-{ label: "Salle polyvalente", value: "Salle polyvalente" },
-{ label: "Terrain sportif", value: "Terrain sportif" },
-{ label: "Espace de coworking", value: "Coworking" },
-{ label: "Salle de spectacle", value: "Salle de spectacle" },
-{ label: "Gymnase", value: "Gymnase" },
-{ label: "Local associatif", value: "Local associatif" },
-{ label: "Salle de formation", value: "Salle de formation" },
-{ label: "Espace extérieur", value: "Espace extérieur" }];
 
 
 const Index = () => {
