@@ -4,6 +4,8 @@ import { Users } from "lucide-react";
 import { useListings } from "@/hooks/useListings";
 
 const Reseau = () => {
+  const { data: listings } = useListings();
+  const listingsCount = listings?.length ?? 0;
   return (
     <Layout>
       <section className="container py-20 md:py-32">
