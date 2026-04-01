@@ -30,10 +30,12 @@ const Explorer = () => {
   const filtered = spaces.filter((s) => {
     const matchSearch = s.title.toLowerCase().includes(search.toLowerCase()) || s.city.toLowerCase().includes(search.toLowerCase());
     const matchType = typeFilter === "all" || s.type === typeFilter;
-    return matchSearch && matchType;
+    const matchQuartier = quartierFilter === "all" || s.quartier === quartierFilter;
+    return matchSearch && matchType && matchQuartier;
   });
 
   const types = [...new Set(spaces.map((s) => s.type))];
+  const quartiers = [...new Set(spaces.map((s) => s.quartier).filter(Boolean))].sort() as string[];
 
   return (
     <Layout>
