@@ -15,7 +15,7 @@ import Layout from "@/components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import { mockSpaces } from "@/data/mockData";
 import { useListings } from "@/hooks/useListings";
-import { format } from "date-fns";
+import { format, startOfDay, parseISO, getDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 

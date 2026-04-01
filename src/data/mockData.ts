@@ -15,6 +15,11 @@ export interface Space {
   lat?: number;
   lng?: number;
   host_name?: string;
+  available_from?: string;
+  available_to?: string;
+  available_days?: string[];
+  available_start_date?: string;
+  available_end_date?: string;
 }
 
 export const mockSpaces: Space[] = [

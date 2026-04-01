@@ -51,6 +51,11 @@ export const useListings = () => {
         reviews_count: l.reviews_count || 0,
         lat: l.lat ?? undefined,
         lng: l.lng ?? undefined,
+        available_from: l.available_from ?? undefined,
+        available_to: l.available_to ?? undefined,
+        available_days: l.available_days?.length ? l.available_days : undefined,
+        available_start_date: l.available_start_date ?? undefined,
+        available_end_date: l.available_end_date ?? undefined,
       }));
     },
   });
