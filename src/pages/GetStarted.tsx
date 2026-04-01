@@ -62,12 +62,13 @@ const spaceTypes = [
   { value: "autre", label: "Autre" },
 ];
 
-const timeSlots = [
-  { value: "matin", label: "Matin (8h–12h)" },
-  { value: "midi", label: "Midi (12h–14h)" },
-  { value: "apres-midi", label: "Après-midi (14h–18h)" },
-  { value: "soir", label: "Soir (18h–00h)" },
-];
+const timeOptions = Array.from({ length: 33 }, (_, i) => {
+  const totalMinutes = i * 30 + 480;
+  const h = Math.floor(totalMinutes / 60) % 24;
+  const m = totalMinutes % 60;
+  const label = `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+  return { value: label, label };
+});
 
 const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; onSubmit: (data: LeadData) => void }) => {
   const [data, setData] = useState<LeadData>({
