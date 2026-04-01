@@ -14,6 +14,7 @@ const Explorer = () => {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [quartierFilter, setQuartierFilter] = useState("all");
   const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
   const { data: spaces = [] } = useListings();
   const handleMapSpaceClick = useCallback((space: Space) => setSelectedSpace(space), []);
