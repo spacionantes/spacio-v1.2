@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Zap, Star, Send, CheckCircle, Mail, Building2, MapPin } from "lucide-react";
+import { Users, Zap, Star, Mail, Building2, MapPin } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,13 +35,12 @@ const Diagnostic = () => {
   const [organization, setOrganization] = useState("");
   const [city, setCity] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
+  
   const { toast } = useToast();
   const [activePeriod, setActivePeriod] = useState(0);
 
   const setIntensity = (periodIndex: number, slotIndex: number, val: number) => {
-    setSaved(false);
+    
     setGrid((prev) => {
       const next = prev.map((d) => [...d]);
       next[periodIndex][slotIndex] = val as Intensity;
@@ -66,16 +65,13 @@ const Diagnostic = () => {
 
   const isFormValid = email.trim() !== "" && organization.trim() !== "" && city.trim() !== "";
 
-  const handleReveal = () => {
+  const handleReveal = async () => {
     if (!isFormValid) {
       toast({ title: "Champs requis", description: "Veuillez remplir votre email, organisation et ville.", variant: "destructive" });
       return;
     }
     setShowResult(true);
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
+    // Save lead + diagnostic in background
     const { error: leadError } = await supabase.from("leads").insert({
       email: email.trim(),
       organization_name: organization.trim(),
@@ -88,19 +84,8 @@ const Diagnostic = () => {
       grid: { periods: grid } as any,
       advice_category: adviceCategory,
     });
-    setSaving(false);
     if (leadError || diagError) {
-      toast({ title: "Erreur", description: "Impossible d'enregistrer le diagnostic.", variant: "destructive" });
-    } else {
-      setSaved(true);
-      toast({ title: "Envoyé !", description: "Votre diagnostic a bien été envoyé par email." });
-      supabase.functions.invoke("send-email", {
-        body: {
-          type: "diagnostic_results",
-          to: email.trim(),
-          data: { score, ratio, organization: organization.trim() },
-        },
-      }).catch((err) => console.error("Email send error:", err));
+      console.error("Save error:", leadError, diagError);
     }
   };
 
@@ -219,9 +204,6 @@ const Diagnostic = () => {
                     {score}
                   </motion.span>
                   <span className="text-xs text-muted-foreground">Occupation moyenne : {Math.round(ratio * 100)}%</span>
-                  <Button onClick={handleSave} disabled={saving || saved} className="mt-2 rounded-2xl px-6">
-                    {saved ? <><CheckCircle className="h-4 w-4" /> Enregistré</> : saving ? "Enregistrement…" : <><Send className="h-4 w-4" /> Recevoir mon diagnostic</>}
-                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
