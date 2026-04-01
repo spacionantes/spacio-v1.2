@@ -14,6 +14,7 @@ const Explorer = () => {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [quartierFilter, setQuartierFilter] = useState("all");
   const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
   const { data: spaces = [] } = useListings();
   const handleMapSpaceClick = useCallback((space: Space) => setSelectedSpace(space), []);
@@ -29,10 +30,12 @@ const Explorer = () => {
   const filtered = spaces.filter((s) => {
     const matchSearch = s.title.toLowerCase().includes(search.toLowerCase()) || s.city.toLowerCase().includes(search.toLowerCase());
     const matchType = typeFilter === "all" || s.type === typeFilter;
-    return matchSearch && matchType;
+    const matchQuartier = quartierFilter === "all" || s.quartier === quartierFilter;
+    return matchSearch && matchType && matchQuartier;
   });
 
   const types = [...new Set(spaces.map((s) => s.type))];
+  const quartiers = [...new Set(spaces.map((s) => s.quartier).filter(Boolean))].sort() as string[];
 
   return (
     <Layout>
@@ -57,6 +60,18 @@ const Explorer = () => {
                 <SelectItem value="all">Tous les types</SelectItem>
                 {types.map((t) => (
                   <SelectItem key={t} value={t}>{t}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={quartierFilter} onValueChange={setQuartierFilter}>
+              <SelectTrigger className="w-48 rounded-2xl">
+                <MapPin className="mr-2 h-4 w-4" />
+                <SelectValue placeholder="Quartier" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tous les quartiers</SelectItem>
+                {quartiers.map((q) => (
+                  <SelectItem key={q} value={q}>{q}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

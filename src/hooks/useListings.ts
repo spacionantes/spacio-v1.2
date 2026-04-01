@@ -56,6 +56,7 @@ export const useListings = () => {
         available_days: l.available_days?.length ? l.available_days : undefined,
         available_start_date: l.available_start_date ?? undefined,
         available_end_date: l.available_end_date ?? undefined,
+        quartier: l.quartier ?? undefined,
       }));
     },
   });

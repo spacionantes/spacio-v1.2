@@ -20,6 +20,7 @@ export interface Space {
   available_days?: string[];
   available_start_date?: string;
   available_end_date?: string;
+  quartier?: string;
 }
 
 export const mockSpaces: Space[] = [
