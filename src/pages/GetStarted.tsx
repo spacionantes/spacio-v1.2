@@ -214,7 +214,12 @@ const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; on
           <Button
             className="mt-5 w-full rounded-2xl bg-[hsl(var(--indigo))] py-6 text-base font-bold text-primary-foreground shadow-lg shadow-[hsl(var(--indigo)/0.3)] transition-all hover:shadow-xl hover:shadow-[hsl(var(--indigo)/0.4)] hover:brightness-110"
             disabled={!canSubmit}
-            onClick={() => onSubmit(data)}
+            onClick={() => onSubmit({
+              ...data,
+              desired_date: selectedDate ? format(selectedDate, "yyyy-MM-dd") : undefined,
+              desired_start_time: startTime || undefined,
+              desired_end_time: endTime || undefined,
+            })}
           >
             Envoyer ma demande
           </Button>
