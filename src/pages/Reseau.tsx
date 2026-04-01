@@ -29,7 +29,7 @@ const Reseau = () => {
               </p>
             </div>
             <div className="inline-block rounded-2xl border border-border bg-card px-12 py-10 shadow-sm">
-              <p className="text-5xl font-extrabold text-primary md:text-6xl">+10</p>
+              <p className="text-5xl font-extrabold text-primary md:text-6xl">{listingsCount}</p>
               <p className="mt-2 text-sm font-medium text-muted-foreground">
                 locaux disponibles
               </p>
