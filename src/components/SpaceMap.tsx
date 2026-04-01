@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import type { Space } from "@/data/mockData";
 
 // Fix default marker icons for Leaflet + bundlers
@@ -20,7 +23,7 @@ interface SpaceMapProps {
 const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
-  const markersRef = useRef<L.Marker[]>([]);
+  const clusterGroupRef = useRef<L.MarkerClusterGroup | null>(null);
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
@@ -47,9 +50,41 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
     const map = mapInstanceRef.current;
     if (!map) return;
 
-    // Clear existing markers
-    markersRef.current.forEach((m) => m.remove());
-    markersRef.current = [];
+    // Remove previous cluster group
+    if (clusterGroupRef.current) {
+      map.removeLayer(clusterGroupRef.current);
+      clusterGroupRef.current = null;
+    }
+
+    const clusterGroup = L.markerClusterGroup({
+      maxClusterRadius: 40,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      iconCreateFunction: (cluster) => {
+        const count = cluster.getChildCount();
+        return L.divIcon({
+          className: "",
+          html: `<div style="
+            background: #2563eb;
+            color: #ffffff;
+            border: 2px solid #1d4ed8;
+            border-radius: 9999px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
+          ">${count}</div>`,
+          iconSize: [36, 36],
+          iconAnchor: [18, 18],
+        });
+      },
+    });
 
     const spacesWithCoords = spaces.filter((s) => s.lat != null && s.lng != null);
 
@@ -74,7 +109,7 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
         iconAnchor: [30, 14],
       });
 
-      const marker = L.marker([space.lat!, space.lng!], { icon }).addTo(map);
+      const marker = L.marker([space.lat!, space.lng!], { icon });
 
       const ratingDisplay = space.rating ? `<span style="margin-left:8px;font-size:12px">⭐ ${space.rating}</span>` : "";
 
@@ -90,8 +125,11 @@ const SpaceMap = ({ spaces, onSpaceClick, selectedSpaceId }: SpaceMapProps) => {
 
       marker.on("click", () => onSpaceClick?.(space));
 
-      markersRef.current.push(marker);
+      clusterGroup.addLayer(marker);
     });
+
+    map.addLayer(clusterGroup);
+    clusterGroupRef.current = clusterGroup;
 
     // Fit bounds if we have markers
     if (spacesWithCoords.length > 0) {
