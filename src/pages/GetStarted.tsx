@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Building2, CheckCircle2, ArrowLeft, MapPin, Users, Ruler } from "lucide-react";
+import { Search, Building2, CheckCircle2, ArrowLeft, MapPin, Users, Ruler, CalendarIcon } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -9,10 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Layout from "@/components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import { mockSpaces } from "@/data/mockData";
 import { useListings } from "@/hooks/useListings";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 type UserType = "seeker" | "owner" | null;
 
