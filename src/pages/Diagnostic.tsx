@@ -205,9 +205,6 @@ const Diagnostic = () => {
                     {score}
                   </motion.span>
                   <span className="text-xs text-muted-foreground">Occupation moyenne : {Math.round(ratio * 100)}%</span>
-                  <Button onClick={handleSave} disabled={saving || saved} className="mt-2 rounded-2xl px-6">
-                    {saved ? <><CheckCircle className="h-4 w-4" /> Enregistré</> : saving ? "Enregistrement…" : <><Send className="h-4 w-4" /> Recevoir mon diagnostic</>}
-                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
