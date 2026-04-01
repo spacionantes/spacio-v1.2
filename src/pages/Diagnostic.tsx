@@ -40,7 +40,7 @@ const Diagnostic = () => {
   const [activePeriod, setActivePeriod] = useState(0);
 
   const setIntensity = (periodIndex: number, slotIndex: number, val: number) => {
-    setSaved(false);
+    
     setGrid((prev) => {
       const next = prev.map((d) => [...d]);
       next[periodIndex][slotIndex] = val as Intensity;
