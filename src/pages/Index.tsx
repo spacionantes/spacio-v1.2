@@ -114,8 +114,8 @@ const Index = () => {
               />{" "}
               pour votre association
             </h1>
-            <p className="mb-10 max-w-xl text-lg text-white/70">
-              Spacio connecte les associations avec des espaces adaptés à leurs activités. Réservez votre prochain lieu d'activité en toute simplicité.
+            <p className="mb-10 max-w-xl text-lg text-justify font-light text-indigo-50">
+              Spacio est un service clé en main qui met à disposition les locaux inutilisés de propriétaires d'espaces à destination des structures qui œuvrent pour le bien commun. Réservez votre prochaine salle en toute simplicité.
             </p>
 
             {/* Space type selector */}
