@@ -1,8 +1,11 @@
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Users } from "lucide-react";
+import { useListings } from "@/hooks/useListings";
 
 const Reseau = () => {
+  const { data: listings } = useListings();
+  const listingsCount = listings?.length ?? 0;
   return (
     <Layout>
       <section className="container py-20 md:py-32">
@@ -26,7 +29,7 @@ const Reseau = () => {
               </p>
             </div>
             <div className="inline-block rounded-2xl border border-border bg-card px-12 py-10 shadow-sm">
-              <p className="text-5xl font-extrabold text-primary md:text-6xl">+10</p>
+              <p className="text-5xl font-extrabold text-primary md:text-6xl">{listingsCount}</p>
               <p className="mt-2 text-sm font-medium text-muted-foreground">
                 locaux disponibles
               </p>
