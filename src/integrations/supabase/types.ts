@@ -167,6 +167,11 @@ export type Database = {
         Row: {
           address: string
           amenities: string[] | null
+          available_days: string[] | null
+          available_end_date: string | null
+          available_from: string | null
+          available_start_date: string | null
+          available_to: string | null
           capacity: number
           city: string
           created_at: string
@@ -186,6 +191,11 @@ export type Database = {
         Insert: {
           address: string
           amenities?: string[] | null
+          available_days?: string[] | null
+          available_end_date?: string | null
+          available_from?: string | null
+          available_start_date?: string | null
+          available_to?: string | null
           capacity: number
           city: string
           created_at?: string
@@ -205,6 +215,11 @@ export type Database = {
         Update: {
           address?: string
           amenities?: string[] | null
+          available_days?: string[] | null
+          available_end_date?: string | null
+          available_from?: string | null
+          available_start_date?: string | null
+          available_to?: string | null
           capacity?: number
           city?: string
           created_at?: string
