@@ -139,6 +139,46 @@ const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; on
             />
           </div>
 
+          <div className="space-y-1.5">
+            <Label>Date souhaitée <span className="text-muted-foreground">(optionnel)</span></Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal rounded-md",
+                    !selectedDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {selectedDate ? format(selectedDate, "PPP", { locale: fr }) : "Choisir une date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  disabled={(date) => date < new Date()}
+                  initialFocus
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Créneau souhaité <span className="text-muted-foreground">(optionnel)</span></Label>
+            <Select value={selectedSlot} onValueChange={setSelectedSlot}>
+              <SelectTrigger><SelectValue placeholder="Sélectionner un créneau" /></SelectTrigger>
+              <SelectContent>
+                {timeSlots.map((s) => (
+                  <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           <Button
             className="w-full rounded-2xl py-6 text-base font-semibold"
             disabled={!canSubmit}
