@@ -68,6 +68,12 @@ const steps = [
 const Index = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { data: spaces = [] } = useListings();
+
+  const spaceTypes = [
+    { label: "Tout voir", value: "" },
+    ...[...new Set(spaces.map((s) => s.type))].sort().map((t) => ({ label: t, value: t })),
+  ];
 
   return (
     <Layout>
