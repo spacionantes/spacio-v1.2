@@ -88,122 +88,138 @@ const SpaceBookingForm = ({ space, onSubmit }: { space: typeof mockSpaces[0]; on
   const canSubmit = !!data.email && !!data.organization_name;
 
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <Card className="overflow-hidden rounded-2xl shadow-sm">
-        {/* Space recap */}
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: "easeOut" }}>
+      {/* Hero image card with overlay */}
+      <div className="relative overflow-hidden rounded-3xl shadow-xl">
         <div className="relative aspect-[16/7] w-full overflow-hidden">
           <img src={space.image_url} alt={space.title} className="h-full w-full object-cover" />
-          <Badge className="absolute right-4 top-4 rounded-xl bg-primary px-3 py-1.5 text-base font-bold text-primary-foreground shadow-lg">
-            {space.price_per_hour}€/h
-          </Badge>
-        </div>
-        <div className="space-y-1 border-b px-6 py-4">
-          <h2 className="text-lg font-bold">{space.title}</h2>
-          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4" /> {space.address}, {space.city}
-          </p>
-          <div className="flex items-center gap-4 pt-1 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1"><Users className="h-4 w-4" /> {space.capacity} pers.</span>
-            <span className="flex items-center gap-1"><Ruler className="h-4 w-4" /> {space.surface_m2} m²</span>
+          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--navy))] via-[hsl(var(--navy)/0.4)] to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <div className="flex items-end justify-between">
+              <div>
+                <h2 className="text-xl font-extrabold text-white drop-shadow-md">{space.title}</h2>
+                <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-white/80">
+                  <MapPin className="h-3.5 w-3.5" /> {space.address}, {space.city}
+                </p>
+              </div>
+              <Badge className="rounded-full bg-white px-4 py-2 text-lg font-extrabold text-[hsl(var(--indigo))] shadow-lg">
+                {space.price_per_hour}€/h
+              </Badge>
+            </div>
+            <div className="mt-3 flex items-center gap-3">
+              <span className="flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                <Users className="h-3.5 w-3.5" /> {space.capacity} pers.
+              </span>
+              <span className="flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                <Ruler className="h-3.5 w-3.5" /> {space.surface_m2} m²
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Contact form */}
-        <CardContent className="space-y-4 p-6">
-          <h3 className="text-base font-semibold">Vos coordonnées</h3>
-
-          <div className="space-y-1.5">
-            <Label>Nom de l'association *</Label>
-            <Input
-              value={data.organization_name}
-              onChange={(e) => update("organization_name", e.target.value)}
-              placeholder="Ex : Les Amis du Quartier"
-            />
+        {/* Form section with indigo accent */}
+        <div className="bg-card p-6 pt-5">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="h-8 w-1 rounded-full bg-[hsl(var(--indigo))]" />
+            <h3 className="text-base font-bold tracking-tight text-[hsl(var(--navy))]">Vos coordonnées</h3>
           </div>
 
-          <div className="space-y-1.5">
-            <Label>Email *</Label>
-            <Input
-              type="email"
-              value={data.email}
-              onChange={(e) => update("email", e.target.value)}
-              placeholder="vous@exemple.com"
-            />
-          </div>
+          <div className="space-y-3.5">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Association *</Label>
+              <Input
+                value={data.organization_name}
+                onChange={(e) => update("organization_name", e.target.value)}
+                placeholder="Ex : Les Amis du Quartier"
+                className="rounded-xl border-input bg-muted/50 transition-colors focus:bg-card"
+              />
+            </div>
 
-          <div className="space-y-1.5">
-            <Label>Téléphone <span className="text-muted-foreground">(optionnel)</span></Label>
-            <Input
-              type="tel"
-              value={data.phone}
-              onChange={(e) => update("phone", e.target.value)}
-              placeholder="06 00 00 00 00"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <Label>Date souhaitée <span className="text-muted-foreground">(optionnel)</span></Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal rounded-md",
-                    !selectedDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {selectedDate ? format(selectedDate, "PPP", { locale: fr }) : "Choisir une date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  disabled={(date) => date < new Date()}
-                  initialFocus
-                  className="p-3 pointer-events-auto"
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email *</Label>
+                <Input
+                  type="email"
+                  value={data.email}
+                  onChange={(e) => update("email", e.target.value)}
+                  placeholder="vous@exemple.com"
+                  className="rounded-xl border-input bg-muted/50 transition-colors focus:bg-card"
                 />
-              </PopoverContent>
-            </Popover>
-          </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Téléphone</Label>
+                <Input
+                  type="tel"
+                  value={data.phone}
+                  onChange={(e) => update("phone", e.target.value)}
+                  placeholder="06 00 00 00 00"
+                  className="rounded-xl border-input bg-muted/50 transition-colors focus:bg-card"
+                />
+              </div>
+            </div>
 
-          <div className="space-y-1.5">
-            <Label>Horaire souhaité <span className="text-muted-foreground">(optionnel)</span></Label>
-            <div className="flex items-center gap-2">
-              <Select value={startTime} onValueChange={setStartTime}>
-                <SelectTrigger className="flex-1"><SelectValue placeholder="Début" /></SelectTrigger>
-                <SelectContent>
-                  {timeOptions.map((t) => (
-                    <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <span className="text-muted-foreground text-sm">→</span>
-              <Select value={endTime} onValueChange={setEndTime}>
-                <SelectTrigger className="flex-1"><SelectValue placeholder="Fin" /></SelectTrigger>
-                <SelectContent>
-                  {timeOptions.filter((t) => !startTime || t.value > startTime).map((t) => (
-                    <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            {/* Date & Time row */}
+            <div className="rounded-2xl border border-border bg-muted/30 p-4">
+              <Label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <CalendarIcon className="mr-1.5 inline h-3.5 w-3.5" />Créneau souhaité <span className="normal-case font-normal">(optionnel)</span>
+              </Label>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal rounded-xl bg-card",
+                        !selectedDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4 text-[hsl(var(--indigo))]" />
+                      {selectedDate ? format(selectedDate, "d MMM", { locale: fr }) : "Date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={setSelectedDate}
+                      disabled={(date) => date < new Date()}
+                      initialFocus
+                      className="p-3 pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+                <Select value={startTime} onValueChange={setStartTime}>
+                  <SelectTrigger className="rounded-xl bg-card"><SelectValue placeholder="Début" /></SelectTrigger>
+                  <SelectContent>
+                    {timeOptions.map((t) => (
+                      <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select value={endTime} onValueChange={setEndTime}>
+                  <SelectTrigger className="rounded-xl bg-card"><SelectValue placeholder="Fin" /></SelectTrigger>
+                  <SelectContent>
+                    {timeOptions.filter((t) => !startTime || t.value > startTime).map((t) => (
+                      <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
           <Button
-            className="w-full rounded-2xl py-6 text-base font-semibold"
+            className="mt-5 w-full rounded-2xl bg-[hsl(var(--indigo))] py-6 text-base font-bold text-primary-foreground shadow-lg shadow-[hsl(var(--indigo)/0.3)] transition-all hover:shadow-xl hover:shadow-[hsl(var(--indigo)/0.4)] hover:brightness-110"
             disabled={!canSubmit}
             onClick={() => onSubmit(data)}
           >
             Envoyer ma demande
           </Button>
-          <p className="text-center text-xs text-muted-foreground">
-            L'équipe Spacio vous recontactera sous 24h pour étudier votre demande.
+          <p className="mt-3 text-center text-xs text-muted-foreground">
+            L'équipe Spacio vous recontactera sous 24h.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 };
