@@ -95,15 +95,17 @@ const Index = () => {
               
             <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
               Trouvez l'espace{" "}
-              <Typewriter
-                text={["parfait", "idéal", "adapté"]}
-                speed={120}
-                deleteSpeed={60}
-                delay={2000}
-                loop={true}
-                cursor="|"
-                className="text-gradient-primary italic font-serif"
-              />{" "}
+              <span className="inline-block align-bottom" style={{ minWidth: "4.5em" }}>
+                <Typewriter
+                  text={["parfait", "idéal", "adapté"]}
+                  speed={120}
+                  deleteSpeed={60}
+                  delay={2000}
+                  loop={true}
+                  cursor="|"
+                  className="text-gradient-primary italic font-serif"
+                />
+              </span>{" "}
               pour votre association
             </h1>
             <p className="mb-10 max-w-xl text-lg text-justify font-light text-indigo-50">
