@@ -95,7 +95,7 @@ const Index = () => {
               
             <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
               Trouvez l'espace{" "}
-              <span className="inline align-bottom">
+              <span className="inline-block whitespace-nowrap align-bottom" style={{ minWidth: "4.5em" }}>
                 <Typewriter
                   text={["parfait", "idéal", "adapté"]}
                   speed={120}
@@ -105,7 +105,8 @@ const Index = () => {
                   cursor="|"
                   className="text-gradient-primary italic font-serif"
                 />
-              </span>{" "}
+              </span>
+              <br className="hidden lg:block" />
               pour votre association
             </h1>
             <p className="mb-10 max-w-xl text-lg text-justify font-light text-indigo-50">
