@@ -95,7 +95,7 @@ const Index = () => {
               
             <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
               Trouvez l'espace{" "}
-              <span className="inline-block align-bottom" style={{ minWidth: "4.5em" }}>
+              <span className="inline align-bottom">
                 <Typewriter
                   text={["parfait", "idéal", "adapté"]}
                   speed={120}
