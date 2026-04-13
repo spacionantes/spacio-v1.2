@@ -6,13 +6,16 @@ import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { useListings } from "@/hooks/useListings";
 
-class SplineErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
-  constructor(props: { children: ReactNode }) {
+class SplineErrorBoundary extends Component<{ children: ReactNode; onError?: () => void }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode; onError?: () => void }) {
     super(props);
     this.state = { hasError: false };
   }
   static getDerivedStateFromError() {
     return { hasError: true };
+  }
+  componentDidCatch() {
+    this.props.onError?.();
   }
   render() {
     if (this.state.hasError) return null;
@@ -21,35 +24,39 @@ class SplineErrorBoundary extends Component<{ children: ReactNode }, { hasError:
 }
 
 const SplineScene = () => {
-  const [SplineComponent, setSplineComponent] = useState<ComponentType<{scene: string;}> | null>(null);
+  const [SplineComponent, setSplineComponent] = useState<ComponentType<{ scene: string }> | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
+    // Delay loading to let the rest of the page render first and free up GPU resources
+    const timer = setTimeout(() => {
+      let mounted = true;
+      import("@splinetool/react-spline")
+        .then((mod) => {
+          if (mounted) {
+            setSplineComponent(() => mod.default as ComponentType<{ scene: string }>);
+            // Give the component a moment before making it visible
+            setTimeout(() => mounted && setVisible(true), 100);
+          }
+        })
+        .catch(() => {
+          if (mounted) setFailed(true);
+        });
 
-    import("@splinetool/react-spline").
-    then((mod) => {
-      if (mounted) {
-        setSplineComponent(() => mod.default as ComponentType<{scene: string;}>);
-      }
-    }).
-    catch(() => {
-      if (mounted) {
-        setSplineComponent(null);
-      }
-    });
+      return () => { mounted = false; };
+    }, 500);
 
-    return () => {
-      mounted = false;
-    };
+    return () => clearTimeout(timer);
   }, []);
 
-  if (!SplineComponent) {
-    return null;
-  }
+  if (failed || !SplineComponent) return null;
 
   return (
-    <SplineErrorBoundary>
-      <SplineComponent scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />
+    <SplineErrorBoundary onError={() => setFailed(true)}>
+      <div style={{ opacity: visible ? 1 : 0, transition: "opacity 0.5s ease" }} className="w-full h-full">
+        <SplineComponent scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />
+      </div>
     </SplineErrorBoundary>
   );
 };
