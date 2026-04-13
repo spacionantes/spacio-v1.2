@@ -1,10 +1,24 @@
-import { useEffect, useState, type ComponentType } from "react";
+import { useEffect, useState, type ComponentType, Component, type ReactNode } from "react";
 import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown } from "lucide-react";
 import { Typewriter } from "@/components/ui/typewriter-text";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { useListings } from "@/hooks/useListings";
+
+class SplineErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
 
 const SplineScene = () => {
   const [SplineComponent, setSplineComponent] = useState<ComponentType<{scene: string;}> | null>(null);
@@ -33,7 +47,11 @@ const SplineScene = () => {
     return null;
   }
 
-  return <SplineComponent scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />;
+  return (
+    <SplineErrorBoundary>
+      <SplineComponent scene="https://prod.spline.design/P521XWBOsGLegwiX/scene.splinecode" />
+    </SplineErrorBoundary>
+  );
 };
 
 const steps = [
