@@ -2,15 +2,36 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Calendar } from "@/components/ui/calendar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Clock, MapPin, CalendarDays, Search, Inbox, CheckCircle2, XCircle, Loader2, ClipboardList } from "lucide-react";
-import { format, isSameDay, parseISO } from "date-fns";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  MapPin,
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  ClipboardList,
+} from "lucide-react";
+import {
+  format,
+  startOfWeek,
+  addDays,
+  addWeeks,
+  isSameDay,
+  parseISO,
+  isToday,
+} from "date-fns";
 import { fr } from "date-fns/locale";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Lead {
   id: string;
@@ -22,20 +43,59 @@ interface Lead {
   statut: string | null;
 }
 
-const statusConfig: Record<string, { label: string; color: string; dot: string; icon: React.ElementType }> = {
-  nouveau: { label: "En attente", color: "bg-muted text-muted-foreground", dot: "bg-muted-foreground", icon: ClipboardList },
-  valide: { label: "Validée", color: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500", icon: CheckCircle2 },
-  refuse: { label: "Refusée", color: "bg-red-50 text-red-700 border-red-200", dot: "bg-red-500", icon: XCircle },
-  en_cours: { label: "En cours", color: "bg-amber-50 text-amber-700 border-amber-200", dot: "bg-amber-500", icon: Loader2 },
+const statusConfig: Record<
+  string,
+  { label: string; bg: string; bar: string; text: string; icon: React.ElementType }
+> = {
+  nouveau: {
+    label: "En attente",
+    bg: "bg-primary/15 hover:bg-primary/25",
+    bar: "bg-primary",
+    text: "text-primary",
+    icon: ClipboardList,
+  },
+  valide: {
+    label: "Validée",
+    bg: "bg-emerald-100 hover:bg-emerald-200",
+    bar: "bg-emerald-500",
+    text: "text-emerald-700",
+    icon: CheckCircle2,
+  },
+  refuse: {
+    label: "Refusée",
+    bg: "bg-red-100 hover:bg-red-200",
+    bar: "bg-red-500",
+    text: "text-red-700",
+    icon: XCircle,
+  },
+  en_cours: {
+    label: "En cours",
+    bg: "bg-amber-100 hover:bg-amber-200",
+    bar: "bg-amber-500",
+    text: "text-amber-700",
+    icon: Loader2,
+  },
 };
 const getStatus = (s: string | null) => statusConfig[s || "nouveau"] || statusConfig.nouveau;
+
+const HOURS = Array.from({ length: 13 }, (_, i) => i + 7); // 7h → 19h
+const HOUR_HEIGHT = 56; // px per hour
+const DAY_START_MIN = HOURS[0] * 60;
+
+const timeToMin = (t: string | null) => {
+  if (!t) return null;
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + (m || 0);
+};
 
 const Agenda = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState<Date>(new Date());
+  const [weekStart, setWeekStart] = useState<Date>(
+    startOfWeek(new Date(), { weekStartsOn: 1 })
+  );
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth", { replace: true });
@@ -46,7 +106,9 @@ const Agenda = () => {
     setLoading(true);
     supabase
       .from("leads")
-      .select("id, space_title, city, desired_date, desired_start_time, desired_end_time, statut")
+      .select(
+        "id, space_title, city, desired_date, desired_start_time, desired_end_time, statut"
+      )
       .eq("user_id", user.id)
       .not("desired_date", "is", null)
       .order("desired_date", { ascending: true })
@@ -56,43 +118,46 @@ const Agenda = () => {
       });
   }, [user?.id]);
 
-  const reservedDays = useMemo(
-    () => leads.map((l) => parseISO(l.desired_date!)).filter((d) => !isNaN(d.getTime())),
-    [leads]
+  const days = useMemo(
+    () => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)),
+    [weekStart]
   );
 
-  const dayLeads = useMemo(
-    () =>
-      leads
-        .filter((l) => l.desired_date && isSameDay(parseISO(l.desired_date), selected))
-        .sort((a, b) => (a.desired_start_time || "").localeCompare(b.desired_start_time || "")),
-    [leads, selected]
-  );
+  const leadsByDay = useMemo(() => {
+    const map: Record<string, Lead[]> = {};
+    for (const d of days) map[format(d, "yyyy-MM-dd")] = [];
+    for (const l of leads) {
+      if (!l.desired_date) continue;
+      const key = l.desired_date.slice(0, 10);
+      if (map[key]) map[key].push(l);
+    }
+    return map;
+  }, [leads, days]);
 
-  const upcoming = useMemo(
-    () =>
-      leads
-        .filter((l) => l.desired_date && parseISO(l.desired_date) >= new Date(new Date().setHours(0, 0, 0, 0)))
-        .slice(0, 5),
-    [leads]
-  );
+  const monthLabel = useMemo(() => {
+    const end = addDays(weekStart, 6);
+    if (weekStart.getMonth() === end.getMonth())
+      return format(weekStart, "MMMM yyyy", { locale: fr });
+    return `${format(weekStart, "MMM", { locale: fr })} – ${format(end, "MMM yyyy", { locale: fr })}`;
+  }, [weekStart]);
 
   if (authLoading || !user) {
     return (
-      <div className="mx-auto max-w-5xl space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6">
         <Skeleton className="h-10 w-64" />
-        <Skeleton className="h-80 w-full rounded-2xl" />
+        <Skeleton className="h-[600px] w-full rounded-2xl" />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="mx-auto max-w-7xl space-y-6">
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Mon agenda</h1>
           <p className="text-sm text-muted-foreground">
-            Visualisez vos créneaux de réservation par date
+            Vue hebdomadaire de vos créneaux de réservation
           </p>
         </div>
         <Button asChild className="rounded-2xl">
@@ -102,124 +167,209 @@ const Agenda = () => {
         </Button>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[auto,1fr]">
-        {/* Calendar */}
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-          {loading ? (
-            <Skeleton className="h-[340px] w-[280px]" />
-          ) : (
-            <Calendar
-              mode="single"
-              locale={fr}
-              selected={selected}
-              onSelect={(d) => d && setSelected(d)}
-              modifiers={{ reserved: reservedDays }}
-              modifiersClassNames={{
-                reserved:
-                  "relative font-semibold text-primary after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:h-1 after:w-1 after:rounded-full after:bg-primary",
-              }}
-              className={cn("p-3 pointer-events-auto")}
-            />
-          )}
-          <div className="mt-3 flex items-center gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
-            <span className="inline-block h-2 w-2 rounded-full bg-primary" />
-            Date avec réservation
+      {/* Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-sm">
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-xl"
+            onClick={() => setWeekStart(startOfWeek(new Date(), { weekStartsOn: 1 }))}
+          >
+            Aujourd&apos;hui
+          </Button>
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+              onClick={() => setWeekStart(addWeeks(weekStart, -1))}
+              aria-label="Semaine précédente"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+              onClick={() => setWeekStart(addWeeks(weekStart, 1))}
+              aria-label="Semaine suivante"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
+          <span className="ml-2 text-base font-semibold capitalize">{monthLabel}</span>
         </div>
-
-        {/* Day slots */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <CalendarDays className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-semibold capitalize">
-              {format(selected, "EEEE d MMMM yyyy", { locale: fr })}
-            </h2>
-          </div>
-
-          {loading ? (
-            <div className="space-y-3">
-              {[1, 2].map((i) => <Skeleton key={i} className="h-24 w-full rounded-2xl" />)}
-            </div>
-          ) : dayLeads.length === 0 ? (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-border bg-card py-12 text-center">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                <Inbox className="h-6 w-6 text-muted-foreground" />
-              </div>
-              <p className="font-medium">Aucun créneau ce jour</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Sélectionnez une date marquée d&apos;un point pour voir les détails
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {dayLeads.map((lead, idx) => {
-                const status = getStatus(lead.statut);
-                const StatusIcon = status.icon;
-                return (
-                  <motion.div
-                    key={lead.id}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.05 }}
-                    className="flex gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm hover:border-primary/30 hover:shadow-md transition-all"
-                  >
-                    <div className="flex flex-col items-center justify-center rounded-xl bg-primary/10 px-4 py-3 text-primary min-w-[88px]">
-                      <Clock className="h-4 w-4 mb-1" />
-                      <span className="text-sm font-bold">
-                        {lead.desired_start_time?.slice(0, 5) || "--:--"}
-                      </span>
-                      {lead.desired_end_time && (
-                        <span className="text-xs opacity-70">
-                          {lead.desired_end_time.slice(0, 5)}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold">{lead.space_title || "Demande générale"}</h3>
-                      <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
-                        <MapPin className="h-3.5 w-3.5" /> {lead.city}
-                      </p>
-                      <Badge className={`mt-2 rounded-xl ${status.color}`} variant="outline">
-                        <StatusIcon className="mr-1 h-3 w-3" />
-                        {status.label}
-                      </Badge>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Upcoming */}
-          {!loading && upcoming.length > 0 && (
-            <div className="pt-4">
-              <h3 className="mb-3 text-sm font-semibold text-muted-foreground">Prochains créneaux</h3>
-              <div className="space-y-2">
-                {upcoming.map((lead) => {
-                  const status = getStatus(lead.statut);
-                  const date = parseISO(lead.desired_date!);
-                  return (
-                    <button
-                      key={lead.id}
-                      onClick={() => setSelected(date)}
-                      className="flex w-full items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-left text-sm hover:border-primary/30 hover:bg-accent/30 transition-all"
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <span className={`h-2 w-2 rounded-full ${status.dot}`} />
-                        <span className="font-medium truncate">{lead.space_title || "Demande"}</span>
-                      </div>
-                      <span className="text-xs text-muted-foreground whitespace-nowrap">
-                        {format(date, "d MMM", { locale: fr })}
-                        {lead.desired_start_time && ` · ${lead.desired_start_time.slice(0, 5)}`}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+          {Object.entries(statusConfig).map(([k, s]) => (
+            <span key={k} className="flex items-center gap-1.5">
+              <span className={cn("h-2 w-2 rounded-full", s.bar)} />
+              {s.label}
+            </span>
+          ))}
         </div>
       </div>
+
+      {/* Calendar grid */}
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        {/* Day headers */}
+        <div className="grid border-b border-border bg-muted/30" style={{ gridTemplateColumns: "60px repeat(7, 1fr)" }}>
+          <div className="border-r border-border" />
+          {days.map((d) => {
+            const today = isToday(d);
+            return (
+              <div
+                key={d.toISOString()}
+                className="flex flex-col items-center border-r border-border py-3 last:border-r-0"
+              >
+                <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                  {format(d, "EEE", { locale: fr })}
+                </span>
+                <span
+                  className={cn(
+                    "mt-1 flex h-9 w-9 items-center justify-center rounded-full text-base font-semibold",
+                    today ? "bg-primary text-primary-foreground" : "text-foreground"
+                  )}
+                >
+                  {format(d, "d")}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Time grid */}
+        <div className="relative overflow-x-auto">
+          <div
+            className="relative grid"
+            style={{
+              gridTemplateColumns: "60px repeat(7, 1fr)",
+              height: HOURS.length * HOUR_HEIGHT,
+            }}
+          >
+            {/* Hours column */}
+            <div className="relative border-r border-border">
+              {HOURS.map((h) => (
+                <div
+                  key={h}
+                  className="absolute left-0 right-0 -translate-y-1/2 pr-2 text-right text-[11px] font-medium text-muted-foreground"
+                  style={{ top: (h - HOURS[0]) * HOUR_HEIGHT }}
+                >
+                  {h.toString().padStart(2, "0")}:00
+                </div>
+              ))}
+            </div>
+
+            {/* Day columns */}
+            {days.map((d) => {
+              const key = format(d, "yyyy-MM-dd");
+              const dayLeads = leadsByDay[key] || [];
+              return (
+                <div key={key} className="relative border-r border-border last:border-r-0">
+                  {/* Hour gridlines */}
+                  {HOURS.map((h, i) => (
+                    <div
+                      key={h}
+                      className={cn(
+                        "absolute left-0 right-0 border-t",
+                        i === 0 ? "border-transparent" : "border-border/60"
+                      )}
+                      style={{ top: i * HOUR_HEIGHT }}
+                    />
+                  ))}
+
+                  {/* Today highlight */}
+                  {isToday(d) && (
+                    <div className="absolute inset-0 bg-primary/[0.03] pointer-events-none" />
+                  )}
+
+                  {/* Events */}
+                  {loading
+                    ? null
+                    : dayLeads.map((lead) => {
+                        const startMin = timeToMin(lead.desired_start_time) ?? DAY_START_MIN;
+                        const endMin =
+                          timeToMin(lead.desired_end_time) ?? startMin + 60;
+                        const top =
+                          ((startMin - DAY_START_MIN) / 60) * HOUR_HEIGHT;
+                        const height = Math.max(
+                          ((endMin - startMin) / 60) * HOUR_HEIGHT - 2,
+                          24
+                        );
+                        const status = getStatus(lead.statut);
+                        return (
+                          <TooltipProvider key={lead.id} delayDuration={150}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  className={cn(
+                                    "absolute left-1 right-1 overflow-hidden rounded-lg border border-transparent text-left transition-all hover:shadow-md hover:-translate-y-px",
+                                    status.bg
+                                  )}
+                                  style={{ top, height }}
+                                >
+                                  <div className="flex h-full">
+                                    <div className={cn("w-1 shrink-0", status.bar)} />
+                                    <div className="min-w-0 flex-1 px-2 py-1">
+                                      <div
+                                        className={cn(
+                                          "truncate text-xs font-semibold",
+                                          status.text
+                                        )}
+                                      >
+                                        {lead.space_title || "Demande"}
+                                      </div>
+                                      {height > 36 && (
+                                        <div className="truncate text-[11px] text-muted-foreground">
+                                          {lead.desired_start_time?.slice(0, 5)}
+                                          {lead.desired_end_time &&
+                                            ` – ${lead.desired_end_time.slice(0, 5)}`}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="rounded-xl">
+                                <div className="space-y-1.5">
+                                  <p className="font-semibold">
+                                    {lead.space_title || "Demande générale"}
+                                  </p>
+                                  <p className="flex items-center gap-1.5 text-xs">
+                                    <MapPin className="h-3 w-3" /> {lead.city}
+                                  </p>
+                                  <p className="text-xs">
+                                    {lead.desired_start_time?.slice(0, 5)}
+                                    {lead.desired_end_time &&
+                                      ` – ${lead.desired_end_time.slice(0, 5)}`}
+                                  </p>
+                                  <Badge
+                                    variant="outline"
+                                    className="rounded-lg text-[10px]"
+                                  >
+                                    {status.label}
+                                  </Badge>
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        );
+                      })}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {leads.length === 0 && !loading && (
+        <p className="text-center text-sm text-muted-foreground">
+          Aucune réservation pour le moment.{" "}
+          <Link to="/explorer" className="text-primary underline-offset-4 hover:underline">
+            Explorer les espaces
+          </Link>
+        </p>
+      )}
     </div>
   );
 };
