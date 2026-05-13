@@ -102,20 +102,24 @@ const MemberSidebar = () => {
 
 const MemberLayout = () => {
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full">
-        <MemberSidebar />
-        <div className="flex-1 flex flex-col">
-          <header className="sticky top-0 z-30 flex h-14 items-center border-b border-border bg-background/80 backdrop-blur-lg px-4">
-            <SidebarTrigger className="mr-2" />
-            <span className="text-sm font-medium text-muted-foreground">Espace membre</span>
-          </header>
-          <main className="flex-1 p-6">
-            <Outlet />
-          </main>
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <SidebarProvider>
+        <div className="flex w-full flex-1">
+          <MemberSidebar />
+          <div className="flex-1 flex flex-col">
+            <div className="sticky top-16 z-20 flex h-12 items-center border-b border-border bg-background/80 backdrop-blur-lg px-4">
+              <SidebarTrigger className="mr-2" />
+              <span className="text-sm font-medium text-muted-foreground">Espace membre</span>
+            </div>
+            <main className="flex-1 p-6">
+              <Outlet />
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+      <Footer />
+    </div>
   );
 };
 
