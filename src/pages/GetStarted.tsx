@@ -282,6 +282,7 @@ const GetStarted = () => {
   const handleSubmit = async (leadData?: LeadData) => {
     const finalData = leadData || data;
     
+    const { data: { user: currentUser } } = await supabase.auth.getUser();
     const { error } = await supabase.from("leads").insert({
       user_type: finalData.user_type || "seeker",
       organization_name: finalData.organization_name,
@@ -295,6 +296,7 @@ const GetStarted = () => {
       desired_date: finalData.desired_date || null,
       desired_start_time: finalData.desired_start_time || null,
       desired_end_time: finalData.desired_end_time || null,
+      user_id: currentUser?.id ?? null,
     });
 
     if (error) {

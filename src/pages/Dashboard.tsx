@@ -43,18 +43,18 @@ const Dashboard = () => {
   }, [authLoading, user, navigate]);
 
   useEffect(() => {
-    if (!user?.email) return;
+    if (!user?.id) return;
     setLoading(true);
     supabase
       .from("leads")
       .select("id, created_at, space_title, city, organization_name, user_type, desired_date, desired_start_time, desired_end_time, statut")
-      .eq("email", user.email)
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .then(({ data }) => {
         setLeads((data as Lead[]) || []);
         setLoading(false);
       });
-  }, [user?.email]);
+  }, [user?.id]);
 
   if (authLoading || !user) {
     return (

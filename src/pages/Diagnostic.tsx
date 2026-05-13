@@ -72,11 +72,13 @@ const Diagnostic = () => {
     }
     setShowResult(true);
     // Save lead + diagnostic in background
+    const { data: { user: currentUser } } = await supabase.auth.getUser();
     const { error: leadError } = await supabase.from("leads").insert({
       email: email.trim(),
       organization_name: organization.trim(),
       city: city.trim(),
       user_type: "diagnostic",
+      user_id: currentUser?.id ?? null,
     });
     const { error: diagError } = await supabase.from("diagnostic_results").insert({
       score,

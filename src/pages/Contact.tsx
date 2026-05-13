@@ -50,6 +50,7 @@ const Contact = () => {
     !!formData.user_type && !!formData.organization_name && !!formData.email;
 
   const handleSubmit = async () => {
+    const { data: { user: currentUser } } = await supabase.auth.getUser();
     const { error } = await supabase.from("leads").insert({
       user_type: formData.user_type,
       organization_name: formData.organization_name,
@@ -57,6 +58,7 @@ const Contact = () => {
       email: formData.email,
       phone: formData.phone || null,
       activity_type: formData.reason || null,
+      user_id: currentUser?.id ?? null,
     });
 
     if (error) {

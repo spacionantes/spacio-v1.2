@@ -55,6 +55,7 @@ const DevenirHote = () => {
   const canSubmit = !!formData.email && !!formData.organization_name && !!formData.city;
 
   const handleSubmit = async () => {
+    const { data: { user: currentUser } } = await supabase.auth.getUser();
     const { error } = await supabase.from("leads").insert({
       user_type: "owner",
       organization_name: formData.organization_name,
@@ -62,6 +63,7 @@ const DevenirHote = () => {
       city: formData.city,
       email: formData.email,
       phone: formData.phone || null,
+      user_id: currentUser?.id ?? null,
     });
 
     if (error) {
