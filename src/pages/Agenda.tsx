@@ -78,7 +78,7 @@ const statusConfig: Record<
 };
 const getStatus = (s: string | null) => statusConfig[s || "nouveau"] || statusConfig.nouveau;
 
-const HOURS = Array.from({ length: 13 }, (_, i) => i + 7); // 7h → 19h
+const HOURS = Array.from({ length: 17 }, (_, i) => i + 7); // 7h → 23h
 const HOUR_HEIGHT = 56; // px per hour
 const DAY_START_MIN = HOURS[0] * 60;
 
@@ -239,7 +239,7 @@ const Agenda = () => {
         </div>
 
         {/* Time grid */}
-        <div className="relative overflow-x-auto">
+        <div className="relative overflow-y-auto max-h-[65vh]">
           <div
             className="relative grid"
             style={{
