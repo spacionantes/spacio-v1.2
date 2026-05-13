@@ -239,7 +239,7 @@ const Agenda = () => {
         </div>
 
         {/* Time grid */}
-        <div className="relative overflow-x-auto">
+        <div className="relative overflow-y-auto max-h-[65vh]">
           <div
             className="relative grid"
             style={{
