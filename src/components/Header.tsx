@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, User as UserIcon } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +18,7 @@ const navLinkClass = (active: boolean) =>
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -71,6 +73,15 @@ const Header = () => {
           </Link>
         </nav>
 
+        {/* Account button */}
+        <Link
+          to={user ? "/dashboard" : "/auth"}
+          className="hidden md:inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+        >
+          <UserIcon className="h-4 w-4" />
+          {user ? "Mon espace" : "Connexion"}
+        </Link>
+
         {/* Mobile toggle */}
         <button className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -109,6 +120,12 @@ const Header = () => {
 
             <Link to="/blog" className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
               Blog
+            </Link>
+
+            <div className="my-1 border-t border-border" />
+
+            <Link to={user ? "/dashboard" : "/auth"} className="rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent" onClick={() => setMobileOpen(false)}>
+              {user ? "Mon espace" : "Connexion"}
             </Link>
           </nav>
         </div>

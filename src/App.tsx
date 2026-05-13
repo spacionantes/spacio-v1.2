@@ -16,8 +16,11 @@ import Reseau from "./pages/Reseau";
 import DevenirHote from "./pages/DevenirHote";
 import Missions from "./pages/Missions";
 import Contact from "./pages/Contact";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
+import { AuthProvider } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
@@ -27,23 +30,27 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/explorer" element={<Explorer />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogArticle />} />
-          <Route path="/commencer" element={<GetStarted />} />
-          <Route path="/diagnostic" element={<Diagnostic />} />
-          <Route path="/legal" element={<Legal />} />
-          <Route path="/equipe" element={<Equipe />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/reseau" element={<Reseau />} />
-          <Route path="/devenir-hote" element={<DevenirHote />} />
-          <Route path="/missions" element={<Missions />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/explorer" element={<Explorer />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogArticle />} />
+            <Route path="/commencer" element={<GetStarted />} />
+            <Route path="/diagnostic" element={<Diagnostic />} />
+            <Route path="/legal" element={<Legal />} />
+            <Route path="/equipe" element={<Equipe />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/reseau" element={<Reseau />} />
+            <Route path="/devenir-hote" element={<DevenirHote />} />
+            <Route path="/missions" element={<Missions />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
