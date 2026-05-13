@@ -17,6 +17,7 @@ import DevenirHote from "./pages/DevenirHote";
 import Missions from "./pages/Missions";
 import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Agenda from "./pages/Agenda";
