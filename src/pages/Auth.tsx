@@ -42,7 +42,16 @@ const Auth = () => {
     if (error) toast.error(error.message);
     else toast.success("Compte créé ! Vérifiez votre email pour confirmer.");
   };
+  return (
+    <Layout>
+      <section className="container flex min-h-[calc(100vh-8rem)] items-center justify-center py-12">
+        <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-sm">
+          <h1 className="mb-2 text-2xl font-bold">Espace membre</h1>
+          <p className="mb-6 text-sm text-muted-foreground">
+            Connectez-vous pour suivre vos demandes
+          </p>
 
+          <Tabs defaultValue="signin">
             <TabsList className="mb-4 grid w-full grid-cols-2 rounded-2xl">
               <TabsTrigger value="signin" className="rounded-2xl">Connexion</TabsTrigger>
               <TabsTrigger value="signup" className="rounded-2xl">Inscription</TabsTrigger>
