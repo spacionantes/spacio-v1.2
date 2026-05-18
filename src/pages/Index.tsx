@@ -278,7 +278,7 @@ const Index = () => {
                     className="absolute left-8 -translate-x-1/2 lg:left-1/2 z-10">
                     <div className="relative flex h-6 w-6 items-center justify-center">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5D69D6] opacity-40" />
-                      <span className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#5D69D6] ring-4 ring-background">
+                      <span className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-indigo ring-4 ring-[#0B0D19] shadow-[0_0_20px_hsl(var(--indigo)/0.8)]">
                         <span className="h-2 w-2 rounded-full bg-white" />
                       </span>
                     </div>
@@ -289,16 +289,16 @@ const Index = () => {
                     <motion.div
                       whileHover={{ y: -4 }}
                       transition={{ duration: 0.2 }}
-                      className="group relative rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-xl lg:p-8">
+                      className="group relative rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-6 shadow-2xl transition-all hover:border-indigo/40 hover:bg-white/[0.06] hover:shadow-[0_20px_60px_-15px_hsl(var(--indigo)/0.4)] lg:p-8">
 
                       <div className={`mb-4 flex items-center gap-3 ${isLeft ? "lg:flex-row-reverse" : ""}`}>
-                        <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${step.color} shrink-0`}>
+                        <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${step.color} shrink-0 shadow-lg`}>
                           <step.icon className="h-6 w-6 text-foreground" />
                         </div>
-                        <span className="text-3xl font-black text-[#5D69D6]/20">{step.number}</span>
+                        <span className="text-3xl font-black text-white/15">{step.number}</span>
                       </div>
-                      <h3 className="mb-2 text-lg font-bold text-foreground lg:text-xl">{step.title}</h3>
-                      <p className="text-sm leading-relaxed text-muted-foreground text-justify">{step.description}</p>
+                      <h3 className="mb-2 text-lg font-bold text-white lg:text-xl">{step.title}</h3>
+                      <p className="text-sm leading-relaxed text-slate-400 text-justify">{step.description}</p>
                     </motion.div>
                   </div>
 
