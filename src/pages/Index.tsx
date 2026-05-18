@@ -135,7 +135,7 @@ const Index = () => {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5D69D6] opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#5D69D6]" />
               </span>
-              Propulsez votre impact social
+              Renforcez le tissu associatif local
             </div>
 
             <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
