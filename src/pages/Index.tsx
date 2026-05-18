@@ -301,7 +301,7 @@ const Index = () => {
                     <motion.div
                       whileHover={{ y: -4 }}
                       transition={{ duration: 0.2 }}
-                      className={`group relative overflow-hidden rounded-2xl border bg-white/[0.04] backdrop-blur-sm p-6 shadow-2xl transition-all hover:bg-white/[0.07] lg:p-8 ${step.border} ${step.glow}`}>
+                      className={`group relative overflow-hidden rounded-2xl border bg-white/[0.08] backdrop-blur-sm p-6 shadow-2xl transition-all hover:bg-white/[0.11] lg:p-8 ${step.border} ${step.glow}`}>
 
                       {/* Colored tint gradient */}
                       <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${step.tint} opacity-80`} />
