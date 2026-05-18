@@ -16,6 +16,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://find-fab-spaces.lovable.app/louer-local-association-nantes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://find-fab-spaces.lovable.app/diagnostic</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
