@@ -65,6 +65,12 @@ export default {
           DEFAULT: "hsl(var(--indigo))",
           light: "hsl(var(--indigo-light))",
           dark: "hsl(var(--indigo-dark))",
+          glow: "hsl(var(--indigo-glow))",
+        },
+        amber: {
+          DEFAULT: "hsl(var(--amber))",
+          light: "hsl(var(--amber-light))",
+          dark: "hsl(var(--amber-dark))",
         },
         "surface-alt": "hsl(var(--surface-alt))",
         pastel: {
