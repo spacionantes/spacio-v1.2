@@ -258,7 +258,7 @@ const Index = () => {
         {/* Vertical timeline */}
         <div className="relative mx-auto max-w-4xl">
           {/* Animated vertical line */}
-          <div className="absolute left-8 top-0 bottom-0 w-px bg-border lg:left-1/2 lg:-translate-x-1/2" aria-hidden="true">
+          <div className="absolute left-8 top-0 bottom-0 w-px -translate-x-1/2 bg-border lg:left-1/2" aria-hidden="true">
             <motion.div
               initial={{ scaleY: 0 }}
               whileInView={{ scaleY: 1 }}
