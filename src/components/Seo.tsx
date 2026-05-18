@@ -13,7 +13,7 @@ interface SeoProps {
 
 const Seo = ({ title, description, path, type = "website", image, jsonLd }: SeoProps) => {
   const url = `${SITE_URL}${path}`;
-  const ogImage = image || `${SITE_URL}/favicon2.png`;
+  const ogImage = image || `${SITE_URL}/og-image.jpg`;
   const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
   return (
@@ -26,6 +26,8 @@ const Seo = ({ title, description, path, type = "website", image, jsonLd }: SeoP
       <meta property="og:url" content={url} />
       <meta property="og:type" content={type} />
       <meta property="og:image" content={ogImage} />
+      <meta property="og:locale" content="fr_FR" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
