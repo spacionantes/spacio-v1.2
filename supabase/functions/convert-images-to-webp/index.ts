@@ -90,9 +90,14 @@ async function updateDbRefs(oldPath: string, newPath: string) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
+    const url = new URL(req.url);
+    const offset = parseInt(url.searchParams.get("offset") ?? "0", 10);
+    const limit = parseInt(url.searchParams.get("limit") ?? "3", 10);
+
     const files = await listAll("");
+    const batch = files.slice(offset, offset + limit);
     const results = [];
-    for (const f of files) {
+    for (const f of batch) {
       try {
         results.push(await convertOne(f));
       } catch (e) {
@@ -102,14 +107,18 @@ Deno.serve(async (req) => {
     const converted = results.filter((r: any) => r.webpBytes);
     const totalOriginal = converted.reduce((s: number, r: any) => s + r.originalBytes, 0);
     const totalWebp = converted.reduce((s: number, r: any) => s + r.webpBytes, 0);
+    const nextOffset = offset + limit;
     return new Response(
       JSON.stringify({
-        total: files.length,
-        converted: converted.length,
-        skipped: results.length - converted.length,
-        totalOriginalKB: Math.round(totalOriginal / 1024),
-        totalWebpKB: Math.round(totalWebp / 1024),
-        savedKB: Math.round((totalOriginal - totalWebp) / 1024),
+        totalFiles: files.length,
+        processedRange: [offset, Math.min(nextOffset, files.length)],
+        done: nextOffset >= files.length,
+        nextOffset: nextOffset >= files.length ? null : nextOffset,
+        batchConverted: converted.length,
+        batchSkipped: results.length - converted.length,
+        batchOriginalKB: Math.round(totalOriginal / 1024),
+        batchWebpKB: Math.round(totalWebp / 1024),
+        batchSavedKB: Math.round((totalOriginal - totalWebp) / 1024),
         results,
       }, null, 2),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
