@@ -215,13 +215,24 @@ const Index = () => {
             </div>
 
             {/* Social proof */}
-            <div className="flex items-center gap-3 border-t border-white/10 pt-5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber/20 text-amber ring-1 ring-amber/40 shadow-[0_0_20px_hsl(var(--amber)/0.4)]">
-                <Users className="h-5 w-5" />
+            <div className="grid gap-4 border-t border-white/10 pt-5 sm:grid-cols-2">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber/20 text-amber ring-1 ring-amber/40 shadow-[0_0_20px_hsl(var(--amber)/0.4)]">
+                  <Users className="h-5 w-5" />
+                </div>
+                <div className="text-sm leading-tight">
+                  <p className="font-bold text-white">+50 associations</p>
+                  <p className="text-slate-400">nous font confiance</p>
+                </div>
               </div>
-              <div className="text-sm leading-tight">
-                <p className="font-bold text-white">Un réseau d'associations</p>
-                <p className="text-slate-400">déjà engagées via Spacio</p>
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo/20 text-indigo ring-1 ring-indigo/40 shadow-[0_0_20px_hsl(var(--indigo)/0.4)]">
+                  <Building2 className="h-5 w-5" />
+                </div>
+                <div className="text-sm leading-tight">
+                  <p className="font-bold text-white">{spaces.length} espaces</p>
+                  <p className="text-slate-400">disponibles à la réservation</p>
+                </div>
               </div>
             </div>
           </motion.div>
