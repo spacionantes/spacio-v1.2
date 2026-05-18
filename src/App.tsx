@@ -22,6 +22,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Agenda from "./pages/Agenda";
 import NotFound from "./pages/NotFound";
+import LouerLocalAssociation from "./pages/LouerLocalAssociation";
 import ScrollToTop from "./components/ScrollToTop";
 import MemberLayout from "./components/MemberLayout";
 import { AuthProvider } from "./hooks/useAuth";
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/commencer" element={<GetStarted />} />
             <Route path="/diagnostic" element={<Diagnostic />} />
             <Route path="/legal" element={<Legal />} />
+            <Route path="/louer-local-association-nantes" element={<LouerLocalAssociation />} />
             <Route path="/equipe" element={<Equipe />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/reseau" element={<Reseau />} />
