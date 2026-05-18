@@ -205,7 +205,7 @@ const Index = () => {
 
             {/* Social proof */}
             <div className="flex items-center gap-3 border-t border-white/10 pt-5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#5D69D6]/20 text-[#5D69D6]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber/20 text-amber ring-1 ring-amber/40 shadow-[0_0_20px_hsl(var(--amber)/0.4)]">
                 <Users className="h-5 w-5" />
               </div>
               <div className="text-sm leading-tight">
