@@ -5,12 +5,18 @@ import Layout from "@/components/Layout";
 import { useArticles } from "@/hooks/useArticles";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import Seo from "@/components/Seo";
 
 const Blog = () => {
   const { data: articles, isLoading } = useArticles();
 
   return (
     <Layout>
+      <Seo
+        title="Blog Spacio – Mutualisation, ESS et immobilier solidaire"
+        description="Conseils, guides et actualités pour associations et propriétaires d'espaces. Le blog Spacio explore l'ESS et la mutualisation à Nantes."
+        path="/blog"
+      />
       <section className="py-16">
         <div className="container">
           <motion.div

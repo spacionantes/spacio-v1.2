@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import Seo from "@/components/Seo";
 
 const faqs = [
   { q: "Comment fonctionne Spacio ?", a: "Spacio met en relation des associations à la recherche d'espaces avec des propriétaires souhaitant valoriser leurs locaux inoccupés. Spacio est un service clé en main. " },
@@ -13,6 +14,20 @@ const faqs = [
 
 const FAQ = () => (
   <Layout>
+    <Seo
+      title="FAQ Spacio – Questions fréquentes sur la mutualisation d'espaces"
+      description="Réponses aux questions sur Spacio, la réservation, le Intensi'Score et la mise à disposition d'espaces solidaires."
+      path="/faq"
+      jsonLd={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      }}
+    />
     <section className="container py-12 md:py-20">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-2xl text-center">
         <h1 className="mb-4 text-3xl font-extrabold md:text-4xl">Questions fréquentes</h1>

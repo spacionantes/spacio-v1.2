@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Loader2, MailCheck, ArrowLeft, KeyRound } from "lucide-react";
+import Seo from "@/components/Seo";
 
 type View = "auth" | "check-email" | "forgot";
 
@@ -119,6 +120,11 @@ const Auth = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Connexion / Inscription – Spacio"
+        description="Accédez à votre espace membre Spacio pour gérer vos demandes, réservations et profil."
+        path="/auth"
+      />
       <section className="container flex min-h-[calc(100vh-8rem)] items-center justify-center py-12">
         <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-sm">
           {view === "check-email" ? (

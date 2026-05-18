@@ -1,0 +1,24 @@
+# Spacio
+
+> Plateforme de mutualisation d'espaces entre associations de l'ESS et propriétaires engagés à Nantes.
+
+Spacio est un service clé en main qui met à disposition des locaux inutilisés à destination des structures œuvrant pour le bien commun.
+
+## Pages
+
+- [Accueil](/): Présentation du service et étapes clés.
+- [Explorer les espaces](/explorer): Cartographie et catalogue des espaces disponibles.
+- [Devenir hôte](/devenir-hote): Informations pour propriétaires souhaitant proposer un espace.
+- [Diagnostic Intensi'Score](/diagnostic): Outil gratuit d'évaluation du taux d'occupation d'un local.
+- [Commencer](/commencer): Parcours d'onboarding pour démarrer.
+- [Missions](/missions): Mission, raison d'être et vision de Spacio.
+- [Équipe](/equipe): Profils des cofondateurs.
+- [Réseau](/reseau): Partenaires et structures alliées.
+- [Blog](/blog): Articles sur l'ESS, la mutualisation et l'immobilier solidaire.
+- [FAQ](/faq): Questions fréquentes.
+- [Contact](/contact): Formulaire de contact.
+- [Mentions légales](/legal): CGU, confidentialité, mentions légales.
+
+## Optional
+
+- [Espace membre](/dashboard): Accessible après authentification.

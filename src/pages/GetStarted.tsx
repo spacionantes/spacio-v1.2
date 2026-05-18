@@ -18,6 +18,7 @@ import { useListings } from "@/hooks/useListings";
 import { format, startOfDay, parseISO, getDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import Seo from "@/components/Seo";
 
 type UserType = "seeker" | "owner" | null;
 
@@ -365,6 +366,11 @@ const GetStarted = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Commencer avec Spacio – Trouvez ou proposez un espace"
+        description="Démarrez votre parcours Spacio : précisez votre profil et vos besoins pour être mis en relation rapidement."
+        path="/commencer"
+      />
       <section className="flex min-h-[70vh] items-center justify-center py-16">
         <div className="w-full max-w-lg px-4">
           <AnimatePresence mode="wait">

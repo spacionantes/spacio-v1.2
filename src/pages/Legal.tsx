@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
+import Seo from "@/components/Seo";
 
 const sections = [
   {
@@ -33,6 +34,11 @@ const Legal = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Mentions légales, CGU et confidentialité – Spacio"
+        description="CGU, politique de confidentialité RGPD et mentions légales de la plateforme Spacio."
+        path="/legal"
+      />
       <section className="container py-12 md:py-20">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}

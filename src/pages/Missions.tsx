@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Eye, Heart, Target } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const sections = [
   {
@@ -34,6 +35,11 @@ const fadeUp = {
 
 const Missions = () => (
   <Layout>
+    <Seo
+      title="Mission, vision et raison d'être – Spacio"
+      description="La mission de Spacio : trouver des locaux pour les associations. Notre vision : un réflexe de partage et la fin de la monofonction des bâtiments."
+      path="/missions"
+    />
     <section className="py-20 lg:py-28">
       <div className="container max-w-4xl">
         <motion.div

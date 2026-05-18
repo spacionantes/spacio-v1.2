@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import Layout from "@/components/Layout";
 import { useArticle } from "@/hooks/useArticles";
 import { Skeleton } from "@/components/ui/skeleton";
+import Seo from "@/components/Seo";
 
 const URL_REGEX = /(https?:\/\/spacionantes\.fr(\/[^\s,.)]*)?)/g;
 
@@ -80,6 +81,22 @@ const BlogArticle = () => {
 
   return (
     <Layout>
+      <Seo
+        title={`${article.title} – Blog Spacio`}
+        description={article.content.slice(0, 155).replace(/\s+/g, " ").trim()}
+        path={`/blog/${article.slug}`}
+        type="article"
+        image={article.image_url || undefined}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: article.title,
+          datePublished: article.published_at,
+          author: { "@type": "Person", name: article.author },
+          image: article.image_url || undefined,
+          mainEntityOfPage: `https://find-fab-spaces.lovable.app/blog/${article.slug}`,
+        }}
+      />
       <article className="py-12">
         <div className="container max-w-3xl">
           <Link to="/blog" className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">

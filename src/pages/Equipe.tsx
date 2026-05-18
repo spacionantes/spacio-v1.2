@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Linkedin } from "lucide-react";
+import Seo from "@/components/Seo";
 import teamMax from "@/assets/team-max.jpg";
 import teamGilles from "@/assets/team-gilles.jpg";
 import teamSimon from "@/assets/team-simon.jpg";
@@ -13,6 +14,11 @@ const team = [
 
 const Equipe = () => (
   <Layout>
+    <Seo
+      title="Équipe Spacio – Les cofondateurs"
+      description="Découvrez l'équipe de cofondateurs derrière Spacio, jeunes ingénieurs engagés pour rendre les espaces inoccupés accessibles aux associations."
+      path="/equipe"
+    />
     <section className="container py-12 md:py-20">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl text-center">
         <h1 className="mb-4 text-3xl font-extrabold md:text-4xl">Notre équipe</h1>

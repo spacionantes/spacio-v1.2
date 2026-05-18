@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { useListings } from "@/hooks/useListings";
 import FeaturedSpaces from "@/components/FeaturedSpaces";
+import Seo from "@/components/Seo";
 
 class SplineErrorBoundary extends Component<{ children: ReactNode; onError?: () => void }, { hasError: boolean }> {
   constructor(props: { children: ReactNode; onError?: () => void }) {
@@ -101,6 +102,11 @@ const Index = () => {
 
   return (
     <Layout>
+    <Seo
+      title="Spacio – Mutualisation d'espaces solidaires à Nantes"
+      description="Spacio met en relation associations de l'ESS et propriétaires d'espaces inutilisés à Nantes. Trouvez ou proposez un local en quelques clics."
+      path="/"
+    />
     {/* Hero */}
     <section className="relative z-10 bg-[rgb(10,10,40)] py-20 border-0 mx-0 lg:py-0">
       <div className="container">

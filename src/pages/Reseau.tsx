@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { Users } from "lucide-react";
+import Seo from "@/components/Seo";
 import { useListings } from "@/hooks/useListings";
 
 const Reseau = () => {
@@ -8,6 +9,11 @@ const Reseau = () => {
   const listingsCount = listings?.length ?? 0;
   return (
     <Layout>
+      <Seo
+        title="Notre réseau – Associations partenaires de Spacio"
+        description="Un écosystème de plus de 50 associations et partenaires engagés qui font confiance à Spacio pour mutualiser leurs espaces."
+        path="/reseau"
+      />
       <section className="container py-20 md:py-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

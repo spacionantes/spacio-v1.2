@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/Layout";
 import { motion, AnimatePresence } from "framer-motion";
+import Seo from "@/components/Seo";
 
 const spaceTypes = [
   { value: "salle-reunion", label: "Salle de réunion" },
@@ -85,6 +86,11 @@ const DevenirHote = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Devenir hôte – Proposez votre espace sur Spacio"
+        description="Valorisez vos espaces inutilisés en les mettant à disposition d'associations. Générez des revenus tout en soutenant l'ESS à Nantes."
+        path="/devenir-hote"
+      />
       <section className="py-16 lg:py-24">
         <div className="container">
           <AnimatePresence mode="wait">
