@@ -34,6 +34,16 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 const SITE_NAME = 'Spacio'
 const ROOT_DOMAIN = 'spacionantes.fr'
 
+const getOrigin = (value?: string | null) => {
+  if (!value) return null
+
+  try {
+    return new URL(value).origin
+  } catch {
+    return null
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -58,12 +68,13 @@ Deno.serve(async (req) => {
     const recipient = payload.user?.email || payload.email || payload.email_data?.email
     const token = payload.email_data?.token || payload.token
     const tokenHash = payload.email_data?.token_hash
-    const redirectTo = payload.email_data?.redirect_to || payload.email_data?.confirmation_url || payload.confirmation_url
+    const redirectTo = payload.email_data?.redirect_to
+    const providerConfirmationUrl = payload.email_data?.confirmation_url || payload.confirmation_url
 
-    // Build confirmation URL from token_hash + redirect_to if not provided directly
-    const siteUrl = `https://${ROOT_DOMAIN}`
-    let confirmationUrl = redirectTo
-    if (tokenHash && !confirmationUrl?.includes('token_hash')) {
+    // Build a confirmation URL on the same origin as the redirect target when possible.
+    const siteUrl = getOrigin(redirectTo) || getOrigin(providerConfirmationUrl) || `https://${ROOT_DOMAIN}`
+    let confirmationUrl = providerConfirmationUrl || redirectTo
+    if (tokenHash) {
       confirmationUrl = `${siteUrl}/auth/confirm?token_hash=${tokenHash}&type=${emailType}${redirectTo ? `&next=${encodeURIComponent(redirectTo)}` : ''}`
     }
 
