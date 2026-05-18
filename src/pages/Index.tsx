@@ -169,7 +169,7 @@ const Index = () => {
                 />
               </span>
               <br className="hidden lg:block" />
-              pour votre association
+              pour votre <span className="text-gradient-vibrant">association</span>
             </h1>
 
             <p className="max-w-xl text-lg text-justify font-light text-slate-300/90">
