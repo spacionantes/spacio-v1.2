@@ -6,7 +6,7 @@ import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { useListings } from "@/hooks/useListings";
 import FeaturedSpaces from "@/components/FeaturedSpaces";
-import { TextParallaxContent } from "@/components/ui/text-parallax-content-scroll";
+import { ParallaxRichContent } from "@/components/ui/text-parallax-content-scroll";
 import Seo from "@/components/Seo";
 
 class SplineErrorBoundary extends Component<{ children: ReactNode; onError?: () => void }, { hasError: boolean }> {
