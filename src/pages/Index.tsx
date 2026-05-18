@@ -155,7 +155,7 @@ const Index = () => {
                   viewBox="0 0 100 10"
                   preserveAspectRatio="none"
                   aria-hidden="true">
-                  <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" strokeWidth="3" fill="transparent" />
+                  <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" strokeWidth="4" fill="transparent" />
                 </svg>
               </span>
               <br className="hidden lg:block" />
