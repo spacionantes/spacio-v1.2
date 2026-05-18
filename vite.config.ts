@@ -18,4 +18,22 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    target: "es2020",
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (!id.includes("node_modules")) return;
+          if (id.includes("@splinetool")) return "spline";
+          if (id.includes("leaflet") || id.includes("react-leaflet")) return "leaflet";
+          if (id.includes("recharts") || id.includes("d3-")) return "charts";
+          if (id.includes("framer-motion")) return "motion";
+          if (id.includes("embla-carousel")) return "carousel";
+          if (id.includes("@radix-ui")) return "radix";
+          if (id.includes("react-dom") || id.includes("react-router") || id.includes("scheduler")) return "react";
+        },
+      },
+    },
+  },
 }));

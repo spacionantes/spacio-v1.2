@@ -29,28 +29,41 @@ const SplineScene = () => {
   const [SplineComponent, setSplineComponent] = useState<ComponentType<{ scene: string }> | null>(null);
   const [failed, setFailed] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    // Delay loading to let the rest of the page render first and free up GPU resources
-    const timer = setTimeout(() => {
-      let mounted = true;
-      import("@splinetool/react-spline")
-        .then((mod) => {
-          if (mounted) {
-            setSplineComponent(() => mod.default as ComponentType<{ scene: string }>);
-            // Give the component a moment before making it visible
-            setTimeout(() => mounted && setVisible(true), 100);
-          }
-        })
-        .catch(() => {
-          if (mounted) setFailed(true);
-        });
+    // Skip Spline entirely on mobile, low-end devices, reduced-motion, or data-saver
+    if (typeof window === "undefined") return;
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // @ts-expect-error - non-standard
+    const saveData = navigator.connection?.saveData;
+    // @ts-expect-error - non-standard
+    const lowMem = (navigator.deviceMemory ?? 8) < 4;
+    if (isMobile || reducedMotion || saveData || lowMem) return;
 
-      return () => { mounted = false; };
-    }, 500);
-
-    return () => clearTimeout(timer);
+    // Wait for the page to be fully idle before even thinking about Spline
+    const idle = (cb: () => void) => {
+      const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback;
+      if (ric) ric(cb, { timeout: 3000 });
+      else setTimeout(cb, 1500);
+    };
+    const t = setTimeout(() => idle(() => setShouldLoad(true)), 800);
+    return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (!shouldLoad) return;
+    let mounted = true;
+    import("@splinetool/react-spline")
+      .then((mod) => {
+        if (!mounted) return;
+        setSplineComponent(() => mod.default as ComponentType<{ scene: string }>);
+        setTimeout(() => mounted && setVisible(true), 100);
+      })
+      .catch(() => mounted && setFailed(true));
+    return () => { mounted = false; };
+  }, [shouldLoad]);
 
   if (failed || !SplineComponent) return null;
 
