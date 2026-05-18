@@ -221,76 +221,93 @@ const Index = () => {
     {/* Featured spaces */}
     <FeaturedSpaces />
 
-    {/* How it works */}
-    <section id="how-it-works" className="bg-surface-alt py-20 lg:py-28">
-      <div className="container">
+    {/* How it works — animated scroll timeline */}
+    <section id="how-it-works" className="relative bg-surface-alt py-20 lg:py-28 overflow-hidden">
+      {/* Ambient glows */}
+      <div className="pointer-events-none absolute top-1/4 -left-20 h-[400px] w-[400px] rounded-full bg-[#5D69D6]/5 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-1/4 -right-20 h-[400px] w-[400px] rounded-full bg-amber-300/10 blur-[120px]" />
+
+      <div className="container relative">
         <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-16 text-center">
-            
-          <h2 className="mb-3 text-3xl font-bold sm:text-4xl">Comment ça marche ?</h2>
+            className="mb-20 text-center">
+
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#5D69D6]/20 bg-[#5D69D6]/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#5D69D6]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#5D69D6]" />
+            Processus
+          </div>
+          <h2 className="mb-3 text-3xl font-bold sm:text-4xl lg:text-5xl">Comment ça marche ?</h2>
           <p className="text-muted-foreground">Un accompagnement en 3 étapes clés</p>
         </motion.div>
 
-        <div className="relative flex flex-col items-center gap-8 lg:flex-row lg:items-stretch lg:gap-0">
-          {steps.map((step, i) =>
-            <div key={step.title} className="relative flex flex-1 flex-col items-center lg:flex-row">
-              {/* Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: i * 0.12 }}
-                className="group relative w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 lg:max-w-none">
-                
-                {/* Step number */}
-                <span className="absolute -top-4 left-6 inline-flex h-8 items-center rounded-full bg-primary px-3 text-xs font-bold text-primary-foreground shadow-sm">
-                  {step.number}
-                </span>
+        {/* Vertical timeline */}
+        <div className="relative mx-auto max-w-4xl">
+          {/* Animated vertical line */}
+          <div className="absolute left-8 top-0 bottom-0 w-px bg-border lg:left-1/2 lg:-translate-x-1/2" aria-hidden="true">
+            <motion.div
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              style={{ originY: 0 }}
+              className="h-full w-full bg-gradient-to-b from-[#5D69D6] via-amber-400 to-orange-500"
+            />
+          </div>
 
-                <div className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${step.color}`}>
-                  <step.icon className="h-6 w-6 text-foreground" />
-                </div>
-                <h3 className="mb-2 text-lg font-bold text-foreground text-left">{step.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground text-justify">{step.description}</p>
-              </motion.div>
+          <div className="space-y-16 lg:space-y-24">
+            {steps.map((step, i) => {
+              const isLeft = i % 2 === 0;
+              return (
+                <motion.div
+                  key={step.title}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className={`relative flex items-start gap-6 lg:gap-0 ${isLeft ? "lg:flex-row" : "lg:flex-row-reverse"}`}>
 
-              {/* Arrow connector */}
-              {i < steps.length - 1 &&
-              <>
-                  {/* Desktop arrow */}
-                  <div className="hidden lg:flex items-center justify-center px-4 shrink-0">
+                  {/* Dot on timeline */}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.4, delay: 0.3, type: "spring", stiffness: 200 }}
+                    className="absolute left-8 -translate-x-1/2 lg:left-1/2 z-10">
+                    <div className="relative flex h-6 w-6 items-center justify-center">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5D69D6] opacity-40" />
+                      <span className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#5D69D6] ring-4 ring-background">
+                        <span className="h-2 w-2 rounded-full bg-white" />
+                      </span>
+                    </div>
+                  </motion.div>
+
+                  {/* Card */}
+                  <div className={`ml-16 lg:ml-0 lg:w-[calc(50%-3rem)] ${isLeft ? "lg:pr-12 lg:text-right" : "lg:pl-12"}`}>
                     <motion.div
-                    initial={{ opacity: 0, x: -8 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: 0.2 + i * 0.12 }}
-                    className="flex items-center gap-1">
-                    
-                      <div className="h-px w-8 bg-gradient-to-r from-border to-primary/40" />
-                      <ArrowRight className="h-5 w-5 text-primary/60" />
+                      whileHover={{ y: -4 }}
+                      transition={{ duration: 0.2 }}
+                      className="group relative rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-xl lg:p-8">
+
+                      <div className={`mb-4 flex items-center gap-3 ${isLeft ? "lg:flex-row-reverse" : ""}`}>
+                        <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${step.color} shrink-0`}>
+                          <step.icon className="h-6 w-6 text-foreground" />
+                        </div>
+                        <span className="text-3xl font-black text-[#5D69D6]/20">{step.number}</span>
+                      </div>
+                      <h3 className="mb-2 text-lg font-bold text-foreground lg:text-xl">{step.title}</h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground text-justify">{step.description}</p>
                     </motion.div>
                   </div>
-                  {/* Mobile arrow */}
-                  <div className="flex lg:hidden items-center justify-center py-2">
-                    <motion.div
-                    initial={{ opacity: 0, y: -4 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: 0.2 + i * 0.12 }}
-                    className="flex flex-col items-center gap-1">
-                    
-                      <div className="w-px h-6 bg-gradient-to-b from-border to-primary/40" />
-                      <ArrowRight className="h-5 w-5 text-primary/60 rotate-90" />
-                    </motion.div>
-                  </div>
-                </>
-              }
-            </div>
-            )}
+
+                  {/* Spacer for opposite side on desktop */}
+                  <div className="hidden lg:block lg:w-[calc(50%-3rem)]" />
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
