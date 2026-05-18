@@ -141,14 +141,6 @@ const Index = () => {
               transition={{ duration: 0.6 }}
               className="relative z-10 text-left py-16 lg:py-24 max-w-2xl ml-4 lg:ml-16 space-y-7">
 
-            {/* Live badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#5D69D6]/30 bg-[#5D69D6]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#A8B0F0] backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5D69D6] opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#5D69D6]" />
-              </span>
-              Renforcez le tissu associatif local
-            </div>
 
             <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
               Trouvez l'espace{" "}
@@ -245,12 +237,8 @@ const Index = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-20 text-center">
+          className="mb-20 text-center">
 
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo/30 bg-indigo/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-indigo-glow backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-indigo-glow animate-pulse" />
-            Processus
-          </div>
           <h2 className="mb-3 text-3xl font-bold text-white sm:text-4xl lg:text-5xl" style={{ color: 'white' }}>Comment ça marche ?</h2>
           <p className="text-slate-400">Un accompagnement en 3 étapes clés</p>
         </motion.div>
