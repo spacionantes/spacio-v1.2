@@ -146,6 +146,9 @@ const Index = () => {
             <div className="absolute -right-[5%] top-1/2 -translate-y-1/2 w-[65%] h-[100%] lg:w-[55%] lg:h-[120%]">
               <SplineScene />
             </div>
+            {/* Fondu pour harmoniser le fond Spline avec le hero #0B0D19 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0B0D19] via-[#0B0D19]/60 to-transparent" />
+            <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#0B0D19] to-transparent" />
           </div>
 
           {/* Text + dropdown — foreground */}
