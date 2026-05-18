@@ -170,7 +170,7 @@ const Index = () => {
                 />
               </span>
               <br className="hidden lg:block" />
-              pour votre <span className="text-gradient-vibrant font-serif italic text-amber-400">association</span>
+              pour votre <span className="font-serif italic text-amber-400">association</span>
             </h1>
 
             <p className="max-w-xl text-lg text-justify font-light text-slate-300/90">
