@@ -6,7 +6,7 @@ import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
 import { useListings } from "@/hooks/useListings";
 import FeaturedSpaces from "@/components/FeaturedSpaces";
-import { TextParallaxContent } from "@/components/ui/text-parallax-content-scroll";
+import { ParallaxRichContent } from "@/components/ui/text-parallax-content-scroll";
 import Seo from "@/components/Seo";
 
 class SplineErrorBoundary extends Component<{ children: ReactNode; onError?: () => void }, { hasError: boolean }> {
@@ -231,20 +231,6 @@ const Index = () => {
 
     {/* Featured spaces */}
     <FeaturedSpaces />
-
-    {/* Parallax scroll storytelling */}
-    <div className="bg-background">
-      <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=80"
-        subheading="Pour les propriétaires"
-        heading="Donnez vie à vos espaces inutilisés."
-      />
-      <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=2000&q=80"
-        subheading="Pour les associations"
-        heading="Trouvez le lieu qui vous ressemble."
-      />
-    </div>
 
     {/* How it works — animated scroll timeline */}
     <section id="how-it-works" className="relative bg-[#0B0D19] py-20 lg:py-28 overflow-hidden">

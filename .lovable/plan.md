@@ -1,81 +1,40 @@
-## Diagnostic PageSpeed actuel (spacionantes.fr)
+## Objectif
 
-| Métrique | Mobile | Desktop | Cible |
-|---|---|---|---|
-| Performance | 34 | 59 | 90+ |
-| LCP | 5.8 s | 0.9 s | < 2.5 s |
-| TBT | 23.6 s | 22.4 s | < 200 ms |
-| Speed Index | 16 s | 9.9 s | < 3.4 s |
-| Poids total | 3.2 MB | 3.2 MB | < 1.5 MB |
+Remplacer la grille 2 colonnes de la section **"Une solution pour tous"** par un scroll parallax style sticky-image : l'utilisateur traverse d'abord le bloc **Associations** (amber), puis le bloc **Propriétaires** (indigo). Le contenu riche (badge, titre, description, liste à puces) reste lisible et conserve son identité couleur.
 
-**Coupable principal** : la scène **Spline 3D** du Hero (gros bundle WebGL, exécution main-thread massive, 20 long tasks, 39 s de JS parsing). C'est ~70 % du problème à elle seule.
+## Ce que je vais faire
 
----
+### 1. Étendre `TextParallaxContent`
+Ajouter un mode "content overlay" : au lieu d'afficher juste `subheading + heading` au centre de l'image fixe, on superpose une **carte de contenu détaillée** (badge, titre, paragraphe justifié, liste de bénéfices) ancrée à gauche ou à droite, avec un fade/parallax synchronisé au scroll. La carte garde le style verre dépoli (`backdrop-blur` + `bg-white/10` + bordure colorée) pour rester lisible sur l'image.
 
-## Roadmap en 3 phases
+Props ajoutées :
+- `accent: "indigo" | "amber"` — pilote bordures, badge, icône check
+- `icon: LucideIcon` — Heart pour assos, Building2 pour propriétaires
+- `bullets: string[]` — liste de bénéfices
+- `align: "left" | "right"` — position de la carte sur l'image
 
-### Phase 1 — Quick wins (impact énorme, ~2 h de dev)
+### 2. Refondre la section dans `src/pages/Index.tsx`
+- Conserver le titre "Une solution pour tous" + sous-titre en intro
+- Remplacer la grille `lg:grid-cols-2` par deux `<TextParallaxContent>` empilés :
+  1. **Associations** (amber, Heart, image chaleureuse de réunion associative)
+  2. **Propriétaires** (indigo, Building2, image d'espace pro/bureau)
+- Récupérer tout le contenu existant (titres, descriptions, listes de 4–5 puces) sans le perdre
 
-1. **Différer le Hero Spline 3D**
-   - Lazy-load via `IntersectionObserver` ou `requestIdleCallback` (le canvas ne se charge qu'après le LCP / interaction utilisateur).
-   - Afficher un **poster image statique** (WebP optimisé) avant l'hydratation 3D → LCP immédiat.
-   - Sur mobile, désactiver Spline et n'afficher que le poster (économie ~2 MB et 20 s de CPU).
+### 3. Nettoyer le doublon
+Supprimer les deux blocs `<TextParallaxContent>` génériques ajoutés précédemment entre `FeaturedSpaces` et "Comment ça marche" — ils faisaient déjà la même promesse de manière moins riche, donc deviendraient redondants.
 
-2. **Optimiser les images** (économie estimée : 1.4 MB)
-   - Convertir toutes les `.png` / `.jpg` du dossier `src/assets` et `public/` en **WebP** (script `sharp` one-shot).
-   - Ajouter `width`/`height` explicites et `loading="lazy"` sauf sur l'image LCP.
-   - Préciser `fetchpriority="high"` sur l'image Hero.
-
-3. **Preload de l'image LCP + font-display**
-   - `<link rel="preload" as="image" href="/hero.webp" fetchpriority="high">` dans `index.html`.
-   - Ajouter `&display=swap` sur l'import Google Fonts Inter (déjà fait : vérifier).
-
-4. **Render blocking** (économie : 240–460 ms)
-   - Charger l'import Google Fonts via `<link rel="preload">` + `media="print" onload`.
-   - Vérifier qu'aucun script tiers n'est synchrone dans `<head>`.
-
-### Phase 2 — Bundle JS (impact fort, ~3 h)
-
-5. **Code-splitting des routes** (économie : 535 KiB de JS inutilisé)
-   - Convertir toutes les pages de `src/App.tsx` en `React.lazy()` + `<Suspense>`.
-   - Vérifier que Leaflet, markercluster et Spline ne sont importés que dans leurs pages respectives (Explorer, Index).
-
-6. **Tree-shaking des libs lourdes**
-   - Auditer `framer-motion`, `lucide-react`, `recharts`, `embla-carousel` → imports nommés uniquement.
-   - Configurer `manualChunks` dans `vite.config.ts` pour isoler vendor/leaflet/spline/charts.
-
-7. **Modern build (no legacy)**
-   - Vérifier `build.target: 'es2020'` dans `vite.config.ts` pour éviter les polyfills inutiles.
-
-### Phase 3 — Infra & cache (impact moyen, ~1 h)
-
-8. **Cache lifetimes** (économie : 1.3 MB sur visites répétées)
-   - Lovable sert déjà des assets hashés ; vérifier les headers `Cache-Control: public, max-age=31536000, immutable` sur `/assets/*`. Si le domaine custom passe par un proxy, configurer les headers.
-
-9. **Préconnexions**
-   - `<link rel="preconnect">` vers `fonts.gstatic.com`, `prod.spline.design`, Supabase (déjà fait).
-
-10. **Compression**
-    - Vérifier que Brotli/Gzip est actif sur le domaine custom `spacionantes.fr`.
-
----
+### 4. Images
+Utiliser deux URLs Unsplash adaptées (espace asso chaleureux + bureau lumineux), avec un overlay sombre pour assurer la lisibilité du contenu blanc par-dessus.
 
 ## Détails techniques
 
-**Fichiers principalement touchés :**
-- `src/pages/Index.tsx` — lazy-load Spline + poster image LCP
-- `src/App.tsx` — `React.lazy()` sur toutes les routes
-- `vite.config.ts` — `build.target`, `manualChunks`, `vite-imagetools`
-- `index.html` — preload LCP, preload font, preconnect
-- `public/` + `src/assets/` — conversion WebP
+- Hauteur de chaque bloc : `150vh` (laisse le temps de lire pendant le sticky)
+- Animation : `useScroll` + `useTransform` sur opacity + translateY de la carte de contenu (apparition au milieu, disparition à la sortie)
+- Sur mobile (<1024px) : carte affichée en plein, image en fond, padding réduit pour éviter le débordement
+- Couleurs : bordure `border-amber/40` ou `border-indigo/40`, badge identique à l'existant, puces ✓ amber-dark / indigo
 
-**Gains attendus après phase 1+2 :**
-- LCP mobile : 5.8 s → ~1.8 s
-- TBT : 23.6 s → ~300 ms
-- Score Performance : 34 → 85–95
+## Hors scope
 
----
-
-## Question avant de démarrer
-
-Veux-tu que j'attaque **toute la roadmap d'un coup**, ou seulement la **Phase 1 (Spline + images)** qui apportera 80 % du gain ? La phase 1 est non-destructrice et la plus rentable.
+- Pas de changement sur les sections Hero, "Comment ça marche", Footer
+- Pas de modification des textes existants (seulement déplacés)
+- Pas de nouvelles dependencies (framer-motion déjà utilisé)
