@@ -44,6 +44,37 @@ const getOrigin = (value?: string | null) => {
   }
 }
 
+const getString = (...values: unknown[]) => {
+  for (const value of values) {
+    if (typeof value === 'string' && value.trim().length > 0) {
+      return value.trim()
+    }
+  }
+
+  return undefined
+}
+
+const normalizeUrl = (value?: string | null, fallbackOrigin?: string | null) => {
+  if (!value) return null
+
+  const embeddedAbsoluteUrl = value.match(/https?:\/\/.+$/)?.[0]
+  const candidate = embeddedAbsoluteUrl || value
+
+  try {
+    return new URL(candidate).toString()
+  } catch {
+    if (fallbackOrigin && candidate.startsWith('/')) {
+      try {
+        return new URL(candidate, fallbackOrigin).toString()
+      } catch {
+        return null
+      }
+    }
+
+    return null
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -64,14 +95,43 @@ Deno.serve(async (req) => {
 
     // Supabase Auth Send Email Hook payload format:
     // { user: { email: "..." }, email_data: { email_action_type: "signup", token: "...", token_hash: "...", redirect_to: "..." } }
-    const emailType = payload.email_data?.email_action_type || payload.email_data?.type || payload.type
-    const recipient = payload.user?.email || payload.email || payload.email_data?.email
-    const token = payload.email_data?.token || payload.token
-    const tokenHash = payload.email_data?.token_hash
-    const redirectTo = payload.email_data?.redirect_to
-    const providerConfirmationUrl = payload.email_data?.confirmation_url || payload.confirmation_url
+    const emailType = getString(
+      payload.email_data?.email_action_type,
+      payload.email_action_type,
+      payload.email_data?.type,
+      payload.type,
+    )
+    const recipient = getString(
+      payload.user?.email,
+      payload.email,
+      payload.recipient,
+      payload.email_data?.email,
+    )
+    const token = getString(payload.email_data?.token, payload.token, payload.data?.token)
+    const tokenHash = getString(
+      payload.email_data?.token_hash,
+      payload.token_hash,
+      payload.tokenHash,
+      payload.data?.token_hash,
+    )
+    const redirectToRaw = getString(
+      payload.email_data?.redirect_to,
+      payload.redirect_to,
+      payload.redirectTo,
+      payload.data?.redirect_to,
+    )
+    const providerConfirmationUrlRaw = getString(
+      payload.email_data?.confirmation_url,
+      payload.confirmation_url,
+      payload.email_data?.action_link,
+      payload.action_link,
+      payload.data?.action_link,
+    )
 
     // Build a confirmation URL on the same origin as the redirect target when possible.
+    const fallbackOrigin = getOrigin(redirectToRaw) || getOrigin(providerConfirmationUrlRaw) || `https://${ROOT_DOMAIN}`
+    const redirectTo = normalizeUrl(redirectToRaw, fallbackOrigin)
+    const providerConfirmationUrl = normalizeUrl(providerConfirmationUrlRaw, fallbackOrigin)
     const siteUrl = getOrigin(redirectTo) || getOrigin(providerConfirmationUrl) || `https://${ROOT_DOMAIN}`
     let confirmationUrl = providerConfirmationUrl || redirectTo
     if (tokenHash) {
