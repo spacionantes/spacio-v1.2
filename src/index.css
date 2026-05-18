@@ -49,20 +49,36 @@
     --indigo: 234 58% 60%;
     --indigo-light: 234 58% 95%;
     --indigo-dark: 234 58% 45%;
-    --navy: 230 50% 12%;
+    --indigo-glow: 234 80% 72%;
+    --amber: 38 92% 50%;
+    --amber-light: 45 96% 64%;
+    --amber-dark: 28 88% 48%;
+    --navy: 230 50% 10%;
     --navy-foreground: 230 20% 85%;
-    --surface-alt: 230 20% 97%;
-    --pastel-blue: 210 80% 95%;
-    --pastel-green: 145 60% 93%;
-    --pastel-orange: 30 80% 93%;
-    --pastel-pink: 340 60% 94%;
-    --pastel-purple: 270 60% 94%;
-    --pastel-yellow: 50 80% 93%;
-    --pastel-teal: 175 60% 93%;
-    --pastel-red: 0 60% 94%;
-    --pastel-indigo: 234 60% 94%;
+    --surface-alt: 230 30% 98%;
+    --pastel-blue: 210 85% 94%;
+    --pastel-green: 145 65% 92%;
+    --pastel-orange: 32 95% 90%;
+    --pastel-pink: 340 75% 93%;
+    --pastel-purple: 270 70% 93%;
+    --pastel-yellow: 48 95% 90%;
+    --pastel-teal: 175 70% 90%;
+    --pastel-red: 0 75% 93%;
+    --pastel-indigo: 234 70% 93%;
     --success: 145 60% 45%;
     --warning: 35 90% 55%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--indigo)), hsl(var(--indigo-glow)));
+    --gradient-vibrant: linear-gradient(135deg, hsl(var(--indigo)) 0%, hsl(280 70% 65%) 50%, hsl(var(--amber)) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(var(--amber)) 0%, hsl(var(--amber-light)) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(230 50% 4%) 0%, hsl(234 45% 10%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(230 50% 10% / 0.04);
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--indigo) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--indigo-glow) / 0.35);
+    --shadow-warm: 0 10px 30px -10px hsl(var(--amber) / 0.3);
   }
 
   .dark {
