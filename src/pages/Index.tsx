@@ -163,11 +163,11 @@ const Index = () => {
                   className="text-gradient-primary italic font-serif"
                 />
                 <svg
-                  className="pointer-events-none absolute -bottom-2 left-0 h-3 w-full text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]"
-                  viewBox="0 0 100 10"
+                  className="pointer-events-none absolute -bottom-2 left-0 h-3 w-[75%] text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]"
+                  viewBox="0 0 100 12"
                   preserveAspectRatio="none"
                   aria-hidden="true">
-                  <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" strokeWidth="4" fill="transparent" />
+                  <path d="M0 6 Q 12 -3 25 6 T 50 6 T 75 6 T 100 6" stroke="currentColor" strokeWidth="4" fill="transparent" />
                 </svg>
               </span>
               <br className="hidden lg:block" />
