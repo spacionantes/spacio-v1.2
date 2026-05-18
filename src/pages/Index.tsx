@@ -1,4 +1,4 @@
-import { useEffect, useState, type ComponentType, Component, type ReactNode } from "react";
+import { useState } from "react";
 import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown, Users } from "lucide-react";
 import { Typewriter } from "@/components/ui/typewriter-text";
 import { useNavigate } from "react-router-dom";
