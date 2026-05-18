@@ -94,6 +94,11 @@ const Diagnostic = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Intensi'Score – Diagnostic gratuit d'occupation d'espace"
+        description="Évaluez gratuitement le taux d'occupation de votre local sur une semaine type et recevez des conseils personnalisés de mutualisation."
+        path="/diagnostic"
+      />
       <section className="container py-12 md:py-20">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-2xl text-center">
           <h1 className="text-3xl font-extrabold md:text-4xl">

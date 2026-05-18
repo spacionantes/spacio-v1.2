@@ -83,6 +83,11 @@ const Contact = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Contact – Spacio Nantes"
+        description="Contactez l'équipe Spacio. Que vous cherchiez un espace ou souhaitiez en proposer un, nous vous répondons sous 24h."
+        path="/contact"
+      />
       <section className="py-16 lg:py-24">
         <div className="container">
           <AnimatePresence mode="wait">

@@ -86,6 +86,11 @@ const DevenirHote = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Devenir hôte – Proposez votre espace sur Spacio"
+        description="Valorisez vos espaces inutilisés en les mettant à disposition d'associations. Générez des revenus tout en soutenant l'ESS à Nantes."
+        path="/devenir-hote"
+      />
       <section className="py-16 lg:py-24">
         <div className="container">
           <AnimatePresence mode="wait">

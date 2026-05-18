@@ -74,6 +74,11 @@ const Explorer = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Explorer les espaces solidaires – Spacio Nantes"
+        description="Parcourez les espaces disponibles à Nantes : salles, ateliers, coworking. Filtrez par type, quartier, capacité et prix pour trouver le lieu idéal."
+        path="/explorer"
+      />
       <section className="min-h-[calc(100vh-4rem)]">
         <div className="border-b border-border bg-background px-4 py-4">
           <div className="container flex flex-wrap items-center gap-3">
