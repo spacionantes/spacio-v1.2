@@ -108,8 +108,12 @@ const Index = () => {
       path="/"
     />
     {/* Hero */}
-    <section className="relative z-10 bg-[rgb(10,10,40)] py-20 border-0 mx-0 lg:py-0">
-      <div className="container">
+    <section className="relative z-10 overflow-hidden bg-[#0B0D19] py-20 border-0 mx-0 lg:py-0">
+      {/* Ambient background glows */}
+      <div className="pointer-events-none absolute -top-[10%] -right-[10%] h-[600px] w-[600px] rounded-full bg-[#5D69D6]/20 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-[10%] -left-[5%] h-[400px] w-[400px] rounded-full bg-orange-500/10 blur-[100px]" />
+
+      <div className="container relative">
         <div className="relative">
           {/* Spline 3D — full background */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -123,11 +127,20 @@ const Index = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="relative z-10 text-left py-16 lg:py-24 max-w-2xl ml-4 lg:ml-16">
-              
-            <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+              className="relative z-10 text-left py-16 lg:py-24 max-w-2xl ml-4 lg:ml-16 space-y-7">
+
+            {/* Live badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#5D69D6]/30 bg-[#5D69D6]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#A8B0F0] backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5D69D6] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#5D69D6]" />
+              </span>
+              Propulsez votre impact social
+            </div>
+
+            <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
               Trouvez l'espace{" "}
-              <span className="inline-block whitespace-nowrap align-bottom" style={{ minWidth: "4.5em" }}>
+              <span className="relative inline-block whitespace-nowrap align-bottom" style={{ minWidth: "4.5em" }}>
                 <Typewriter
                   text={["parfait", "idéal", "adapté"]}
                   speed={120}
@@ -137,21 +150,32 @@ const Index = () => {
                   cursor="|"
                   className="text-gradient-primary italic font-serif"
                 />
+                <svg
+                  className="pointer-events-none absolute -bottom-2 left-0 h-3 w-full text-orange-400/50"
+                  viewBox="0 0 100 10"
+                  preserveAspectRatio="none"
+                  aria-hidden="true">
+                  <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" strokeWidth="3" fill="transparent" />
+                </svg>
               </span>
               <br className="hidden lg:block" />
               pour votre association
             </h1>
-            <p className="mb-10 max-w-xl text-lg text-justify font-light text-indigo-50">
+
+            <p className="max-w-xl text-lg text-justify font-light text-slate-300/90">
               Spacio est un service clé en main qui met à disposition les locaux inutilisés de propriétaires d'espaces à destination des structures qui œuvrent pour le bien commun.
             </p>
 
-            {/* Space type selector */}
-            <div className="relative max-w-md">
+            {/* Space type selector — glowing */}
+            <div className="group relative max-w-md">
+              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[#5D69D6] to-orange-500 opacity-25 blur transition duration-700 group-hover:opacity-40" />
               <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md px-6 py-4 text-left text-white shadow-lg transition-colors hover:bg-white/15">
-                  
-                <span className="text-base font-medium text-white/80">Quel type d'espace cherchez-vous ?</span>
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="relative flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-[#161930] px-5 py-3 text-left text-white shadow-2xl transition-colors hover:bg-[#1a1e3a]">
+                <div className="flex-1">
+                  <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Recherche</span>
+                  <span className="block text-base font-medium text-white/90">Quel type d'espace cherchez-vous ?</span>
+                </div>
                 <ChevronDown className={`h-5 w-5 text-white/60 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
@@ -161,7 +185,7 @@ const Index = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2 }}
                   className="absolute left-0 right-0 top-full z-50 mt-2 max-h-64 overflow-y-auto rounded-2xl border border-white/15 bg-[hsl(230,50%,8%)]/95 shadow-2xl scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/20">
-                  
+
                   {spaceTypes.map((type) =>
                   <button
                     key={type.value}
@@ -170,13 +194,26 @@ const Index = () => {
                       navigate(type.value ? `/explorer?type=${encodeURIComponent(type.value)}` : "/explorer");
                     }}
                     className="flex w-full items-center gap-3 px-6 py-3.5 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white">
-                    
+
                       <Building2 className="h-4 w-4 text-primary/80" />
                       {type.label}
                     </button>
                   )}
                 </motion.div>
                 }
+            </div>
+
+            {/* Social proof */}
+            <div className="flex items-center gap-4 border-t border-white/10 pt-5">
+              <div className="flex -space-x-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0B0D19] bg-slate-700 text-xs font-bold text-white">ES</div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0B0D19] bg-[#5D69D6] text-xs font-bold text-white">AS</div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0B0D19] bg-orange-500 text-xs font-bold text-white">+</div>
+              </div>
+              <div className="text-sm leading-tight">
+                <p className="font-bold text-white">Un réseau d'acteurs ESS</p>
+                <p className="text-slate-400">déjà engagés via Spacio</p>
+              </div>
             </div>
           </motion.div>
         </div>
