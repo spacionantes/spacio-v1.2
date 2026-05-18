@@ -222,10 +222,10 @@ const Index = () => {
     <FeaturedSpaces />
 
     {/* How it works — animated scroll timeline */}
-    <section id="how-it-works" className="relative bg-surface-alt py-20 lg:py-28 overflow-hidden">
+    <section id="how-it-works" className="relative bg-[#0B0D19] py-20 lg:py-28 overflow-hidden">
       {/* Ambient glows */}
-      <div className="pointer-events-none absolute top-1/4 -left-20 h-[400px] w-[400px] rounded-full bg-[#5D69D6]/5 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-1/4 -right-20 h-[400px] w-[400px] rounded-full bg-amber-300/10 blur-[120px]" />
+      <div className="pointer-events-none absolute top-1/4 -left-20 h-[500px] w-[500px] rounded-full bg-indigo/20 blur-[140px]" />
+      <div className="pointer-events-none absolute bottom-1/4 -right-20 h-[500px] w-[500px] rounded-full bg-amber/15 blur-[140px]" />
 
       <div className="container relative">
         <motion.div
@@ -235,12 +235,12 @@ const Index = () => {
             transition={{ duration: 0.5 }}
             className="mb-20 text-center">
 
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#5D69D6]/20 bg-[#5D69D6]/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#5D69D6]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#5D69D6]" />
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo/30 bg-indigo/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-indigo-glow backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-indigo-glow animate-pulse" />
             Processus
           </div>
-          <h2 className="mb-3 text-3xl font-bold sm:text-4xl lg:text-5xl">Comment ça marche ?</h2>
-          <p className="text-muted-foreground">Un accompagnement en 3 étapes clés</p>
+          <h2 className="mb-3 text-3xl font-bold text-white sm:text-4xl lg:text-5xl" style={{ color: 'white' }}>Comment ça marche ?</h2>
+          <p className="text-slate-400">Un accompagnement en 3 étapes clés</p>
         </motion.div>
 
         {/* Vertical timeline */}
