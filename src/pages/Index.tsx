@@ -313,7 +313,7 @@ const Index = () => {
     </section>
 
     {/* Solution for all */}
-    <section className="relative overflow-hidden bg-[#0B0D19] py-20">
+    <section className="relative overflow-hidden bg-background py-20">
       {/* Ambient glows: indigo (hosts) left, amber (associations) right */}
       <div className="pointer-events-none absolute top-1/3 -left-32 h-[500px] w-[500px] rounded-full bg-indigo/10 blur-[140px]" />
       <div className="pointer-events-none absolute bottom-1/4 -right-32 h-[500px] w-[500px] rounded-full bg-amber/15 blur-[140px]" />
