@@ -17,6 +17,7 @@ import DevenirHote from "./pages/DevenirHote";
 import Missions from "./pages/Missions";
 import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
+import AuthConfirm from "./pages/AuthConfirm";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/missions" element={<Missions />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/confirm" element={<AuthConfirm />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route element={<MemberLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
