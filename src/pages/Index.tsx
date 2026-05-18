@@ -69,22 +69,34 @@ const steps = [
     title: "Explorez les espaces",
     description: "Parcourez nos offres. Un espace vous plaît ? Envoyer une demande, nous vous recontacterons dans les 24h.",
     color: "bg-pastel-blue",
-    number: "01"
+    number: "01",
+    tint: "from-indigo/25 via-indigo/5 to-transparent",
+    border: "border-indigo/30 hover:border-indigo/60",
+    glow: "hover:shadow-[0_20px_60px_-15px_hsl(var(--indigo)/0.6)]",
+    numberColor: "text-indigo/50",
   },
   {
     icon: Lightbulb,
     title: "Faites vous conseiller",
     description: "Spacio prend le relais : nous vérifions la compatibilité d'usage, et nous nous occupons de tous les détails.",
     color: "bg-pastel-orange",
-    number: "02"
+    number: "02",
+    tint: "from-amber/30 via-amber/5 to-transparent",
+    border: "border-amber/30 hover:border-amber/60",
+    glow: "hover:shadow-[0_20px_60px_-15px_hsl(var(--amber)/0.6)]",
+    numberColor: "text-amber/60",
   },
   {
     icon: Handshake,
     title: "Rencontrez vous ! ",
     description: "Nous organisons la mise en relation avec le propriétaire de l'espace. Une fois la rencontre validée, tout est prêt pour accueillir vos activités !",
     color: "bg-pastel-green",
-    number: "03"
-  }
+    number: "03",
+    tint: "from-emerald-400/25 via-emerald-400/5 to-transparent",
+    border: "border-emerald-400/30 hover:border-emerald-400/60",
+    glow: "hover:shadow-[0_20px_60px_-15px_rgba(52,211,153,0.5)]",
+    numberColor: "text-emerald-400/50",
+  },
 ];
 
 
@@ -289,16 +301,19 @@ const Index = () => {
                     <motion.div
                       whileHover={{ y: -4 }}
                       transition={{ duration: 0.2 }}
-                      className="group relative rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-6 shadow-2xl transition-all hover:border-indigo/40 hover:bg-white/[0.06] hover:shadow-[0_20px_60px_-15px_hsl(var(--indigo)/0.4)] lg:p-8">
+                      className={`group relative overflow-hidden rounded-2xl border bg-white/[0.04] backdrop-blur-sm p-6 shadow-2xl transition-all hover:bg-white/[0.07] lg:p-8 ${step.border} ${step.glow}`}>
 
-                      <div className={`mb-4 flex items-center gap-3 ${isLeft ? "lg:flex-row-reverse" : ""}`}>
+                      {/* Colored tint gradient */}
+                      <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${step.tint} opacity-80`} />
+
+                      <div className={`relative mb-4 flex items-center gap-3 ${isLeft ? "lg:flex-row-reverse" : ""}`}>
                         <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${step.color} shrink-0 shadow-lg`}>
                           <step.icon className="h-6 w-6 text-foreground" />
                         </div>
-                        <span className="text-3xl font-black text-white/15">{step.number}</span>
+                        <span className={`text-3xl font-black ${step.numberColor}`}>{step.number}</span>
                       </div>
-                      <h3 className="mb-2 text-lg font-bold text-white lg:text-xl">{step.title}</h3>
-                      <p className="text-sm leading-relaxed text-slate-400 text-justify">{step.description}</p>
+                      <h3 className="relative mb-2 text-lg font-bold text-white lg:text-xl">{step.title}</h3>
+                      <p className="relative text-sm leading-relaxed text-slate-300 text-justify">{step.description}</p>
                     </motion.div>
                   </div>
 
