@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
 
   try {
     const payload = await req.json()
-    console.log('Raw payload keys:', Object.keys(payload))
+    console.log('FULL PAYLOAD:', JSON.stringify(payload))
 
     // Supabase Auth Send Email Hook payload format:
     // { user: { email: "..." }, email_data: { email_action_type: "signup", token: "...", token_hash: "...", redirect_to: "..." } }
