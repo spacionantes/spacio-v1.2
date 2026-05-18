@@ -1,5 +1,5 @@
 import { useEffect, useState, type ComponentType, Component, type ReactNode } from "react";
-import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown } from "lucide-react";
+import { ClipboardCheck, Lightbulb, Handshake, ArrowRight, Building2, Heart, ChevronDown, Users } from "lucide-react";
 import { Typewriter } from "@/components/ui/typewriter-text";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -151,11 +151,11 @@ const Index = () => {
                   className="text-gradient-primary italic font-serif"
                 />
                 <svg
-                  className="pointer-events-none absolute -bottom-2 left-0 h-3 w-full text-orange-400/50"
+                  className="pointer-events-none absolute -bottom-2 left-0 h-3 w-full text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]"
                   viewBox="0 0 100 10"
                   preserveAspectRatio="none"
                   aria-hidden="true">
-                  <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" strokeWidth="3" fill="transparent" />
+                  <path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" strokeWidth="4" fill="transparent" />
                 </svg>
               </span>
               <br className="hidden lg:block" />
@@ -204,15 +204,13 @@ const Index = () => {
             </div>
 
             {/* Social proof */}
-            <div className="flex items-center gap-4 border-t border-white/10 pt-5">
-              <div className="flex -space-x-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0B0D19] bg-slate-700 text-xs font-bold text-white">ES</div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0B0D19] bg-[#5D69D6] text-xs font-bold text-white">AS</div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0B0D19] bg-orange-500 text-xs font-bold text-white">+</div>
+            <div className="flex items-center gap-3 border-t border-white/10 pt-5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#5D69D6]/20 text-[#5D69D6]">
+                <Users className="h-5 w-5" />
               </div>
               <div className="text-sm leading-tight">
-                <p className="font-bold text-white">Un réseau d'acteurs ESS</p>
-                <p className="text-slate-400">déjà engagés via Spacio</p>
+                <p className="font-bold text-white">Un réseau d'associations</p>
+                <p className="text-slate-400">déjà engagées via Spacio</p>
               </div>
             </div>
           </motion.div>
