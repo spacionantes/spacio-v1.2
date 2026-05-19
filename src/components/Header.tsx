@@ -18,7 +18,9 @@ const navLinkClass = (active: boolean) =>
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cursor, setCursor] = useState({ left: 0, width: 0, opacity: 0 });
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
