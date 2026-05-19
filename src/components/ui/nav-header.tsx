@@ -62,7 +62,7 @@ export const NavCursor = ({ position }: { position: Position }) => {
   return (
     <motion.div
       animate={position}
-      className="absolute z-0 h-7 rounded-full bg-foreground md:h-12"
+      className="absolute z-0 h-6 rounded-full bg-foreground md:h-8"
     />
   );
 };
