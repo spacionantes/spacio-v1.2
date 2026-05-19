@@ -13,6 +13,8 @@ import Seo from "@/components/Seo";
 
 type View = "auth" | "check-email" | "forgot";
 
+const PUBLIC_SITE_URL = "https://www.spacionantes.fr";
+
 const Auth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -72,7 +74,7 @@ const Auth = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth?verified=1`,
+        emailRedirectTo: `${PUBLIC_SITE_URL}/?auth_action=email-confirmed`,
         data: { full_name: fullName },
       },
     });
@@ -97,7 +99,7 @@ const Auth = () => {
     const { error } = await supabase.auth.resend({
       type: "signup",
       email,
-      options: { emailRedirectTo: `${window.location.origin}/auth?verified=1` },
+      options: { emailRedirectTo: `${PUBLIC_SITE_URL}/?auth_action=email-confirmed` },
     });
     setLoading(false);
     if (error) toast.error(error.message);
@@ -108,7 +110,7 @@ const Auth = () => {
     e.preventDefault();
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${PUBLIC_SITE_URL}/reset-password`,
     });
     setLoading(false);
     if (error) toast.error(error.message);

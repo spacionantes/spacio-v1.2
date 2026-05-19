@@ -1,12 +1,13 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Index from "./pages/Index";
 import ScrollToTop from "./components/ScrollToTop";
 import { AuthProvider } from "./hooks/useAuth";
+import { supabase } from "./integrations/supabase/client";
 
 // Lazy-loaded routes — keep landing eager for fast LCP, defer the rest
 const Explorer = lazy(() => import("./pages/Explorer"));
@@ -40,6 +41,48 @@ const RouteFallback = () => (
   </div>
 );
 
+const AuthActionBridge = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const authAction = params.get("auth_action");
+    const tokenHash = params.get("token_hash");
+    const type = params.get("type");
+    const next = params.get("next");
+
+    if (authAction === "confirm" && tokenHash && type && location.pathname !== "/auth/confirm") {
+      const nextParams = new URLSearchParams();
+      nextParams.set("token_hash", tokenHash);
+      nextParams.set("type", type);
+
+      if (next) {
+        nextParams.set("next", next);
+      }
+
+      navigate(`/auth/confirm?${nextParams.toString()}`, { replace: true });
+      return;
+    }
+
+    if (authAction === "email-confirmed" && location.pathname === "/") {
+      navigate("/auth?verified=1", { replace: true });
+    }
+  }, [location.pathname, location.search, navigate]);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY" && location.pathname !== "/reset-password") {
+        navigate("/reset-password", { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [location.pathname, navigate]);
+
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -48,6 +91,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ScrollToTop />
+          <AuthActionBridge />
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<Index />} />

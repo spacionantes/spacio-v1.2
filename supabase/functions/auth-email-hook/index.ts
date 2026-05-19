@@ -33,6 +33,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 
 const SITE_NAME = 'Spacio'
 const ROOT_DOMAIN = 'spacionantes.fr'
+const WWW_ROOT_DOMAIN = 'www.spacionantes.fr'
 
 const getOrigin = (value?: string | null) => {
   if (!value) return null
@@ -129,13 +130,23 @@ Deno.serve(async (req) => {
     )
 
     // Build a confirmation URL on the same origin as the redirect target when possible.
-    const fallbackOrigin = getOrigin(redirectToRaw) || getOrigin(providerConfirmationUrlRaw) || `https://${ROOT_DOMAIN}`
+    const fallbackOrigin = getOrigin(redirectToRaw) || getOrigin(providerConfirmationUrlRaw) || `https://${WWW_ROOT_DOMAIN}`
     const redirectTo = normalizeUrl(redirectToRaw, fallbackOrigin)
     const providerConfirmationUrl = normalizeUrl(providerConfirmationUrlRaw, fallbackOrigin)
-    const siteUrl = getOrigin(redirectTo) || getOrigin(providerConfirmationUrl) || `https://${ROOT_DOMAIN}`
+    const siteUrl = getOrigin(redirectTo) || getOrigin(providerConfirmationUrl) || `https://${WWW_ROOT_DOMAIN}`
     let confirmationUrl = providerConfirmationUrl || redirectTo
     if (tokenHash) {
-      confirmationUrl = `${siteUrl}/auth/confirm?token_hash=${tokenHash}&type=${emailType}${redirectTo ? `&next=${encodeURIComponent(redirectTo)}` : ''}`
+      const params = new URLSearchParams({
+        auth_action: 'confirm',
+        token_hash: tokenHash,
+        type: emailType,
+      })
+
+      if (redirectTo) {
+        params.set('next', redirectTo)
+      }
+
+      confirmationUrl = `${siteUrl}/?${params.toString()}`
     }
 
     console.log('Confirmation URL built', {
@@ -171,7 +182,7 @@ Deno.serve(async (req) => {
 
     const templateProps = {
       siteName: SITE_NAME,
-      siteUrl: `https://${ROOT_DOMAIN}`,
+      siteUrl: `https://${WWW_ROOT_DOMAIN}`,
       recipient,
       confirmationUrl,
       token,
