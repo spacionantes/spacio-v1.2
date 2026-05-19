@@ -52,11 +52,13 @@ const Header = () => {
         >
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <NavTab setPosition={setCursor}>
-                <span className="inline-flex items-center gap-1">
-                  À propos <ChevronDown className="h-3.5 w-3.5" />
-                </span>
-              </NavTab>
+              <button
+                ref={aboutRef}
+                onMouseEnter={() => onEnter(aboutRef.current)}
+                className={tabClass}
+              >
+                À propos <ChevronDown className="h-3.5 w-3.5" />
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-44">
               <DropdownMenuItem asChild>
@@ -68,17 +70,24 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <NavTab setPosition={setCursor} onClick={() => navigate("/explorer")}>
+          <button
+            ref={explorerRef}
+            onMouseEnter={() => onEnter(explorerRef.current)}
+            onClick={() => navigate("/explorer")}
+            className={tabClass}
+          >
             Trouver un espace
-          </NavTab>
+          </button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <NavTab setPosition={setCursor}>
-                <span className="inline-flex items-center gap-1">
-                  Propriétaire d'espace <ChevronDown className="h-3.5 w-3.5" />
-                </span>
-              </NavTab>
+              <button
+                ref={ownerRef}
+                onMouseEnter={() => onEnter(ownerRef.current)}
+                className={tabClass}
+              >
+                Propriétaire d'espace <ChevronDown className="h-3.5 w-3.5" />
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-44">
               <DropdownMenuItem asChild>
@@ -90,9 +99,14 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <NavTab setPosition={setCursor} onClick={() => navigate("/blog")}>
+          <button
+            ref={blogRef}
+            onMouseEnter={() => onEnter(blogRef.current)}
+            onClick={() => navigate("/blog")}
+            className={tabClass}
+          >
             Blog
-          </NavTab>
+          </button>
 
           <NavCursor position={cursor} />
         </ul>
