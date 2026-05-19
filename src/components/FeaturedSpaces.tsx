@@ -31,7 +31,7 @@ const FeaturedSpaces = () => {
         >
           <div>
             <h2 className="mb-2 text-3xl font-bold sm:text-4xl">Espaces en vedette</h2>
-            <p className="text-muted-foreground">Une sélection de nos espaces les mieux notés</p>
+            <p className="text-muted-foreground">Une sélection de nos meilleurs espaces</p>
           </div>
           <Button asChild variant="outline" className="rounded-2xl">
             <Link to="/explorer">
