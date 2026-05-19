@@ -114,7 +114,7 @@ const Header = () => {
         {/* Account button */}
         <Link
           to={user ? "/dashboard" : "/auth"}
-          className="hidden md:inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          className="hidden md:inline-flex items-center gap-1.5 rounded-full border-2 border-foreground bg-background px-4 py-1.5 text-sm font-medium uppercase text-foreground transition-colors hover:bg-foreground hover:text-background"
         >
           <UserIcon className="h-4 w-4" />
           {user ? "Mon espace" : "Connexion"}
