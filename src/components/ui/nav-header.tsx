@@ -27,36 +27,36 @@ export function NavHeader({ children }: { children?: React.ReactNode }) {
   );
 }
 
-export const NavTab = ({
-  children,
-  setPosition,
-  asChild = false,
-  onClick,
-}: {
-  children: React.ReactNode;
-  setPosition: (p: Position) => void;
-  asChild?: boolean;
-  onClick?: () => void;
-}) => {
-  const ref = useRef<HTMLLIElement>(null);
+export const NavTab = React.forwardRef<
+  HTMLLIElement,
+  {
+    children: React.ReactNode;
+    setPosition: (p: Position) => void;
+    onClick?: () => void;
+  } & React.HTMLAttributes<HTMLLIElement>
+>(({ children, setPosition, onClick, ...props }, forwardedRef) => {
+  const innerRef = useRef<HTMLLIElement>(null);
+  React.useImperativeHandle(forwardedRef, () => innerRef.current as HTMLLIElement);
 
   const handleEnter = () => {
-    if (!ref.current) return;
-    const { width } = ref.current.getBoundingClientRect();
-    setPosition({ width, opacity: 1, left: ref.current.offsetLeft });
+    if (!innerRef.current) return;
+    const { width } = innerRef.current.getBoundingClientRect();
+    setPosition({ width, opacity: 1, left: innerRef.current.offsetLeft });
   };
 
   return (
     <li
-      ref={ref}
+      ref={innerRef}
       onMouseEnter={handleEnter}
       onClick={onClick}
+      {...props}
       className="relative z-10 block cursor-pointer px-3 py-1.5 text-xs uppercase text-white mix-blend-difference md:px-5 md:py-3 md:text-sm"
     >
       {children}
     </li>
   );
-};
+});
+NavTab.displayName = "NavTab";
 
 export const NavCursor = ({ position }: { position: Position }) => {
   return (
