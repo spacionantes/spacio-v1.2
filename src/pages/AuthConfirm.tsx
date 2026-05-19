@@ -15,7 +15,7 @@ const AuthConfirm = () => {
     const confirmEmail = async () => {
       const tokenHash = searchParams.get("token_hash");
       const type = searchParams.get("type");
-      const next = searchParams.get("next") || "/auth?verified=1";
+      const nextParam = searchParams.get("next");
 
       if (!tokenHash || !type) {
         toast.error("Lien de confirmation invalide ou incomplet.");
@@ -29,12 +29,26 @@ const AuthConfirm = () => {
       });
 
       if (error) {
-        toast.error("Le lien de confirmation est invalide ou expiré.");
-        navigate("/auth", { replace: true });
+        toast.error("Le lien est invalide ou a expiré. Veuillez en demander un nouveau.");
+        navigate(type === "recovery" ? "/auth?view=forgot" : "/auth", { replace: true });
         return;
       }
 
-      navigate(next, { replace: true });
+      // Pour la récupération de mot de passe : toujours rediriger vers la page de réinitialisation
+      if (type === "recovery") {
+        navigate("/reset-password", { replace: true });
+        return;
+      }
+
+      // Pour la confirmation d'inscription / changement d'email
+      if (type === "signup" || type === "email" || type === "email_change") {
+        toast.success("Email confirmé avec succès !");
+        navigate("/dashboard", { replace: true });
+        return;
+      }
+
+      // Magic link ou autres
+      navigate(nextParam && nextParam.startsWith("/") ? nextParam : "/dashboard", { replace: true });
     };
 
     void confirmEmail();
