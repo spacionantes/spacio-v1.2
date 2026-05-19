@@ -82,8 +82,8 @@ const Explorer = () => {
       <section className="min-h-[calc(100vh-4rem)]">
         <div className="border-b border-border bg-muted px-4 py-4">
           <div className="container flex flex-wrap items-center gap-3">
-            <div className="flex flex-1 items-center gap-2 rounded-2xl border border-border bg-card px-3 py-1.5 shadow-sm">
-              <Search className="h-4 w-4 text-muted-foreground" />
+            <div className="flex flex-1 items-center gap-2 rounded-full border-2 border-foreground bg-background px-4 py-1.5">
+              <Search className="h-4 w-4 text-foreground" />
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -92,7 +92,7 @@ const Explorer = () => {
               />
             </div>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-48 rounded-2xl">
+              <SelectTrigger className="w-48 rounded-full border-2 border-foreground bg-background">
                 <SlidersHorizontal className="mr-2 h-4 w-4" />
                 <SelectValue placeholder="Type d'espace" />
               </SelectTrigger>
@@ -102,7 +102,7 @@ const Explorer = () => {
               </SelectContent>
             </Select>
             <Select value={quartierFilter} onValueChange={setQuartierFilter}>
-              <SelectTrigger className="w-48 rounded-2xl">
+              <SelectTrigger className="w-48 rounded-full border-2 border-foreground bg-background">
                 <MapPin className="mr-2 h-4 w-4" />
                 <SelectValue placeholder="Quartier" />
               </SelectTrigger>
@@ -114,7 +114,7 @@ const Explorer = () => {
 
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="rounded-2xl">
+                <Button variant="outline" className="rounded-full border-2 border-foreground bg-background hover:bg-foreground hover:text-background">
                   <SlidersHorizontal className="mr-2 h-4 w-4" />
                   Plus de filtres
                   {activeAdvanced > 0 && (
