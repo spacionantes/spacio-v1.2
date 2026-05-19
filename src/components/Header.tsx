@@ -12,7 +12,7 @@ import { NavCursor } from "@/components/ui/nav-header";
 import logo from "@/assets/logo.png";
 
 const tabClass =
-  "relative z-10 inline-flex items-center gap-1 cursor-pointer px-3 py-1.5 text-xs uppercase text-white mix-blend-difference md:px-5 md:py-3 md:text-sm bg-transparent border-0 outline-none";
+  "relative z-10 inline-flex items-center gap-1 cursor-pointer px-3 py-1 text-xs uppercase text-white mix-blend-difference md:px-4 md:py-1.5 md:text-sm bg-transparent border-0 outline-none";
 
 const navLinkClass = (active: boolean) =>
   `inline-flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
