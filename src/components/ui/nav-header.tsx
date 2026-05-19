@@ -60,7 +60,7 @@ NavTab.displayName = "NavTab";
 
 export const NavCursor = ({ position }: { position: Position }) => {
   return (
-    <motion.li
+    <motion.div
       animate={position}
       className="absolute z-0 h-7 rounded-full bg-foreground md:h-12"
     />

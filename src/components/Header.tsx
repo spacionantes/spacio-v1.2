@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -8,8 +8,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { NavTab, NavCursor } from "@/components/ui/nav-header";
+import { NavCursor } from "@/components/ui/nav-header";
 import logo from "@/assets/logo.png";
+
+const tabClass =
+  "relative z-10 inline-flex items-center gap-1 cursor-pointer px-3 py-1.5 text-xs uppercase text-white mix-blend-difference md:px-5 md:py-3 md:text-sm bg-transparent border-0 outline-none";
 
 const navLinkClass = (active: boolean) =>
   `inline-flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
@@ -22,6 +25,15 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const aboutRef = useRef<HTMLButtonElement>(null);
+  const ownerRef = useRef<HTMLButtonElement>(null);
+  const explorerRef = useRef<HTMLButtonElement>(null);
+  const blogRef = useRef<HTMLButtonElement>(null);
+
+  const onEnter = (el: HTMLElement | null) => {
+    if (!el) return;
+    setCursor({ width: el.getBoundingClientRect().width, left: el.offsetLeft, opacity: 1 });
+  };
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -34,17 +46,19 @@ const Header = () => {
         </Link>
 
         {/* Desktop nav — centered, animated pill cursor */}
-        <ul
+        <div
           onMouseLeave={() => setCursor((pv) => ({ ...pv, opacity: 0 }))}
-          className="absolute left-1/2 hidden -translate-x-1/2 rounded-full border-2 border-foreground bg-background p-1 md:flex"
+          className="absolute left-1/2 hidden -translate-x-1/2 items-center rounded-full border-2 border-foreground bg-background p-1 md:flex"
         >
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <NavTab setPosition={setCursor}>
-                <span className="inline-flex items-center gap-1">
-                  À propos <ChevronDown className="h-3.5 w-3.5" />
-                </span>
-              </NavTab>
+              <button
+                ref={aboutRef}
+                onMouseEnter={() => onEnter(aboutRef.current)}
+                className={tabClass}
+              >
+                À propos <ChevronDown className="h-3.5 w-3.5" />
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-44">
               <DropdownMenuItem asChild>
@@ -56,17 +70,24 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <NavTab setPosition={setCursor} onClick={() => navigate("/explorer")}>
+          <button
+            ref={explorerRef}
+            onMouseEnter={() => onEnter(explorerRef.current)}
+            onClick={() => navigate("/explorer")}
+            className={tabClass}
+          >
             Trouver un espace
-          </NavTab>
+          </button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <NavTab setPosition={setCursor}>
-                <span className="inline-flex items-center gap-1">
-                  Propriétaire d'espace <ChevronDown className="h-3.5 w-3.5" />
-                </span>
-              </NavTab>
+              <button
+                ref={ownerRef}
+                onMouseEnter={() => onEnter(ownerRef.current)}
+                className={tabClass}
+              >
+                Propriétaire d'espace <ChevronDown className="h-3.5 w-3.5" />
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-44">
               <DropdownMenuItem asChild>
@@ -78,12 +99,17 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <NavTab setPosition={setCursor} onClick={() => navigate("/blog")}>
+          <button
+            ref={blogRef}
+            onMouseEnter={() => onEnter(blogRef.current)}
+            onClick={() => navigate("/blog")}
+            className={tabClass}
+          >
             Blog
-          </NavTab>
+          </button>
 
           <NavCursor position={cursor} />
-        </ul>
+        </div>
 
         {/* Account button */}
         <Link
