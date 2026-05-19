@@ -12,7 +12,7 @@ import { NavCursor } from "@/components/ui/nav-header";
 import logo from "@/assets/logo.png";
 
 const tabClass =
-  "relative z-10 inline-flex items-center gap-1 cursor-pointer px-3 py-1.5 text-xs uppercase text-white mix-blend-difference md:px-5 md:py-3 md:text-sm bg-transparent border-0 outline-none";
+  "relative z-10 inline-flex items-center gap-1 cursor-pointer px-3 py-1 text-xs uppercase text-white mix-blend-difference md:px-4 md:py-1.5 md:text-sm bg-transparent border-0 outline-none";
 
 const navLinkClass = (active: boolean) =>
   `inline-flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
@@ -48,7 +48,7 @@ const Header = () => {
         {/* Desktop nav — centered, animated pill cursor */}
         <div
           onMouseLeave={() => setCursor((pv) => ({ ...pv, opacity: 0 }))}
-          className="absolute left-1/2 hidden -translate-x-1/2 items-center rounded-full border-2 border-foreground bg-background p-1 md:flex"
+          className="absolute left-1/2 hidden -translate-x-1/2 items-center rounded-full border-2 border-foreground bg-background p-0.5 md:flex"
         >
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
