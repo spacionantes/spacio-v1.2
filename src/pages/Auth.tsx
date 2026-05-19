@@ -13,7 +13,12 @@ import Seo from "@/components/Seo";
 
 type View = "auth" | "check-email" | "forgot";
 
-const PUBLIC_SITE_URL = "https://www.spacionantes.fr";
+// Utilise l'origine courante (Netlify preview, custom domain, localhost…)
+// On retombe sur le domaine de prod uniquement en SSR/build (jamais en runtime).
+const PUBLIC_SITE_URL =
+  typeof window !== "undefined"
+    ? window.location.origin
+    : "https://www.spacionantes.fr";
 
 const Auth = () => {
   const navigate = useNavigate();
