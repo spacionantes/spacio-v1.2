@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NavTab, NavCursor } from "@/components/ui/nav-header";
 import logo from "@/assets/logo.png";
 
 const navLinkClass = (active: boolean) =>
